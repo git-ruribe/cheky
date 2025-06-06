@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Sabores Clásicos NL</title>
+    <title>cheky.app</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-brown: #8B4513; /* SaddleBrown */
@@ -23,7 +23,7 @@
         }
         
         body {
-            font-family: 'Caveat', cursive;
+            font-family: 'Lato', sans-serif;
             background: linear-gradient(45deg, var(--light-brown), var(--cream));
             margin: 0;
             padding: 0; /* Quitar padding */
@@ -34,235 +34,6 @@
             justify-content: center;
         }
 
-        /* Botón de donación con animación cíclica */
-            .beer-donation-btn {
-                position: absolute;
-                top: 15px;
-                right: 15px;
-                background: rgba(255, 215, 0, 0.15);
-                border: 2px solid rgba(255, 215, 0, 0.3);
-                border-radius: 50%;
-                width: 55px; /* Un poco más grande como pediste */
-                height: 55px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 2.2rem; /* Más grande */
-                color: #FFD700;
-                text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-                cursor: pointer;
-                transition: all 0.3s ease;
-                z-index: 10;
-                opacity: 0.8;
-                transform: rotate(-5deg);
-                box-shadow: 0 3px 10px rgba(0,0,0,0.15);
-            }
-            
-            .beer-donation-btn:hover {
-                opacity: 1;
-                transform: rotate(0deg) scale(1.1);
-                background: rgba(255, 215, 0, 0.25);
-                border-color: #FFD700;
-                box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
-            }
-            
-            /* Contenedor para los iconos animados */
-            .beer-icon-container {
-                position: relative;
-                width: 100%;
-                height: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            
-            /* Estados de los iconos */
-            .beer-icon, .click-icon, .happy-icon {
-                position: absolute;
-                opacity: 0;
-                transform: scale(0.8);
-                transition: all 0.4s ease;
-                pointer-events: none;
-            }
-            
-            /* Animación cíclica principal */
-            .beer-icon2 {
-                animation: iconCycle 9s infinite;
-                animation-delay: 0s;
-            }
-            
-            .click-icon {
-                animation: iconCycle 9s infinite;
-                animation-delay: 3s;
-                color: #FF6B35; /* Naranja para la manita */
-            }
-            
-            .happy-icon {
-                animation: iconCycle 9s infinite;
-                animation-delay: 6s;
-                color: #FFD700; /* Dorado para la cara feliz */
-            }
-            
-            /* Keyframes para el ciclo de iconos */
-            @keyframes iconCycle {
-                0%, 11.1% {
-                    opacity: 0;
-                    transform: scale(0.8) rotate(-10deg);
-                }
-                11.2%, 22.2% {
-                    opacity: 1;
-                    transform: scale(1) rotate(0deg);
-                }
-                22.3%, 33.3% {
-                    opacity: 1;
-                    transform: scale(1.1) rotate(5deg);
-                }
-                33.4%, 100% {
-                    opacity: 0;
-                    transform: scale(0.8) rotate(-10deg);
-                }
-            }
-            
-            /* Efecto especial para la manita (más llamativo) */
-            .click-icon {
-                animation: clickIconCycle 9s infinite;
-                animation-delay: 3s;
-            }
-            
-            @keyframes clickIconCycle {
-                0%, 11.1% {
-                    opacity: 0;
-                    transform: scale(0.8);
-                }
-                11.2%, 16.7% {
-                    opacity: 1;
-                    transform: scale(1) translateY(0px);
-                }
-                16.8%, 22.2% {
-                    opacity: 1;
-                    transform: scale(1.2) translateY(-2px); /* Efecto de "presionar" */
-                }
-                22.3%, 27.8% {
-                    opacity: 1;
-                    transform: scale(1) translateY(0px);
-                }
-                27.9%, 33.3% {
-                    opacity: 1;
-                    transform: scale(1.1) translateY(-1px);
-                }
-                33.4%, 100% {
-                    opacity: 0;
-                    transform: scale(0.8);
-                }
-            }
-            
-            /* Efecto especial para la cara feliz (más expresiva) */
-            .happy-icon {
-                animation: happyIconCycle 9s infinite;
-                animation-delay: 6s;
-            }
-            
-            @keyframes happyIconCycle {
-                0%, 11.1% {
-                    opacity: 0;
-                    transform: scale(0.8) rotate(-10deg);
-                }
-                11.2%, 16.7% {
-                    opacity: 1;
-                    transform: scale(1) rotate(0deg);
-                }
-                16.8%, 22.2% {
-                    opacity: 1;
-                    transform: scale(1.15) rotate(5deg); /* Cara más grande y rotada */
-                }
-                22.3%, 27.8% {
-                    opacity: 1;
-                    transform: scale(1.1) rotate(-3deg);
-                }
-                27.9%, 33.3% {
-                    opacity: 1;
-                    transform: scale(1.05) rotate(2deg);
-                }
-                33.4%, 100% {
-                    opacity: 0;
-                    transform: scale(0.8) rotate(-10deg);
-                }
-            }
-            
-            /* Pulso sutil en el borde del botón durante toda la animación */
-            .beer-donation-btn::before {
-                content: '';
-                position: absolute;
-                top: -3px; left: -3px; right: -3px; bottom: -3px;
-                border-radius: 50%;
-                background: rgba(255, 215, 0, 0.2);
-                animation: gentlePulse 9s ease-in-out infinite;
-                z-index: -1;
-            }
-            
-            @keyframes gentlePulse {
-                0%, 30%, 70%, 100% { 
-                    transform: scale(1);
-                    opacity: 0;
-                }
-                15%, 50%, 85% { 
-                    transform: scale(1.1);
-                    opacity: 0.3;
-                }
-            }
-            
-            /* Responsive - más pequeño en móviles */
-            @media (max-width: 768px) {
-                .beer-donation-btn {
-                    width: 50px;
-                    height: 50px;
-                    top: 12px;
-                    right: 12px;
-                    font-size: 2rem;
-                }
-            }
-            
-            /* Versión alternativa más sutil (opcional) */
-            .beer-donation-btn.subtle {
-                opacity: 0.6;
-                font-size: 2rem;
-            }
-            
-            .beer-donation-btn.subtle:hover {
-                opacity: 0.9;
-            }
-            
-            /* Versión más llamativa (opcional) */
-            .beer-donation-btn.attention-grabber {
-                background: rgba(255, 215, 0, 0.5);
-                border-color: rgba(255, 215, 0, 0.75);
-                box-shadow: 0 3px 15px rgba(255, 215, 0, 0.5);
-            }
-            
-            .beer-donation-btn.attention-grabber::before {
-                animation-duration: 6s; /* Pulso más frecuente */
-            }
-
-        /* Ícono de cerveza en esquina superior derecha */
-        .beer-icon {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 3rem;
-            color: #FFD700;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            opacity: 0.8;
-            transition: all 0.3s ease;
-            z-index: 10;
-            pointer-events: none;
-            transform: rotate(-10deg);
-            animation: beerFloat 3s ease-in-out infinite;
-        }
-        
-        @keyframes beerFloat {
-            0%, 100% { transform: rotate(-10deg) translateY(0px); }
-            50% { transform: rotate(-10deg) translateY(-3px); }
-        }
 
         .album-container {
             max-width: 450px;
@@ -350,13 +121,14 @@
         }
 
         .cover-title {
-            font-family: 'Permanent Marker', cursive;
+            font-family: 'Anton', sans-serif; /* Cambiado a Anton */
             font-size: 2.8rem;
             margin-bottom: 0.5rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
         .cover-subtitle {
+            font-family: 'Lato', sans-serif;
             font-size: 1.5rem;
             font-weight: 600;
             margin-bottom: 1.5rem;
@@ -372,12 +144,34 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
 
+        .cover-presented {
+            position: absolute;
+            bottom: 24px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 1.1rem;
+            color: #fff;
+            opacity: 0.92;
+            letter-spacing: 0.02em;
+            font-family: 'Lato', sans-serif;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .cover-presented .cheky-highlight {
+            font-weight: 700;
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 0.04em;
+            font-size: 1.5em;
+            padding: 0 6px;
+        }
+
         /* Restaurant Index Page Styles */
         .restaurant-index-content {
             text-align: center;
         }
         .restaurant-index-header {
-            font-family: 'Permanent Marker', cursive;
+            font-family: 'anton', sans-serif;
             font-size: 2rem;
             color: var(--primary-brown);
             margin-bottom: 0.5rem;
@@ -434,7 +228,7 @@
         }
 
         .restaurant-title {
-            font-family: 'Permanent Marker', cursive;
+            font-family: 'anton', sans-serif;
             font-size: 2rem;
             height: 4.8rem; /* Altura fija para 2 líneas (2rem * 2 + espaciado) */
             line-height: 2.2rem; /* Altura de línea ajustada */
@@ -490,7 +284,7 @@
             object-fit: contain;
             border-radius: 12px;
         }
-        
+                
         .user-photo-placeholder-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -498,9 +292,30 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-end;
             color: var(--dark-brown);
             pointer-events: none;
+            padding-bottom: 12px;
+        }
+        .user-photo-placeholder-center {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Centra vertical y horizontal */
+            width: 100%;
+        }
+        .user-photo-privacy-message {
+            margin-top: 18px;
+            font-size: 0.8rem;
+            color: #654321;
+            background: #fffbe7;
+            border-radius: 7px;
+            padding: 10px 12px;
+            text-align: center;
+            font-family: 'Lato', sans-serif;
+            width: 90%;
+            max-width: 320px;
         }
         .user-photo-placeholder-icon { font-size: 3rem; margin-bottom: 0.3rem; }
         .user-photo-text { font-size: 1rem; font-weight: 600; text-align: center; }
@@ -518,7 +333,7 @@
             cursor: pointer;
             transition: all 0.2s ease;
             box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-            font-family: 'Caveat', cursive;
+            font-family: 'Lato', sans-serif;
             flex-shrink: 0;
             display: flex;
             align-items: center;
@@ -552,7 +367,7 @@
             transform: translateY(-20px); 
             transition: transform 0.3s ease;
             border: 3px solid var(--primary-brown);
-            font-family: 'Caveat', cursive; 
+            font-family: 'Lato', sans-serif; 
             color: var(--dark-brown);
             display: flex;
             flex-direction: column;
@@ -563,7 +378,7 @@
         
         .modal-overlay.show .modal-content { transform: translateY(0); }
         .modal-header {
-            font-family: 'Permanent Marker', cursive; font-size: 1.6rem;
+            font-family: 'anton', sans-serif; font-size: 1.6rem;
             color: var(--primary-brown); margin-bottom: 15px; text-align: center;
             flex-shrink: 0;
         }
@@ -607,7 +422,7 @@
             font-size: 1.2rem; 
             cursor: pointer; 
             transition: all 0.2s ease; 
-            font-family: 'Caveat', cursive; 
+            font-family: 'Lato', sans-serif; 
             /* Posición fija en esquina superior derecha: */
             position: absolute;
             top: 10px;
@@ -708,6 +523,13 @@
             background: var(--orange);
         }
 
+        .image-modal-share-btn {
+            right: 125px;
+        }
+        .image-modal-share-btn:hover {
+            background: var(--orange);
+        }
+
 
         /* Navigation bar at the bottom */
         .navigation {
@@ -786,13 +608,7 @@
 </head>
 <body>
     <!-- 🍺 BOTÓN ANIMADO DE DONACIÓN -->
-    <button class="beer-donation-btn attention-grabber" onclick="showDonationModal()" title="¡Conoce Cerveza Buena!">
-        <div class="beer-icon-container">
-            <span class="beer-icon">🍺</span>
-            <span class="click-icon">👆</span>
-            <span class="happy-icon">😊</span>
-        </div>
-    </button>
+
     <div class="album-container">
         <div class="album-book-wrapper">
             <div id="currentPage" class="page">
@@ -832,6 +648,9 @@
                 </button>
                 <button class="image-modal-action-btn image-modal-replace-btn" onclick="replaceCurrentImage()" title="Reemplazar foto">
                     <i class="fas fa-camera"></i>
+                </button>
+                <button class="image-modal-action-btn image-modal-share-btn" onclick="shareCurrentImage()" title="Compartir foto">
+                    <i class="fas fa-share-alt"></i>
                 </button>
             </div>
         </div>
@@ -961,7 +780,7 @@ function showLoadingIndicator(show = true) {
                     align-items: center;
                     z-index: 2000;
                     color: white;
-                    font-family: 'Caveat', cursive;
+                    font-family: 'Lato', sans-serif;
                     font-size: 1.2rem;
                 ">
                     <div style="text-align: center;">
@@ -1172,7 +991,7 @@ function showLoadingIndicator(show = true) {
                     align-items: center;
                     z-index: 2000;
                     color: white;
-                    font-family: 'Caveat', cursive;
+                    font-family: 'Lato', sans-serif;
                     font-size: 1.2rem;
                 ">
                     <div style="text-align: center;">
@@ -1216,7 +1035,7 @@ function showSuccessMessage(message) {
         padding: 10px 20px;
         border-radius: 5px;
         z-index: 1500;
-        font-family: 'Caveat', cursive;
+        font-family: 'Lato', sans-serif;
         font-size: 1.1rem;
         box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         opacity: 0;
@@ -1250,7 +1069,7 @@ function showSuccessMessage(message) {
         padding: 10px 20px;
         border-radius: 5px;
         z-index: 1500;
-        font-family: 'Caveat', cursive;
+        font-family: 'Lato', sans-serif;
         font-size: 1.1rem;
         box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         opacity: 0;
@@ -1342,8 +1161,11 @@ function importPhotos(event) {
             return `
                 <div class="page-content cover-page">
                     <h1 class="cover-title">12 Joyas Auténticas</h1>
-                    <h2 class="cover-subtitle">Sabores Tradicionales de Nuevo León</h2>
+                    <h2 class="cover-subtitle">Sabores Tradicionales de<br>Nuevo León</h2>
                     <img src="CantinaMty.png" onerror="this.onerror=null;this.src='https://placehold.co/150x150/D2B48C/654321?text=Error';" alt="Comida del Noreste" class="cover-image">
+                    <div class="cover-presented">
+                        presentado por <span class="cheky-highlight">cheky.app</span>
+                    </div>
                 </div>`;
         }
 
@@ -1381,16 +1203,20 @@ function importPhotos(event) {
             } else {
                 photoAreaContent = `
                     <div class="user-photo-placeholder-overlay">
-                        <i class="fas fa-camera user-photo-placeholder-icon"></i>
-                        <p class="user-photo-text">Toca para añadir tu foto</p>
+                        <div class="user-photo-placeholder-center">
+                            <i class="fas fa-camera user-photo-placeholder-icon"></i>
+                            <p class="user-photo-text">Toca para añadir tu foto</p>
+                        </div>
+                        <div class="user-photo-privacy-message">
+                            <strong>MODO PRIVADO:</strong> TÚ TIENES EL CONTROL<br>
+                            Tus fotos se guardan en tu dispositivo en el caché del navegador, compártelas con quien tú quieras o grábalas en tu carrete.
+                        </div>
                     </div>`;
                 photoAreaOnClick = `selectUserPhoto('${restaurant.name.replace(/'/g, "\\'")}', event)`;
             }
 
             return `
                 <div class="page-content restaurant-content-wrapper">
-                    <!-- <div class="beer-icon">🍺</div> -->
-
                     
                     <h2 class="restaurant-title">${restaurant.name}</h2>
                     <div class="photo-display-area" onclick="${photoAreaOnClick}">
@@ -1482,6 +1308,28 @@ function importPhotos(event) {
             modalImageEl.style.display = 'block'; // Reset display style for next time
         };
 
+        window.shareCurrentImage = async function() {
+            if (!modalImageEl.src) return;
+            if (navigator.share && modalImageEl.src.startsWith('data:image/')) {
+                try {
+                    // Convierte el base64 a un blob
+                    const res = await fetch(modalImageEl.src);
+                    const blob = await res.blob();
+                    const file = new File([blob], 'cheky_foto.jpg', { type: blob.type });
+
+                    await navigator.share({
+                        files: [file],
+                        title: 'Mi foto de cheky.app',
+                        text: '¡Mira mi foto en cheky.app!',
+                    });
+                } catch (err) {
+                    alert('No se pudo compartir la foto.');
+                }
+            } else {
+                alert('La función de compartir no está disponible en este dispositivo o navegador.');
+            }
+        };
+
         function generateFinalPageContent() {
             return `
                 <div class="page-content cover-page">
@@ -1512,12 +1360,15 @@ function importPhotos(event) {
         function updateNavigation() {
             prevBtn.disabled = currentPageIndex === 0;
             nextBtn.disabled = currentPageIndex === contentPages.length - 1;
-            pageIndicatorEl.textContent = `${currentPageIndex + 1} / ${contentPages.length}`;
+            //pageIndicatorEl.textContent = `${currentPageIndex + 1} / ${contentPages.length}`;
+            pageIndicatorEl.textContent = "Índice"
 
             if (contentPages[currentPageIndex].type === 'restaurant') {
+                pageIndicatorEl.textContent = "Índice"
                 pageIndicatorEl.classList.add('index-link');
                 pageIndicatorEl.onclick = () => navigateToPage(1, 'backward');
             } else {
+                pageIndicatorEl.textContent = ""
                 pageIndicatorEl.classList.remove('index-link');
                 pageIndicatorEl.onclick = null;
             }
@@ -1566,202 +1417,6 @@ function importPhotos(event) {
                 closeImageModal();
             }
         });
-
-        function showDonationModal() {
-            const modal = document.createElement('div');
-            modal.id = 'donationModal';
-            modal.style.cssText = `
-                position: fixed;
-                top: 0; left: 0;
-                width: 100vw; height: 100vh;
-                background: rgba(0,0,0,0.85);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 2000;
-                opacity: 0;
-                transition: opacity 0.3s ease;
-            `;
-            
-            modal.innerHTML = `
-                <div style="
-                    background: linear-gradient(135deg, #2C1810, #4A2C17);
-                    padding: 25px 20px 20px 20px;
-                    border-radius: 15px;
-                    border: 3px solid #D4AF37;
-                    max-width: 85%;
-                    width: 320px;
-                    max-height: 80vh;
-                    overflow-y: auto;
-                    text-align: center;
-                    color: #F5F5DC;
-                    position: relative;
-                    transform: translateY(-30px);
-                    transition: transform 0.3s ease;
-                    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-                ">
-                    <!-- Botón cerrar en esquina superior derecha -->
-                    <button onclick="closeDonationModal()" style="
-                        position: absolute;
-                        top: 8px;
-                        right: 8px;
-                        background: rgba(0,0,0,0.6);
-                        color: white;
-                        border: none;
-                        border-radius: 50%;
-                        width: 30px;
-                        height: 30px;
-                        font-size: 1.1rem;
-                        cursor: pointer;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        transition: background 0.2s ease;
-                        z-index: 10;
-                    ">×</button>
-                    
-                    <!-- Etiqueta de patrocinio -->
-                    <div style="
-                        position: absolute;
-                        top: -8px;
-                        left: 50%;
-                        transform: translateX(-50%);
-                        background: #D4AF37;
-                        color: #2C1810;
-                        padding: 3px 12px;
-                        border-radius: 8px;
-                        font-size: 0.7rem;
-                        font-weight: 700;
-                        letter-spacing: 1px;
-                        font-family: 'Caveat', cursive;
-                    ">PATROCINADO</div>
-                    
-                    <!-- Logo más pequeño -->
-                    <div style="
-                        width: 60px;
-                        height: 60px;
-                        background: linear-gradient(45deg, #D4AF37, #FFD700);
-                        border-radius: 50%;
-                        margin: 15px auto 10px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        font-size: 2rem;
-                        border: 2px solid #F5F5DC;
-                        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
-                    ">🍺</div>
-                    
-                    <h3 style="
-                        font-family: 'Permanent Marker', cursive;
-                        color: #D4AF37;
-                        margin-bottom: 5px;
-                        font-size: 1.5rem;
-                        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-                    ">Cerveza Buena</h3>
-                    
-                    <p style="
-                        font-style: italic;
-                        margin-bottom: 15px;
-                        font-size: 0.9rem;
-                        color: #D4AF37;
-                        opacity: 0.9;
-                    ">"El sabor auténtico de Nuevo León"</p>
-                    
-                    <p style="
-                        font-size: 1rem;
-                        margin-bottom: 15px;
-                        line-height: 1.3;
-                        font-family: 'Caveat', cursive;
-                    ">
-                        Cerveza artesanal 100% regiomontana, perfecta para acompañar tus aventuras gastronómicas.
-                    </p>
-                    
-                    <div style="
-                        background: rgba(212, 175, 55, 0.1);
-                        padding: 10px;
-                        border-radius: 8px;
-                        margin-bottom: 15px;
-                        border: 1px solid rgba(212, 175, 55, 0.3);
-                    ">
-                        <p style="
-                            margin: 0;
-                            font-size: 0.85rem;
-                            line-height: 1.2;
-                        ">
-                            <strong>🍻 Estilos:</strong> Clara • Ámbar • Negra • IPA
-                        </p>
-                    </div>
-                    
-                    <button onclick="openRegiaWebsite()" style="
-                        background: linear-gradient(45deg, #D4AF37, #FFD700);
-                        color: #2C1810;
-                        border: none;
-                        padding: 10px 20px;
-                        border-radius: 20px;
-                        font-size: 1rem;
-                        font-weight: 700;
-                        cursor: pointer;
-                        transition: all 0.3s ease;
-                        font-family: 'Caveat', cursive;
-                        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-                        margin-bottom: 10px;
-                        width: 100%;
-                    ">
-                        🌐 Conocer más
-                    </button>
-                    
-                    <p style="
-                        font-size: 0.75rem;
-                        color: rgba(245, 245, 220, 0.7);
-                        margin: 0;
-                        line-height: 1.2;
-                    ">
-                        Apoya a los productores locales 🇲🇽
-                    </p>
-                </div>
-            `;
-            
-            document.body.appendChild(modal);
-            
-            // Animar entrada
-            setTimeout(() => {
-                modal.style.opacity = '1';
-                modal.querySelector('div').style.transform = 'translateY(0)';
-            }, 10);
-            
-            // Cerrar al hacer click fuera
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) closeDonationModal();
-            });
-        }
-
-        function closeDonationModal() {
-            const modal = document.getElementById('donationModal');
-            if (modal) {
-                modal.style.opacity = '0';
-                setTimeout(() => {
-                    document.body.removeChild(modal);
-                }, 300);
-            }
-        }
-        
-        // Funciones para los botones del anuncio
-        function openRegiaWebsite() {
-            // Simular sitio web (puedes cambiar por una URL real más adelante)
-            alert('🍺 ¡Próximamente! Cerveza Buena estará disponible en toda la zona metropolitana de Monterrey.');
-            closeDonationModal();
-        }
-        
-        function findRegiaStores() {
-            alert(`📍 Puntos de venta Cerveza Buena:
-        
-        🏪 Tiendas de conveniencia selectas
-        🍺 Bares y cantinas del centro de MTY  
-        🛒 Mercados locales de San Pedro
-        🎯 Eventos gastronómicos regionales
-        
-        ¡Próximamente en más ubicaciones!`);
-        }
 
 
         
