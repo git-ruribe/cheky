@@ -1,1 +1,1770 @@
-hola
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Sabores Clásicos NL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-brown: #8B4513; /* SaddleBrown */
+            --light-brown: #D2B48C; /* Tan */
+            --cream: #F5F5DC; /* Beige */
+            --dark-brown: #654321; /* DarkBrown (custom) */
+            --orange: #FF8C00; /* DarkOrange */
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Caveat', cursive;
+            background: linear-gradient(45deg, var(--light-brown), var(--cream));
+            margin: 0;
+            padding: 0; /* Quitar padding */
+            height: 100vh;
+            overflow: hidden; /* Importante */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Botón de donación con animación cíclica */
+            .beer-donation-btn {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                background: rgba(255, 215, 0, 0.15);
+                border: 2px solid rgba(255, 215, 0, 0.3);
+                border-radius: 50%;
+                width: 55px; /* Un poco más grande como pediste */
+                height: 55px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 2.2rem; /* Más grande */
+                color: #FFD700;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+                cursor: pointer;
+                transition: all 0.3s ease;
+                z-index: 10;
+                opacity: 0.8;
+                transform: rotate(-5deg);
+                box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+            }
+            
+            .beer-donation-btn:hover {
+                opacity: 1;
+                transform: rotate(0deg) scale(1.1);
+                background: rgba(255, 215, 0, 0.25);
+                border-color: #FFD700;
+                box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+            }
+            
+            /* Contenedor para los iconos animados */
+            .beer-icon-container {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            /* Estados de los iconos */
+            .beer-icon, .click-icon, .happy-icon {
+                position: absolute;
+                opacity: 0;
+                transform: scale(0.8);
+                transition: all 0.4s ease;
+                pointer-events: none;
+            }
+            
+            /* Animación cíclica principal */
+            .beer-icon2 {
+                animation: iconCycle 9s infinite;
+                animation-delay: 0s;
+            }
+            
+            .click-icon {
+                animation: iconCycle 9s infinite;
+                animation-delay: 3s;
+                color: #FF6B35; /* Naranja para la manita */
+            }
+            
+            .happy-icon {
+                animation: iconCycle 9s infinite;
+                animation-delay: 6s;
+                color: #FFD700; /* Dorado para la cara feliz */
+            }
+            
+            /* Keyframes para el ciclo de iconos */
+            @keyframes iconCycle {
+                0%, 11.1% {
+                    opacity: 0;
+                    transform: scale(0.8) rotate(-10deg);
+                }
+                11.2%, 22.2% {
+                    opacity: 1;
+                    transform: scale(1) rotate(0deg);
+                }
+                22.3%, 33.3% {
+                    opacity: 1;
+                    transform: scale(1.1) rotate(5deg);
+                }
+                33.4%, 100% {
+                    opacity: 0;
+                    transform: scale(0.8) rotate(-10deg);
+                }
+            }
+            
+            /* Efecto especial para la manita (más llamativo) */
+            .click-icon {
+                animation: clickIconCycle 9s infinite;
+                animation-delay: 3s;
+            }
+            
+            @keyframes clickIconCycle {
+                0%, 11.1% {
+                    opacity: 0;
+                    transform: scale(0.8);
+                }
+                11.2%, 16.7% {
+                    opacity: 1;
+                    transform: scale(1) translateY(0px);
+                }
+                16.8%, 22.2% {
+                    opacity: 1;
+                    transform: scale(1.2) translateY(-2px); /* Efecto de "presionar" */
+                }
+                22.3%, 27.8% {
+                    opacity: 1;
+                    transform: scale(1) translateY(0px);
+                }
+                27.9%, 33.3% {
+                    opacity: 1;
+                    transform: scale(1.1) translateY(-1px);
+                }
+                33.4%, 100% {
+                    opacity: 0;
+                    transform: scale(0.8);
+                }
+            }
+            
+            /* Efecto especial para la cara feliz (más expresiva) */
+            .happy-icon {
+                animation: happyIconCycle 9s infinite;
+                animation-delay: 6s;
+            }
+            
+            @keyframes happyIconCycle {
+                0%, 11.1% {
+                    opacity: 0;
+                    transform: scale(0.8) rotate(-10deg);
+                }
+                11.2%, 16.7% {
+                    opacity: 1;
+                    transform: scale(1) rotate(0deg);
+                }
+                16.8%, 22.2% {
+                    opacity: 1;
+                    transform: scale(1.15) rotate(5deg); /* Cara más grande y rotada */
+                }
+                22.3%, 27.8% {
+                    opacity: 1;
+                    transform: scale(1.1) rotate(-3deg);
+                }
+                27.9%, 33.3% {
+                    opacity: 1;
+                    transform: scale(1.05) rotate(2deg);
+                }
+                33.4%, 100% {
+                    opacity: 0;
+                    transform: scale(0.8) rotate(-10deg);
+                }
+            }
+            
+            /* Pulso sutil en el borde del botón durante toda la animación */
+            .beer-donation-btn::before {
+                content: '';
+                position: absolute;
+                top: -3px; left: -3px; right: -3px; bottom: -3px;
+                border-radius: 50%;
+                background: rgba(255, 215, 0, 0.2);
+                animation: gentlePulse 9s ease-in-out infinite;
+                z-index: -1;
+            }
+            
+            @keyframes gentlePulse {
+                0%, 30%, 70%, 100% { 
+                    transform: scale(1);
+                    opacity: 0;
+                }
+                15%, 50%, 85% { 
+                    transform: scale(1.1);
+                    opacity: 0.3;
+                }
+            }
+            
+            /* Responsive - más pequeño en móviles */
+            @media (max-width: 768px) {
+                .beer-donation-btn {
+                    width: 50px;
+                    height: 50px;
+                    top: 12px;
+                    right: 12px;
+                    font-size: 2rem;
+                }
+            }
+            
+            /* Versión alternativa más sutil (opcional) */
+            .beer-donation-btn.subtle {
+                opacity: 0.6;
+                font-size: 2rem;
+            }
+            
+            .beer-donation-btn.subtle:hover {
+                opacity: 0.9;
+            }
+            
+            /* Versión más llamativa (opcional) */
+            .beer-donation-btn.attention-grabber {
+                background: rgba(255, 215, 0, 0.5);
+                border-color: rgba(255, 215, 0, 0.75);
+                box-shadow: 0 3px 15px rgba(255, 215, 0, 0.5);
+            }
+            
+            .beer-donation-btn.attention-grabber::before {
+                animation-duration: 6s; /* Pulso más frecuente */
+            }
+
+        /* Ícono de cerveza en esquina superior derecha */
+        .beer-icon {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 3rem;
+            color: #FFD700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            z-index: 10;
+            pointer-events: none;
+            transform: rotate(-10deg);
+            animation: beerFloat 3s ease-in-out infinite;
+        }
+        
+        @keyframes beerFloat {
+            0%, 100% { transform: rotate(-10deg) translateY(0px); }
+            50% { transform: rotate(-10deg) translateY(-3px); }
+        }
+
+        .album-container {
+            max-width: 450px;
+            width: 100vw; /* Ancho completo en móvil */
+            height: 100vh; /* Altura completa sin importar la barra */
+            background: var(--primary-brown);
+            border-radius: 0; /* Sin bordes en móvil */
+            box-shadow: none; /* Sin sombra en móvil */
+            border: none; /* Sin borde en móvil */
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Para pantallas más grandes, restaurar el diseño original */
+        @media (min-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .album-container {
+                width: 100%;
+                height: calc(100vh - 20px);
+                border-radius: 20px;
+                box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+                border: 8px solid var(--dark-brown);
+            }
+        }
+
+        /* Agregar espacio al contenido para compensar la navegación fija */
+        .album-book-wrapper {
+            flex: 1;
+            position: relative;
+            perspective: 1200px;
+            overflow: hidden;
+            background: var(--cream);
+            margin: 15px; /* ← Margen base para desktop */
+            border-radius: 15px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--cream);
+            border-radius: 10px;
+            display: flex;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+            transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+            overflow: hidden;
+        }
+
+        .page.flipping-forward {
+            transform: rotateY(-180deg);
+        }
+
+        .page.flipping-backward {
+            transform: rotateY(180deg);
+        }
+
+        .page-content {
+            flex: 1;
+            padding: 20px 20px 80px 20px; /* Agregar padding-bottom de 80px */
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Portada Styles */
+        .cover-page {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, var(--orange), var(--primary-brown));
+            color: white;
+            border-radius: inherit;
+        }
+
+        .cover-title {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .cover-subtitle {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .cover-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Restaurant Index Page Styles */
+        .restaurant-index-content {
+            text-align: center;
+        }
+        .restaurant-index-header {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 2rem;
+            color: var(--primary-brown);
+            margin-bottom: 0.5rem;
+        }
+        .restaurant-index-count {
+            font-size: 1.2rem;
+            color: var(--dark-brown);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        .restaurant-list-container {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 8px;
+        }
+        .restaurant-list-container::-webkit-scrollbar { width: 6px; }
+        .restaurant-list-container::-webkit-scrollbar-track { background: var(--light-brown); border-radius: 3px; }
+        .restaurant-list-container::-webkit-scrollbar-thumb { background: var(--primary-brown); border-radius: 3px; }
+
+        .restaurant-list-item {
+            display: flex;
+            align-items: center;
+            background: var(--light-brown);
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--primary-brown);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            font-size: 1.1rem;
+            color: var(--dark-brown);
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            text-align: left;
+            gap: 8px;
+        }
+        .restaurant-list-item i { font-size: 1.1rem; flex-shrink: 0; }
+        .restaurant-list-item .fa-circle-check { color: #28a745; }
+        .restaurant-list-item .fa-circle { color: #6c757d; }
+        .restaurant-list-item:hover { background-color: var(--cream); }
+
+        /* Restaurant Page Specific Styles */
+        .restaurant-content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+            padding: 20px 10px 80px 10px; /* Cambiar de 15px a 80px el padding-bottom */
+            overflow: hidden;
+        }
+
+        .restaurant-title {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 2rem;
+            height: 4.8rem; /* Altura fija para 2 líneas (2rem * 2 + espaciado) */
+            line-height: 2.2rem; /* Altura de línea ajustada */
+            color: var(--primary-brown);
+            text-align: center;
+            margin-bottom: 10px;
+            flex-shrink: 0;
+            margin-top: 10px;
+        }
+
+        .photo-display-area {
+            flex-grow: 1;
+            min-height: 0;
+            width: 90%;
+            max-width: 350px;
+            /* Quitar el background y border fijo */
+            /* background-color: var(--light-brown); */
+            /* border: 3px solid var(--primary-brown); */
+            /* border-radius: 15px; */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .user-photo-frame {
+            background-color: var(--light-brown);
+            border: 3px solid var(--primary-brown);
+            border-radius: 15px;
+            padding: 8px;
+            max-width: 100%;
+            max-height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .user-photo-frame img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+            display: block;
+        }
+
+        .photo-display-area img.user-photo-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+        
+        .user-photo-placeholder-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(210,180,140,0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-brown);
+            pointer-events: none;
+        }
+        .user-photo-placeholder-icon { font-size: 3rem; margin-bottom: 0.3rem; }
+        .user-photo-text { font-size: 1rem; font-weight: 600; text-align: center; }
+        .user-photo-placeholder-overlay.hidden { display: none; }
+
+
+        .info-button {
+            background: var(--orange);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 9999px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+            font-family: 'Caveat', cursive;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .info-button:hover {
+            background: #E67E00;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        /* Modal Styles */
+        .modal-overlay { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 1000;
+        }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+
+        .modal-content { 
+            background: var(--cream); 
+            padding: 25px; 
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            max-width: 90%; 
+            width: 380px;
+            position: relative; 
+            transform: translateY(-20px); 
+            transition: transform 0.3s ease;
+            border: 3px solid var(--primary-brown);
+            font-family: 'Caveat', cursive; 
+            color: var(--dark-brown);
+            display: flex;
+            flex-direction: column;
+            /* Cambiar estas líneas: */
+            max-height: 85vh; /* Limitar altura máxima */
+            min-height: 200px; /* Altura mínima */
+        }
+        
+        .modal-overlay.show .modal-content { transform: translateY(0); }
+        .modal-header {
+            font-family: 'Permanent Marker', cursive; font-size: 1.6rem;
+            color: var(--primary-brown); margin-bottom: 15px; text-align: center;
+            flex-shrink: 0;
+        }
+        .modal-body {
+            font-size: 1.1rem; line-height: 1.4; 
+            overflow-y: auto; margin-bottom: 15px; padding-right: 8px; text-align: justify;
+            flex-grow: 1;
+        }
+        .modal-body::-webkit-scrollbar { width: 6px; }
+        .modal-body::-webkit-scrollbar-track { background: var(--light-brown); border-radius: 3px; }
+        .modal-body::-webkit-scrollbar-thumb { background: var(--primary-brown); border-radius: 3px; }
+        
+        .modal-official-photo {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 2px solid var(--light-brown);
+        }
+
+        .modal-info-details { font-size: 1rem; color: var(--dark-brown); text-align: left; margin-bottom: 0.8rem; }
+        .modal-info-details strong { color: var(--primary-brown); }
+        .modal-info-details a { color: var(--orange); text-decoration: underline; }
+        .modal-info-details a:hover { color: var(--primary-brown); }
+        .modal-social-icons-container { display: flex; justify-content: center; gap: 1rem; margin-top: 1rem; margin-bottom: 0.5rem;}
+        .modal-social-icon {
+            display: flex; align-items: center; justify-content: center;
+            width: 40px; height: 40px; border-radius: 50%;
+            background: var(--primary-brown); color: white; text-decoration: none;
+            font-size: 1rem; transition: all 0.2s ease; box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        .modal-social-icon:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+        
+        .modal-close-btn {
+            background: var(--orange); 
+            color: white; 
+            border: none;
+            padding: 8px 12px; 
+            border-radius: 50%; 
+            font-size: 1.2rem; 
+            cursor: pointer; 
+            transition: all 0.2s ease; 
+            font-family: 'Caveat', cursive; 
+            /* Posición fija en esquina superior derecha: */
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+        }
+        
+        .modal-close-btn:hover { background: #E67E00; transform: translateY(-1px); }
+
+        /* Image Modal - Styles for Robustness */
+        .image-modal-overlay { 
+            position: fixed; /* o absolute si solo quieres que se centre en el contenedor */
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            display: flex; /* CRUCIAL */
+            align-items: center; /* CRUCIAL */
+            justify-content: center; /* CRUCIAL */
+            z-index: 1001;
+            background: rgba(0,0,0,0.9);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .image-modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        .image-modal-content {
+            position: relative;
+            background-color: rgba(255, 255, 255, 0.95); /* Visible background for the content box */
+            padding: 20px; /* Padding around the image within this box */
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            max-width: 90vw; 
+            max-height: 90vh;
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* CRITICAL: Prevents image from visually overflowing this box */
+        }
+        .image-modal-img {
+            display: block; /* Remove extra space under image */
+            max-width: 100%; /* Image scales down to fit padding */
+            max-height: 100%; /* Image scales down to fit padding */
+            object-fit: contain;
+            border-radius: 6px; /* Optional rounding for the image itself */
+        }
+        .image-modal-close-btn {
+            position: absolute; 
+            top: 5px; /* Relative to .image-modal-content padding edge */
+            right: 5px; /* Relative to .image-modal-content padding edge */
+            background: rgba(0,0,0,0.6); /* Darker for visibility */
+            color: white; border: none;
+            border-radius: 50%; width: 35px; height: 35px; font-size: 1.2rem;
+            cursor: pointer; display: flex; justify-content: center; align-items: center;
+            transition: background-color 0.2s ease;
+            z-index: 10; 
+        }
+        .image-modal-close-btn:hover { background: rgba(0,0,0,0.8); }
+
+        .image-modal-action-btn {
+            position: absolute;
+            bottom: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+        
+        .image-modal-delete-btn {
+            right: 70px;
+        }
+        
+        .image-modal-delete-btn:hover {
+            background: #dc3545;
+        }
+        
+        .image-modal-replace-btn {
+            right: 15px;
+        }
+        
+        .image-modal-replace-btn:hover {
+            background: var(--orange);
+        }
+
+
+        /* Navigation bar at the bottom */
+        .navigation {
+            display: grid; 
+            grid-template-columns: 1fr auto 1fr; 
+            align-items: center;
+            padding: 12px 15px;
+            background: var(--dark-brown);
+            border-radius: 0 0 15px 15px; /* Restaurar border-radius */
+            width: 100%;
+            flex-shrink: 0;
+            position: relative; /* Cambiar de fixed a relative en desktop */
+            bottom: auto; /* Reset bottom */
+            left: auto; /* Reset left */
+            right: auto; /* Reset right */
+            z-index: 100;
+            min-height: 60px;
+            box-shadow: none; /* Quitar sombra en desktop */
+        }
+        
+        /* Solo en móvil usar posición fija */
+        /* Solo en móvil usar posición fija */
+        @media (max-width: 767px) {
+            .navigation {
+                position: fixed !important;
+                bottom: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                z-index: 1000 !important;
+                border-radius: 0 !important;
+                box-shadow: 0 -2px 10px rgba(0,0,0,0.3) !important;
+            }
+            
+            .album-book-wrapper {
+                margin: 15px 15px 90px 15px !important; /* Margen inferior solo en móvil */
+            }
+        }
+        
+        /* En desktop, margen normal */
+        @media (min-width: 768px) {
+            .album-book-wrapper {
+                margin: 15px; /* Margen normal */
+            }
+            
+            .page-content {
+                padding: 20px; /* Padding normal */
+            }
+            
+            .restaurant-content-wrapper {
+                padding: 20px 10px 15px 10px; /* Padding normal */
+            }
+        }
+
+        
+        .nav-btn:first-child { justify-self: start; }
+        .page-indicator { 
+            justify-self: center; 
+            padding: 5px 0;
+        }
+        .page-indicator.index-link {
+            cursor: pointer;
+            color: var(--cream);
+        }
+        .page-indicator.index-link:hover {
+            text-decoration: underline;
+            color: var(--orange);
+        }
+
+        .nav-btn:last-child { justify-self: end; }
+        .nav-btn, .page-indicator { font-size: 1.1rem; color: var(--cream); }
+        .nav-btn { background: none; border: none; cursor: pointer; padding: 5px 8px; transition: color 0.2s ease; }
+        .nav-btn:hover:not(:disabled) { color: var(--orange); }
+        .nav-btn:disabled { color: #a0a0a0a0; cursor: not-allowed; }
+
+    </style>
+</head>
+<body>
+    <!-- 🍺 BOTÓN ANIMADO DE DONACIÓN -->
+    <button class="beer-donation-btn attention-grabber" onclick="showDonationModal()" title="¡Conoce Cerveza Buena!">
+        <div class="beer-icon-container">
+            <span class="beer-icon">🍺</span>
+            <span class="click-icon">👆</span>
+            <span class="happy-icon">😊</span>
+        </div>
+    </button>
+    <div class="album-container">
+        <div class="album-book-wrapper">
+            <div id="currentPage" class="page">
+                <!-- Page content will be injected here -->
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button id="prevBtn" class="nav-btn">
+                <i class="fas fa-chevron-left"></i> Anterior
+            </button>
+            <div id="pageIndicator" class="page-indicator"></div>
+            <button id="nextBtn" class="nav-btn">
+                Siguiente <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+
+        <div id="infoModal" class="modal-overlay">
+            <div class="modal-content">
+                <h3 id="modalTitle" class="modal-header"></h3>
+                <div id="modalBody" class="modal-body"></div>
+                <button class="modal-close-btn" onclick="closeInfoModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    
+        <div id="imageModal" class="image-modal-overlay">
+            <div class="image-modal-content">
+                <img id="modalImage" src="" alt="Ampliar imagen" class="image-modal-img">
+                <button class="image-modal-close-btn" onclick="closeImageModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+                <!-- Agregar estos dos botones: -->
+                <button class="image-modal-action-btn image-modal-delete-btn" onclick="deleteCurrentImage()" title="Eliminar foto">
+                    <i class="fas fa-trash"></i>
+                </button>
+                <button class="image-modal-action-btn image-modal-replace-btn" onclick="replaceCurrentImage()" title="Reemplazar foto">
+                    <i class="fas fa-camera"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="userPhotoInput" accept="image/*" style="display:none;">
+
+
+    <script>
+        let restaurants = [];
+        let contentPages = [];
+        let currentPageIndex = 0;
+
+        // Nueva función para inicializar la app después de cargar el JSON
+        function initializeAlbumApp() {
+            contentPages = [
+                { type: 'cover' },
+                { type: 'restaurantIndex' },
+                ...restaurants.map(restaurant => ({ type: 'restaurant', data: restaurant })),
+                { type: 'finalPage' }
+            ];
+            renderCurrentPage();
+        }
+        
+        // Cargar el JSON antes de iniciar la app
+        fetch('cartasdesiempre.json')
+          .then(response => response.json())
+          .then(data => {
+              restaurants = data;
+              initializeAlbumApp();
+          })
+          .catch(error => {
+              alert("Error al cargar el archivo de restaurantes: " + error);
+          });
+        
+        let isAnimating = false;
+        let currentRestaurantForUpload = null;
+
+        // DOM Elements
+        const currentPageEl = document.getElementById('currentPage');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const pageIndicatorEl = document.getElementById('pageIndicator');
+        const userPhotoInput = document.getElementById('userPhotoInput');
+        const infoModal = document.getElementById('infoModal');
+        const modalTitleEl = document.getElementById('modalTitle');
+        const modalBodyEl = document.getElementById('modalBody');
+        const imageModal = document.getElementById('imageModal');
+        const modalImageEl = document.getElementById('modalImage');
+
+        userPhotoInput.addEventListener('change', handlePhotoUpload);
+
+        window.selectUserPhoto = function(restaurantName, event) {
+            currentRestaurantForUpload = restaurantName;
+            userPhotoInput.click();
+        };
+
+// 1. Función de compresión de imágenes
+function compressImage(file, maxWidth = 800, maxHeight = 600, quality = 0.8) {
+    return new Promise((resolve, reject) => {
+        // Validar que es una imagen
+        if (!file.type.startsWith('image/')) {
+            reject(new Error('El archivo no es una imagen'));
+            return;
+        }
+
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        
+        img.onload = () => {
+            // Calcular nuevas dimensiones manteniendo la proporción
+            let { width, height } = img;
+            
+            // Solo redimensionar si la imagen es más grande que los límites
+            if (width > maxWidth || height > maxHeight) {
+                const ratio = Math.min(maxWidth / width, maxHeight / height);
+                width = width * ratio;
+                height = height * ratio;
+            }
+            
+            // Configurar canvas
+            canvas.width = width;
+            canvas.height = height;
+            
+            // Mejorar calidad de renderizado
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+            
+            // Dibujar imagen redimensionada
+            ctx.drawImage(img, 0, 0, width, height);
+            
+            // Convertir a base64 con compresión
+            const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+            
+            // Limpiar memoria
+            URL.revokeObjectURL(img.src);
+            
+            resolve(compressedDataUrl);
+        };
+        
+        img.onerror = () => {
+            reject(new Error('Error al cargar la imagen'));
+        };
+        
+        // Cargar imagen
+        img.src = URL.createObjectURL(file);
+    });
+}
+
+// 2. Función auxiliar para mostrar indicador de carga
+function showLoadingIndicator(show = true) {
+    let loader = document.getElementById('imageLoader');
+    
+    if (show) {
+        if (!loader) {
+            loader = document.createElement('div');
+            loader.id = 'imageLoader';
+            loader.innerHTML = `
+                <div style="
+                    position: fixed;
+                    top: 0; left: 0;
+                    width: 100vw; height: 100vh;
+                    background: rgba(0,0,0,0.8);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 2000;
+                    color: white;
+                    font-family: 'Caveat', cursive;
+                    font-size: 1.2rem;
+                ">
+                    <div style="text-align: center;">
+                        <div style="
+                            width: 40px; height: 40px;
+                            border: 3px solid #f3f3f3;
+                            border-top: 3px solid #FF8C00;
+                            border-radius: 50%;
+                            animation: spin 1s linear infinite;
+                            margin: 0 auto 10px;
+                        "></div>
+                        Procesando imagen...
+                    </div>
+                </div>
+                <style>
+                    @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+                </style>
+            `;
+            document.body.appendChild(loader);
+        }
+        loader.style.display = 'flex';
+    } else {
+        if (loader) {
+            loader.style.display = 'none';
+        }
+    }
+}
+
+// 3. Función para obtener información del archivo
+function getFileInfo(file) {
+    return {
+        name: file.name,
+        size: file.size,
+        sizeKB: Math.round(file.size / 1024),
+        sizeMB: Math.round(file.size / (1024 * 1024) * 100) / 100,
+        type: file.type
+    };
+}
+
+// 4. Función mejorada para manejar la subida de fotos (+ filtro)
+//-----------------------------
+        // Función de filtro vintage automático (Sepia + Foto Antigua)
+function applyAutoVintageFilter(imageData) {
+    const data = imageData.data;
+    
+    for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        
+        // 1. Aplicar efecto sepia
+        let newR = Math.min(255, (r * 0.393) + (g * 0.769) + (b * 0.189));
+        let newG = Math.min(255, (r * 0.349) + (g * 0.686) + (b * 0.168));
+        let newB = Math.min(255, (r * 0.272) + (g * 0.534) + (b * 0.131));
+        
+        // 2. Añadir efecto de foto antigua
+        // Agregar sutil ruido vintage
+        const noise = (Math.random() - 0.5) * 15;
+        newR = Math.max(0, Math.min(255, newR + noise));
+        newG = Math.max(0, Math.min(255, newG + noise));
+        newB = Math.max(0, Math.min(255, newB + noise));
+        
+        // 3. Reducir contraste para efecto envejecido
+        newR = newR * 0.85 + 35;
+        newG = newG * 0.85 + 25;
+        newB = newB * 0.85 + 15;
+        
+        // 4. Añadir un toque cálido extra
+        newR = Math.min(255, newR * 1.05);
+        newG = Math.min(255, newG * 1.02);
+        newB = Math.max(0, newB * 0.98);
+        
+        data[i] = newR;
+        data[i + 1] = newG;
+        data[i + 2] = newB;
+        // data[i + 3] mantiene la transparencia original
+    }
+    
+    return imageData;
+}
+
+// Función mejorada de compresión con filtro automático
+function compressImageWithVintageFilter(file, maxWidth = 800, maxHeight = 600, quality = 0.8) {
+    return new Promise((resolve, reject) => {
+        // Validar que es una imagen
+        if (!file.type.startsWith('image/')) {
+            reject(new Error('El archivo no es una imagen'));
+            return;
+        }
+
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        
+        img.onload = () => {
+            // Calcular nuevas dimensiones manteniendo la proporción
+            let { width, height } = img;
+            
+            // Solo redimensionar si la imagen es más grande que los límites
+            if (width > maxWidth || height > maxHeight) {
+                const ratio = Math.min(maxWidth / width, maxHeight / height);
+                width = width * ratio;
+                height = height * ratio;
+            }
+            
+            // Configurar canvas
+            canvas.width = width;
+            canvas.height = height;
+            
+            // Mejorar calidad de renderizado
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+            
+            // Dibujar imagen redimensionada
+            ctx.drawImage(img, 0, 0, width, height);
+            
+            // ✨ APLICAR FILTRO VINTAGE AUTOMÁTICAMENTE
+            const imageData = ctx.getImageData(0, 0, width, height);
+            const filteredData = applyAutoVintageFilter(imageData);
+            ctx.putImageData(filteredData, 0, 0);
+            
+            // Convertir a base64 con compresión
+            const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+            
+            // Limpiar memoria
+            URL.revokeObjectURL(img.src);
+            
+            resolve(compressedDataUrl);
+        };
+        
+        img.onerror = () => {
+            reject(new Error('Error al cargar la imagen'));
+        };
+        
+        // Cargar imagen
+        img.src = URL.createObjectURL(file);
+    });
+}
+
+// Función simplificada para manejar la subida de fotos con filtro automático
+async function handlePhotoUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+        // Mostrar indicador de carga
+        showLoadingIndicator(true);
+        
+        // Obtener información del archivo original
+        const originalInfo = {
+            name: file.name,
+            size: file.size,
+            sizeKB: Math.round(file.size / 1024),
+        };
+        
+        console.log('Procesando imagen:', originalInfo.name, `(${originalInfo.sizeKB}KB)`);
+        
+        // Comprimir imagen CON filtro vintage automático
+        const processedDataUrl = await compressImageWithVintageFilter(file, 800, 600, 0.8);
+        
+        // Calcular tamaño procesado
+        const processedSize = Math.round(processedDataUrl.length * 0.75); // Aproximación
+        const compressionRatio = Math.round((1 - processedSize / originalInfo.size) * 100);
+        
+        console.log(`✨ Filtro vintage aplicado y comprimido: ${originalInfo.sizeKB}KB → ${Math.round(processedSize/1024)}KB (${compressionRatio}% reducción)`);
+        
+        // Guardar imagen procesada
+        localStorage.setItem('user_photo_' + currentRestaurantForUpload, processedDataUrl);
+        
+        // Actualizar vista
+        renderCurrentPage();
+        
+        // Ocultar indicador de carga
+        showLoadingIndicator(false);
+        
+        // Mostrar mensaje de éxito
+        showSuccessMessage(`📸 Foto vintage guardada (${Math.round(processedSize/1024)}KB)`);
+        
+    } catch (error) {
+        console.error('Error al procesar imagen:', error);
+        showLoadingIndicator(false);
+        alert('Error al procesar la imagen. Por favor, intenta con otra imagen.');
+    }
+    
+    // Limpiar input
+    event.target.value = '';
+}
+
+// Funciones auxiliares (mantén las que ya tienes del código anterior)
+function showLoadingIndicator(show = true) {
+    let loader = document.getElementById('imageLoader');
+    
+    if (show) {
+        if (!loader) {
+            loader = document.createElement('div');
+            loader.id = 'imageLoader';
+            loader.innerHTML = `
+                <div style="
+                    position: fixed;
+                    top: 0; left: 0;
+                    width: 100vw; height: 100vh;
+                    background: rgba(0,0,0,0.8);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 2000;
+                    color: white;
+                    font-family: 'Caveat', cursive;
+                    font-size: 1.2rem;
+                ">
+                    <div style="text-align: center;">
+                        <div style="
+                            width: 40px; height: 40px;
+                            border: 3px solid #f3f3f3;
+                            border-top: 3px solid #FF8C00;
+                            border-radius: 50%;
+                            animation: spin 1s linear infinite;
+                            margin: 0 auto 10px;
+                        "></div>
+                        Aplicando filtro vintage...
+                    </div>
+                </div>
+                <style>
+                    @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+                </style>
+            `;
+            document.body.appendChild(loader);
+        }
+        loader.style.display = 'flex';
+    } else {
+        if (loader) {
+            loader.style.display = 'none';
+        }
+    }
+}
+
+function showSuccessMessage(message) {
+    const successDiv = document.createElement('div');
+    successDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #28a745;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        z-index: 1500;
+        font-family: 'Caveat', cursive;
+        font-size: 1.1rem;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    `;
+    successDiv.textContent = message;
+    
+    document.body.appendChild(successDiv);
+    
+    // Animar entrada
+    setTimeout(() => successDiv.style.opacity = '1', 100);
+    
+    // Remover después de 3 segundos
+    setTimeout(() => {
+        successDiv.style.opacity = '0';
+        setTimeout(() => document.body.removeChild(successDiv), 300);
+    }, 3000);
+}
+//-----------------------------
+
+// 5. Función para mostrar mensaje de éxito
+function showSuccessMessage(message) {
+    const successDiv = document.createElement('div');
+    successDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #28a745;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        z-index: 1500;
+        font-family: 'Caveat', cursive;
+        font-size: 1.1rem;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    `;
+    successDiv.textContent = message;
+    
+    document.body.appendChild(successDiv);
+    
+    // Animar entrada
+    setTimeout(() => successDiv.style.opacity = '1', 100);
+    
+    // Remover después de 3 segundos
+    setTimeout(() => {
+        successDiv.style.opacity = '0';
+        setTimeout(() => document.body.removeChild(successDiv), 300);
+    }, 3000);
+}
+
+// 6. Función para limpiar el localStorage si está muy lleno
+function cleanupStorage() {
+    try {
+        // Verificar espacio usado (aproximado)
+        const used = JSON.stringify(localStorage).length;
+        const usedMB = Math.round(used / (1024 * 1024) * 100) / 100;
+        
+        console.log(`Almacenamiento usado: ${usedMB}MB`);
+        
+        // Si usa más de 8MB, mostrar advertencia
+        if (usedMB > 8) {
+            console.warn('Almacenamiento casi lleno. Considera limpiar fotos antiguas.');
+        }
+        
+        return usedMB;
+    } catch (error) {
+        console.error('Error al verificar almacenamiento:', error);
+        return 0;
+    }
+}
+
+// 7. Función para exportar/respaldar fotos
+function exportPhotos() {
+    const photos = {};
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith('user_photo_')) {
+            photos[key] = localStorage.getItem(key);
+        }
+    }
+    
+    const dataStr = JSON.stringify(photos, null, 2);
+    const dataBlob = new Blob([dataStr], {type: 'application/json'});
+    
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(dataBlob);
+    link.download = 'sabores_clasicos_fotos_respaldo.json';
+    link.click();
+    
+    URL.revokeObjectURL(link.href);
+}
+
+// 8. Función para importar fotos desde respaldo
+function importPhotos(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const photos = JSON.parse(e.target.result);
+            
+            Object.keys(photos).forEach(key => {
+                if (key.startsWith('user_photo_')) {
+                    localStorage.setItem(key, photos[key]);
+                }
+            });
+            
+            renderCurrentPage();
+            showSuccessMessage('Fotos restauradas exitosamente');
+        } catch (error) {
+            alert('Error al importar fotos: archivo inválido');
+        }
+    };
+    reader.readAsText(file);
+}
+
+
+        function generateCoverContent() {
+            return `
+                <div class="page-content cover-page">
+                    <h1 class="cover-title">12 Joyas Auténticas</h1>
+                    <h2 class="cover-subtitle">Sabores Tradicionales de Nuevo León</h2>
+                    <img src="CantinaMty.png" onerror="this.onerror=null;this.src='https://placehold.co/150x150/D2B48C/654321?text=Error';" alt="Comida del Noreste" class="cover-image">
+                </div>`;
+        }
+
+        function generateRestaurantIndexContent() {
+            let completedCount = 0;
+            const restaurantListItems = restaurants.map(restaurant => {
+                const hasPhoto = localStorage.getItem('user_photo_' + restaurant.name);
+                if (hasPhoto) completedCount++;
+                const iconClass = hasPhoto ? 'fas fa-circle-check' : 'far fa-circle';
+                return `
+                    <div class="restaurant-list-item" onclick="navigateToRestaurantPage('${restaurant.name.replace(/'/g, "\\'")}')">
+                        <i class="${iconClass}"></i>
+                        <span>${restaurant.name}</span>
+                    </div>`;
+            }).join('');
+            return `
+                <div class="page-content restaurant-index-content">
+                    <h2 class="restaurant-index-header">Restaurantes Visitados</h2>
+                    <p class="restaurant-index-count">${completedCount} de ${restaurants.length} completados</p>
+                    <div class="restaurant-list-container">${restaurantListItems}</div>
+                </div>`;
+        }
+
+        function generateRestaurantContent(restaurant) {
+            const savedUserPhoto = localStorage.getItem('user_photo_' + restaurant.name);
+            let photoAreaContent;
+            let photoAreaOnClick;
+
+            if (savedUserPhoto) {
+                photoAreaContent = `
+                    <div class="user-photo-frame">
+                        <img src="${savedUserPhoto}" alt="Tu foto en ${restaurant.name}" class="user-photo-image">
+                    </div>`;
+                photoAreaOnClick = `openImageModal('${savedUserPhoto}')`;
+            } else {
+                photoAreaContent = `
+                    <div class="user-photo-placeholder-overlay">
+                        <i class="fas fa-camera user-photo-placeholder-icon"></i>
+                        <p class="user-photo-text">Toca para añadir tu foto</p>
+                    </div>`;
+                photoAreaOnClick = `selectUserPhoto('${restaurant.name.replace(/'/g, "\\'")}', event)`;
+            }
+
+            return `
+                <div class="page-content restaurant-content-wrapper">
+                    <!-- <div class="beer-icon">🍺</div> -->
+
+                    
+                    <h2 class="restaurant-title">${restaurant.name}</h2>
+                    <div class="photo-display-area" onclick="${photoAreaOnClick}">
+                        ${photoAreaContent}
+                    </div>
+                    <button class="info-button" onclick="openInfoModal(
+                        '${restaurant.name.replace(/'/g, "\\'")}',
+                        '${restaurant.type.replace(/'/g, "\\'")}',
+                        '${restaurant.address.replace(/'/g, "\\'")}',
+                        '${restaurant.mapUrl.replace(/'/g, "\\'")}',
+                        '${restaurant.tel.replace(/'/g, "\\'")}',
+                        '${restaurant.social.replace(/'/g, "\\'")}',
+                        '${restaurant.description.replace(/'/g, "\\'").replace(/\n/g, "\\n")}',
+                        '${(restaurant.photos && restaurant.photos.length > 0 ? restaurant.photos[0] : '').replace(/'/g, "\\'")}'
+                    )">
+                        Información <i class="fas fa-info-circle"></i>
+                    </button>
+                </div>`;
+        }
+
+        window.openInfoModal = function(name, type, address, mapUrl, tel, social, description, officialPhotoUrl) {
+            modalTitleEl.textContent = name;
+            const formattedDescription = description.replace(/\\n/g, '<br>');
+            let officialPhotoHTML = '';
+            if (officialPhotoUrl && officialPhotoUrl !== 'null' && officialPhotoUrl !== '') {
+                officialPhotoHTML = `<img src="${officialPhotoUrl}" alt="Foto de ${name}" class="modal-official-photo" onerror="this.style.display='none'">`;
+            }
+            modalBodyEl.innerHTML = `
+                ${officialPhotoHTML}
+                <p class="modal-info-details"><strong>Tipo:</strong> ${type}</p>
+                <p class="modal-info-details">
+                    <strong>Dirección:</strong> <a href="${mapUrl}" target="_blank" rel="noopener noreferrer">${address}</a>
+                </p>
+                <p style="text-align: justify;">${formattedDescription}</p>
+                <div class="modal-social-icons-container">
+                    ${tel !== 'null' && tel !== '' ? `<a href="tel:${tel}" class="modal-social-icon" title="Llamar a ${name}"><i class="fas fa-phone"></i></a>` : ''}
+                    <a href="${mapUrl}" target="_blank" rel="noopener noreferrer" class="modal-social-icon" title="Ver mapa de ${name}"><i class="fas fa-map-marker-alt"></i></a>
+                    ${social !== 'null' && social !== '' ? `<a href="${social}" target="_blank" rel="noopener noreferrer" class="modal-social-icon" title="Sitio web o red social de ${name}"><i class="fas fa-link"></i></a>` : ''}
+                </div>`;
+            infoModal.classList.add('show');
+        };
+
+        window.closeInfoModal = function() { infoModal.classList.remove('show'); };
+
+        window.openImageModal = function(imageUrl) {
+            if (!imageUrl || imageUrl.startsWith('https://placehold.co/')) {
+                return;
+            }
+            
+            // Encontrar qué restaurante tiene esta imagen
+            currentImageRestaurant = null;
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('user_photo_') && localStorage.getItem(key) === imageUrl) {
+                    currentImageRestaurant = key.replace('user_photo_', '');
+                    break;
+                }
+            }
+            
+            modalImageEl.style.display = 'block'; 
+            modalImageEl.src = imageUrl;
+            imageModal.classList.add('show');
+        };
+        
+        // Función para eliminar imagen
+        window.deleteCurrentImage = function() {
+            if (!currentImageRestaurant) return;
+            
+            if (confirm('¿Estás seguro de que quieres eliminar esta foto?')) {
+                localStorage.removeItem('user_photo_' + currentImageRestaurant);
+                closeImageModal();
+                renderCurrentPage();
+                showSuccessMessage('📸 Foto eliminada');
+            }
+        };
+        
+        // Función para reemplazar imagen
+        window.replaceCurrentImage = function() {
+            if (!currentImageRestaurant) return;
+            
+            currentRestaurantForUpload = currentImageRestaurant;
+            closeImageModal();
+            userPhotoInput.click();
+        };
+        
+        window.closeImageModal = function() {
+            imageModal.classList.remove('show');
+            modalImageEl.src = ''; // Clear src to prevent showing old image briefly
+            modalImageEl.style.display = 'block'; // Reset display style for next time
+        };
+
+        function generateFinalPageContent() {
+            return `
+                <div class="page-content cover-page">
+                    <h2 class="cover-title">¡Álbum Explorado!</h2>
+                    <p class="cover-subtitle">Gracias por recorrer los sabores de Monterrey.</p>
+                    <img src="CantinaMtyBack.png" onerror="this.onerror=null;this.src='https://placehold.co/150x150/D2B48C/654321?text=Error';" alt="Felicidades" class="cover-image">
+                </div>`;
+        }
+
+        function renderCurrentPage() {
+            const pageData = contentPages[currentPageIndex];
+            let contentHTML = '';
+            currentPageEl.innerHTML = ''; 
+
+            if (pageData.type === 'cover') {
+                contentHTML = generateCoverContent();
+            } else if (pageData.type === 'restaurantIndex') {
+                contentHTML = generateRestaurantIndexContent();
+            } else if (pageData.type === 'restaurant') {
+                contentHTML = generateRestaurantContent(pageData.data); 
+            } else if (pageData.type === 'finalPage') {
+                contentHTML = generateFinalPageContent();
+            }
+            currentPageEl.innerHTML = contentHTML;
+            updateNavigation();
+        }
+
+        function updateNavigation() {
+            prevBtn.disabled = currentPageIndex === 0;
+            nextBtn.disabled = currentPageIndex === contentPages.length - 1;
+            pageIndicatorEl.textContent = `${currentPageIndex + 1} / ${contentPages.length}`;
+
+            if (contentPages[currentPageIndex].type === 'restaurant') {
+                pageIndicatorEl.classList.add('index-link');
+                pageIndicatorEl.onclick = () => navigateToPage(1, 'backward');
+            } else {
+                pageIndicatorEl.classList.remove('index-link');
+                pageIndicatorEl.onclick = null;
+            }
+        }
+
+        function navigateToPage(newIndex, direction = 'forward') {
+            if (isAnimating || newIndex < 0 || newIndex >= contentPages.length) return;
+            
+            isAnimating = true;
+            const animationClass = direction === 'forward' ? 'flipping-forward' : 'flipping-backward';
+            
+            // Aplicar animación
+            currentPageEl.classList.add(animationClass);
+            
+            setTimeout(() => {
+                currentPageIndex = newIndex;
+                renderCurrentPage();
+                currentPageEl.classList.remove(animationClass);
+                isAnimating = false;
+            }, 400); // Coincidir con la duración CSS (0.4s)
+        }
+        
+        window.navigateToRestaurantPage = function(restaurantName) {
+            const restaurantPageIndex = contentPages.findIndex(page => page.type === 'restaurant' && page.data.name === restaurantName);
+            if (restaurantPageIndex !== -1) {
+                const direction = restaurantPageIndex > currentPageIndex ? 'forward' : 'backward';
+                navigateToPage(restaurantPageIndex, direction);
+            }
+        }
+
+        // Event Listeners
+        prevBtn.addEventListener('click', () => { if (currentPageIndex > 0) navigateToPage(currentPageIndex - 1, 'backward'); });
+        nextBtn.addEventListener('click', () => { if (currentPageIndex < contentPages.length - 1) navigateToPage(currentPageIndex + 1, 'forward'); });
+        
+        window.addEventListener('resize', renderCurrentPage);
+        
+        window.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                if (infoModal.classList.contains('show')) closeInfoModal();
+                if (imageModal.classList.contains('show')) closeImageModal();
+            }
+        });
+        infoModal.addEventListener('click', function(event) { if (event.target === infoModal) closeInfoModal(); });
+        imageModal.addEventListener('click', function(event) { 
+            if (event.target === imageModal) { // Only close if overlay itself is clicked
+                closeImageModal();
+            }
+        });
+
+        function showDonationModal() {
+            const modal = document.createElement('div');
+            modal.id = 'donationModal';
+            modal.style.cssText = `
+                position: fixed;
+                top: 0; left: 0;
+                width: 100vw; height: 100vh;
+                background: rgba(0,0,0,0.85);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 2000;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            `;
+            
+            modal.innerHTML = `
+                <div style="
+                    background: linear-gradient(135deg, #2C1810, #4A2C17);
+                    padding: 25px 20px 20px 20px;
+                    border-radius: 15px;
+                    border: 3px solid #D4AF37;
+                    max-width: 85%;
+                    width: 320px;
+                    max-height: 80vh;
+                    overflow-y: auto;
+                    text-align: center;
+                    color: #F5F5DC;
+                    position: relative;
+                    transform: translateY(-30px);
+                    transition: transform 0.3s ease;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+                ">
+                    <!-- Botón cerrar en esquina superior derecha -->
+                    <button onclick="closeDonationModal()" style="
+                        position: absolute;
+                        top: 8px;
+                        right: 8px;
+                        background: rgba(0,0,0,0.6);
+                        color: white;
+                        border: none;
+                        border-radius: 50%;
+                        width: 30px;
+                        height: 30px;
+                        font-size: 1.1rem;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        transition: background 0.2s ease;
+                        z-index: 10;
+                    ">×</button>
+                    
+                    <!-- Etiqueta de patrocinio -->
+                    <div style="
+                        position: absolute;
+                        top: -8px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        background: #D4AF37;
+                        color: #2C1810;
+                        padding: 3px 12px;
+                        border-radius: 8px;
+                        font-size: 0.7rem;
+                        font-weight: 700;
+                        letter-spacing: 1px;
+                        font-family: 'Caveat', cursive;
+                    ">PATROCINADO</div>
+                    
+                    <!-- Logo más pequeño -->
+                    <div style="
+                        width: 60px;
+                        height: 60px;
+                        background: linear-gradient(45deg, #D4AF37, #FFD700);
+                        border-radius: 50%;
+                        margin: 15px auto 10px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 2rem;
+                        border: 2px solid #F5F5DC;
+                        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+                    ">🍺</div>
+                    
+                    <h3 style="
+                        font-family: 'Permanent Marker', cursive;
+                        color: #D4AF37;
+                        margin-bottom: 5px;
+                        font-size: 1.5rem;
+                        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+                    ">Cerveza Buena</h3>
+                    
+                    <p style="
+                        font-style: italic;
+                        margin-bottom: 15px;
+                        font-size: 0.9rem;
+                        color: #D4AF37;
+                        opacity: 0.9;
+                    ">"El sabor auténtico de Nuevo León"</p>
+                    
+                    <p style="
+                        font-size: 1rem;
+                        margin-bottom: 15px;
+                        line-height: 1.3;
+                        font-family: 'Caveat', cursive;
+                    ">
+                        Cerveza artesanal 100% regiomontana, perfecta para acompañar tus aventuras gastronómicas.
+                    </p>
+                    
+                    <div style="
+                        background: rgba(212, 175, 55, 0.1);
+                        padding: 10px;
+                        border-radius: 8px;
+                        margin-bottom: 15px;
+                        border: 1px solid rgba(212, 175, 55, 0.3);
+                    ">
+                        <p style="
+                            margin: 0;
+                            font-size: 0.85rem;
+                            line-height: 1.2;
+                        ">
+                            <strong>🍻 Estilos:</strong> Clara • Ámbar • Negra • IPA
+                        </p>
+                    </div>
+                    
+                    <button onclick="openRegiaWebsite()" style="
+                        background: linear-gradient(45deg, #D4AF37, #FFD700);
+                        color: #2C1810;
+                        border: none;
+                        padding: 10px 20px;
+                        border-radius: 20px;
+                        font-size: 1rem;
+                        font-weight: 700;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        font-family: 'Caveat', cursive;
+                        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+                        margin-bottom: 10px;
+                        width: 100%;
+                    ">
+                        🌐 Conocer más
+                    </button>
+                    
+                    <p style="
+                        font-size: 0.75rem;
+                        color: rgba(245, 245, 220, 0.7);
+                        margin: 0;
+                        line-height: 1.2;
+                    ">
+                        Apoya a los productores locales 🇲🇽
+                    </p>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Animar entrada
+            setTimeout(() => {
+                modal.style.opacity = '1';
+                modal.querySelector('div').style.transform = 'translateY(0)';
+            }, 10);
+            
+            // Cerrar al hacer click fuera
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeDonationModal();
+            });
+        }
+
+        function closeDonationModal() {
+            const modal = document.getElementById('donationModal');
+            if (modal) {
+                modal.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(modal);
+                }, 300);
+            }
+        }
+        
+        // Funciones para los botones del anuncio
+        function openRegiaWebsite() {
+            // Simular sitio web (puedes cambiar por una URL real más adelante)
+            alert('🍺 ¡Próximamente! Cerveza Buena estará disponible en toda la zona metropolitana de Monterrey.');
+            closeDonationModal();
+        }
+        
+        function findRegiaStores() {
+            alert(`📍 Puntos de venta Cerveza Buena:
+        
+        🏪 Tiendas de conveniencia selectas
+        🍺 Bares y cantinas del centro de MTY  
+        🛒 Mercados locales de San Pedro
+        🎯 Eventos gastronómicos regionales
+        
+        ¡Próximamente en más ubicaciones!`);
+        }
+
+
+        
+    </script>
+</body>
+</html>
