@@ -951,6 +951,11 @@ async function handlePhotoUpload(event) {
         };
         
         console.log('Procesando imagen:', originalInfo.name, `(${originalInfo.sizeKB}KB)`);
+
+        gtag('event', 'cheky_completed', {
+            'cheky_list_name': 'Cantinas Tradicionales de Monterrey', // Variable con el nombre de la lista
+            'cheky_item_name': originalInfo.name          // Variable con el nombre del lugar
+            });
         
         // Comprimir imagen CON filtro vintage automático
         const processedDataUrl = await compressImageWithVintageFilter(file, 800, 600, 0.8);
