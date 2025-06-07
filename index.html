@@ -1230,14 +1230,18 @@ function importPhotos(event) {
                         '${restaurant.tel.replace(/'/g, "\\'")}',
                         '${restaurant.social.replace(/'/g, "\\'")}',
                         '${restaurant.description.replace(/'/g, "\\'").replace(/\n/g, "\\n")}',
-                        '${(restaurant.photos && restaurant.photos.length > 0 ? restaurant.photos[0] : '').replace(/'/g, "\\'")}'
+                        '${(restaurant.photos && restaurant.photos.length > 0 ? restaurant.photos[0] : '').replace(/'/g, "\\'")}',
+                        '${restaurant.coordinates.replace(/'/g, "\\'")}',
                     )">
                         Sobre este Lugar <i class="fas fa-info-circle"></i>
                     </button>
                 </div>`;
         }
 
-        window.openInfoModal = function(name, type, address, mapUrl, tel, social, description, officialPhotoUrl) {
+        window.openInfoModal = function(name, type, address, mapUrl, tel, social, description, officialPhotoUrl, coordinates) {
+            const latLng = coordinates.split(',').map(coord => parseFloat(coord.trim()));
+            const lat = latLng[0];
+            const lng = latLng[1];
             modalTitleEl.textContent = name;
             const formattedDescription = description.replace(/\\n/g, '<br>');
             let officialPhotoHTML = '';
@@ -1248,12 +1252,12 @@ function importPhotos(event) {
                 ${officialPhotoHTML}
                 <p class="modal-info-details"><strong>Tipo:</strong> ${type}</p>
                 <p class="modal-info-details">
-                    <strong>Dirección:</strong> <a href="${mapUrl}" target="_blank" rel="noopener noreferrer">${address}</a>
+                    <strong>Dirección:</strong> <a onclick="openMapSmart(${lat},${lng},'${name.replace(/'/g, "\\'")}')" target="_blank" rel="noopener noreferrer">${address}</a>
                 </p>
                 <p style="text-align: justify;">${formattedDescription}</p>
                 <div class="modal-social-icons-container">
                     ${tel !== 'null' && tel !== '' ? `<a href="tel:${tel}" class="modal-social-icon" title="Llamar a ${name}"><i class="fas fa-phone"></i></a>` : ''}
-                    <a href="${mapUrl}" target="_blank" rel="noopener noreferrer" class="modal-social-icon" title="Ver mapa de ${name}"><i class="fas fa-map-marker-alt"></i></a>
+                    <a onclick="openMapSmart(${lat},${lng},'${name.replace(/'/g, "\\'")}')" target="_blank" rel="noopener noreferrer" class="modal-social-icon" title="Ver mapa de ${name}"><i class="fas fa-map-marker-alt"></i></a>
                     ${social !== 'null' && social !== '' ? `<a href="${social}" target="_blank" rel="noopener noreferrer" class="modal-social-icon" title="Sitio web o red social de ${name}"><i class="fas fa-link"></i></a>` : ''}
                 </div>`;
             infoModal.classList.add('show');
@@ -1417,6 +1421,28 @@ function importPhotos(event) {
                 closeImageModal();
             }
         });
+
+        function openMapSmart(lat, lon, label) {
+
+            const encodedLabel = encodeURIComponent(label);
+
+            // Detección del Sistema Operativo
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            let mapUrl = '';
+
+            // iOS (iPhone, iPad, iPod)
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                mapUrl = `http://maps.apple.com/?q=${encodedLabel}&ll=${lat},${lon}`;
+            } 
+            // Android
+            else {
+                // Para Android y todos los demás (desktop, etc.), Google Maps es el respaldo más seguro.
+                mapUrl = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
+            }
+
+            // Abrir el enlace en una nueva pestaña para no sacar al usuario de tu app.
+            window.open(mapUrl, '_blank');
+        }
 
 
         
