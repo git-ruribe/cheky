@@ -14,7 +14,7 @@
         "name": "Restaurant Bar Zacatecas",
         "type": "Cantina Tradicional",
         "address": "Av. Francisco I. Madero #1070, Centro, 64000 Monterrey",
-        "mapUrl": "https://www.google.com/maps/place/Restaurant+Bar+Zacatecas/@25.6695,-100.3098,17z/",
+        "mapUrl": "geo:25.6811,-100.3129?q=25.6811,-100.3129(Restaurant+Bar+Zacatecas)",
         "coordinates": [25.6695, -100.3098],
         "tel": "+52-81-8375-6174",
         "social": "https://www.facebook.com/ELZACATECASBAR",

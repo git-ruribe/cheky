@@ -1183,8 +1183,8 @@ function importPhotos(event) {
             }).join('');
             return `
                 <div class="page-content restaurant-index-content">
-                    <h2 class="restaurant-index-header">Restaurantes Visitados</h2>
-                    <p class="restaurant-index-count">${completedCount} de ${restaurants.length} completados</p>
+                    <h2 class="restaurant-index-header">Tu Ruta de Cantinas</h2>
+                    <p class="restaurant-index-count">${completedCount} de ${restaurants.length} registrados</p>
                     <div class="restaurant-list-container">${restaurantListItems}</div>
                 </div>`;
         }
@@ -1208,8 +1208,8 @@ function importPhotos(event) {
                             <p class="user-photo-text">Toca para añadir tu foto</p>
                         </div>
                         <div class="user-photo-privacy-message">
-                            <strong>MODO PRIVADO:</strong> TÚ TIENES EL CONTROL<br>
-                            Tus fotos se guardan en tu dispositivo en el caché del navegador, compártelas con quien tú quieras o grábalas en tu carrete.
+                            <strong>MODO PRIVADO ACTIVADO:</strong><br>
+                            Las fotos se guardan localmente en tu dispositivo en el caché del navegador, para compartirlas o verlas en tu aplicación de fotos debes dar clic en la foto y luego botón compartir.
                         </div>
                     </div>`;
                 photoAreaOnClick = `selectUserPhoto('${restaurant.name.replace(/'/g, "\\'")}', event)`;
@@ -1232,7 +1232,7 @@ function importPhotos(event) {
                         '${restaurant.description.replace(/'/g, "\\'").replace(/\n/g, "\\n")}',
                         '${(restaurant.photos && restaurant.photos.length > 0 ? restaurant.photos[0] : '').replace(/'/g, "\\'")}'
                     )">
-                        Información <i class="fas fa-info-circle"></i>
+                        Sobre este Lugar <i class="fas fa-info-circle"></i>
                     </button>
                 </div>`;
         }
@@ -1333,8 +1333,8 @@ function importPhotos(event) {
         function generateFinalPageContent() {
             return `
                 <div class="page-content cover-page">
-                    <h2 class="cover-title">¡Álbum Explorado!</h2>
-                    <p class="cover-subtitle">Gracias por recorrer los sabores de Monterrey.</p>
+                    <h2 class="cover-title">cheky.app</h2>
+                    <p class="cover-subtitle">Comparte los sabores de Monterrey.</p>
                     <img src="CantinaMtyBack.png" onerror="this.onerror=null;this.src='https://placehold.co/150x150/D2B48C/654321?text=Error';" alt="Felicidades" class="cover-image">
                 </div>`;
         }
