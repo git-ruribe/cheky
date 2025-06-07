@@ -3,9 +3,9 @@
         "name": "Indio Azteca",
         "type": "Cantina Histórica",
         "address": "Calzada Francisco I. Madero 1101, Centro, Monterrey 64000",
-        "mapUrl": "https://www.google.com/maps/place/Cantina+El+Indio+Azteca/@25.6695,-100.3085,17z/",
+        "mapUrl": "https://maps.app.goo.gl/bAVhmEbieTyAukEa8",
         "coordinates": "25.683047, -100.303637",
-        "tel": "+52-81-8375-xxxx",
+        "tel": "+52-81-8375-5146",
         "social": "https://www.facebook.com/IndioAztecaCantina",
         "photos": ["https://example.com/indio-azteca.jpg"],
         "description": "Especializado en Costillas Adobadas de Puerco, aldilla, hígados, frijoles con veneno (frijoles con asado de puerco), chicharrón en salsa verde, chamorro y botanas tradicionales de cantina. Ambiente de edificio estilo siglo XVI con mesas de madera de 80 años que tienen compartimentos para botellas de cerveza, numerosas cabezas de venado montadas, atmósfera tradicional de cantina. Fundada en 1920, es la cantina más antigua de Monterrey que aún opera (más de 100 años). Originalmente establecimiento solo para hombres hasta el 13 de octubre de 2022, cuando las mujeres entraron y fueron atendidas por primera vez, rompiendo 102 años de tradición."
@@ -13,8 +13,8 @@
     {
         "name": "Restaurant Bar Zacatecas",
         "type": "Cantina Tradicional",
-        "address": "Av. Francisco I. Madero #1070, Centro, 64000 Monterrey",
-        "mapUrl": "geo:25.6811,-100.3129?q=25.6811,-100.3129(Restaurant+Bar+Zacatecas)",
+        "address": "Av. Francisco I. Madero 1070, Centro, 64000 Monterrey",
+        "mapUrl": "https://maps.app.goo.gl/tx4MjUjnRjLa6AxW7",
         "coordinates": "25.682798, -100.303855",
         "tel": "+52-81-8375-6174",
         "social": "https://www.facebook.com/ELZACATECASBAR",
