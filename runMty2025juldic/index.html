@@ -5,17 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>cheky.app | Restaurantes y Cantinas Tradicionales en Monterrey</title>
-    <meta name="description" content="Descubre los restaurantes y cantinas más auténticos y con más historia de Monterrey. Una lista divertida para que explores y guardes los recuerdos de tu visita.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://cheky.app/">
-    <meta property="og:title" content="Restaurantes y Cantinas Tradicionales en Monterrey">
-    <meta property="og:description" content="Descubre los restaurantes y cantinas más auténticos y con más historia de Monterrey.">
-    <meta property="og:image" content="https://cheky.app/CantinaMty.png"> <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://cheky.app/">
-    <meta property="twitter:title" content="Restaurantes y Cantinas Tradicionales en Monterrey">
-    <meta property="twitter:description" content="Descubre los restaurantes y cantinas más auténticos y con más historia de Monterrey.">
-    <meta property="twitter:image" content="https://cheky.app/CantinaMty.png"> 
+    <title>cheky.app | Reto Running Monterrey</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Lato:wght@400;700&display=swap" rel="stylesheet">
@@ -1322,7 +1313,7 @@ async function handlePhotoUpload(event) {
         console.log('Procesando imagen:', originalInfo.name, `(${originalInfo.sizeKB}KB)`);
 
         gtag('event', 'cheky_completed', {
-            'cheky_list_name': 'Cantinas Tradicionales de Monterrey', // Variable con el nombre de la lista
+            'cheky_list_name': 'Carreras Monterrey', // Variable con el nombre de la lista
             'cheky_item_name': originalInfo.name          // Variable con el nombre del lugar
             });
         
@@ -1546,8 +1537,8 @@ function importPhotos(event) {
             return `
                 <div class="page-content cover-page">
                     <h1 class="cover-title">Club Exatec Running Monterrey</h1>
-                    <h2 class="cover-subtitle">Calendario Carreras 2S 2025</h2>
-                    <img src="CantinaMty.png" onerror="this.onerror=null;this.src='https://placehold.co/150x150/D2B48C/654321?text=Error';" alt="Comida del Noreste" class="cover-image">
+                    <h2 class="cover-subtitle">Mi Album de Carreras 2S 2025</h2>
+                    <img src="CarreraMty.png" onerror="this.onerror=null;this.src='https://placehold.co/150x150/D2B48C/654321?text=Error';" alt="Comida del Noreste" class="cover-image">
                     <div class="cover-presented">
                         presentado por <span class="cheky-highlight">cheky.app</span>
                     </div>
@@ -1732,7 +1723,7 @@ function importPhotos(event) {
                 <div class="page-content cover-page">
                     <h2 class="cover-title">cheky.app</h2>
                     <p class="cover-subtitle">Logra tus Metas</p>
-                    <img src="CantinaMtyBack.png" onerror="this.onerror=null;this.src='https://placehold.co/150x150/D2B48C/654321?text=Error';" alt="Felicidades" class="cover-image">
+                    <img src="CarreraMtyBack.png" onerror="this.onerror=null;this.src='https://placehold.co/150x150/D2B48C/654321?text=Error';" alt="Felicidades" class="cover-image">
                 </div>`;
         }
 
@@ -2083,7 +2074,7 @@ function importPhotos(event) {
                 <div class="challenge-success-content">
                     <p class="challenge-success-message">
                         ¡Genial! ${planDescription}<br><br>
-                        ${showCalendarButton ? 'Para que no se te olvide, hemos creado un archivo de calendario para ti.' : '¡Disfruta explorando las cantinas tradicionales!'}
+                        ${showCalendarButton ? 'Para que no se te olvide, hemos creado un archivo de calendario para ti.' : '¡Disfruta explorando las carreras !'}
                     </p>
                     
                     <div class="challenge-actions">
@@ -2111,7 +2102,7 @@ function importPhotos(event) {
             });
 
             closeChallengeModal();
-            showSuccessMessage('🎯 ¡Reto configurado! ¡A explorar cantinas!');
+            showSuccessMessage('🎯 ¡Reto configurado! ¡A explorar carreras!');
             renderCurrentPage();
         };
 
@@ -2160,7 +2151,7 @@ function importPhotos(event) {
         window.downloadCalendarFile = function() {
             const config = challengeData;
             const icsContent = generateICSFile(config);
-            downloadFile(icsContent, 'cheky-cantinas-tradicionales.ics', 'text/calendar');
+            downloadFile(icsContent, 'cheky-carreras.ics', 'text/calendar');
 
             // 📊 ANALYTICS: Usuario descarga el archivo de calendario
             trackChallengeEvent('calendar_downloaded', {
@@ -2169,7 +2160,7 @@ function importPhotos(event) {
                 'day': config.day,
                 'time': config.time,
                 'file_type': 'ics',
-                'file_name': 'cheky-cantinas-tradicionales.ics',
+                'file_name': 'cheky-carreras-.ics',
                 'events_count': 12
             });
             
@@ -2243,26 +2234,26 @@ function generateICSFile(config) {
     const numberOfEvents = 12;
     
     // Generar UID único
-    const uid = `cheky-cantinas-${Date.now()}@cheky.app`;
+    const uid = `cheky-carreras-${Date.now()}@cheky.app`;
     
     // Crear descripción simple sin caracteres problemáticos
-    const description = `Es hora de tu aventura ${config.rhythm === 'weekly' ? 'semanal' : 'quincenal'}! No te olvides de completar tu Cheky. Elige una de las cantinas de la lista y disfruta. Link: https://cheky.app/`;
+    const description = `Es hora de tu aventura ${config.rhythm === 'weekly' ? 'semanal' : 'quincenal'}! No te olvides de completar tu Cheky. Elige una de las carreras de la lista y disfruta. Link: https://cheky.app/`;
     
     // **IMPORTANTE**: Usar solo \n para saltos de línea internos del ICS
     const icsLines = [
         'BEGIN:VCALENDAR',
         'VERSION:2.0',
-        'PRODID:-//cheky.app//Cantinas Tradicionales//ES',
+        'PRODID:-//cheky.app//carreras//ES',
         'CALSCALE:GREGORIAN',
         'METHOD:PUBLISH',
-        'X-WR-CALNAME:Cheky: Cantinas Tradicionales de Monterrey',
-        'X-WR-CALDESC:Tu ruta para explorar las mejores cantinas tradicionales de Monterrey',
+        'X-WR-CALNAME:Cheky: carreras de Monterrey',
+        'X-WR-CALDESC:Tu ruta para explorar las mejores carreras de Monterrey',
         'BEGIN:VEVENT',
         `UID:${uid}`,
         `DTSTART:${formatLocalDate(firstEventDate)}`,
         `DTEND:${formatLocalDate(endTime)}`,
         `DTSTAMP:${formatLocalDate(now)}`,
-        'SUMMARY:Tu Cheky de la Semana: Visita una Cantina',
+        'SUMMARY:Tu Cheky de la Semana: Corre una carrera',
         `DESCRIPTION:${description}`,
         'LOCATION:Monterrey, Nuevo Leon, Mexico',
         'CATEGORIES:PERSONAL',
@@ -2271,7 +2262,7 @@ function generateICSFile(config) {
         'BEGIN:VALARM',
         'TRIGGER:-PT2H',
         'ACTION:DISPLAY',
-        'DESCRIPTION:Recordatorio: Tu Cheky de cantinas en 2 horas',
+        'DESCRIPTION:Recordatorio: Tu Cheky de carreras en 2 horas',
         'END:VALARM',
         'END:VEVENT',
         'END:VCALENDAR'

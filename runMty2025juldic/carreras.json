@@ -12,7 +12,8 @@
             "https://maratonmonterrey.mx/wp-content/uploads/2023/07/medalla-maraton-monterrey-2023-300x300.png",
             "https://maratonmonterrey.mx/wp-content/uploads/2023/07/playera-maraton-monterrey-2023-300x300.png"
         ],
-        "description": "El Maratón Powerade Monterrey es uno de los maratones más importantes de México. Se celebra anualmente en diciembre y atrae a miles de corredores de todo el mundo. El recorrido es mayormente plano y rápido, ideal para buscar una marca personal. El evento cuenta con una gran organización y un ambiente festivo. Además del maratón, también hay distancias de 21K, 10K y 5K. La información para la edición de 2025 aún no está completamente disponible, pero se espera que la ruta y la organización sean similares a las de años anteriores."
+        "description": "El Maratón Powerade Monterrey es uno de los maratones más importantes de México. Se celebra anualmente en diciembre y atrae a miles de corredores de todo el mundo. El recorrido es mayormente plano y rápido, ideal para buscar una marca personal. El evento cuenta con una gran organización y un ambiente festivo. Además del maratón, también hay distancias de 21K, 10K y 5K. La información para la edición de 2025 aún no está completamente disponible, pero se espera que la ruta y la organización sean similares a las de años anteriores.",
+        "date": "2025-12-14"
     },
     {
         "name": "21k Nuevo León",
@@ -23,7 +24,8 @@
         "tel": "",
         "social": "https://www.facebook.com/AsociaciondeAtletismodeNL/",
         "photos": [],
-        "description": "El 21k Nuevo León es una de las carreras de medio maratón más tradicionales del estado. Es organizada por la Asociación de Atletismo de Nuevo León (AANL). La ruta suele recorrer las principales avenidas de la ciudad de Monterrey. La convocatoria oficial para la edición de 2025 aún no ha sido publicada, por lo que no se tienen detalles sobre la ruta exacta, costos y otros pormenores. Se recomienda estar atento a las redes sociales de la AANL para futuras actualizaciones."
+        "description": "El 21k Nuevo León es una de las carreras de medio maratón más tradicionales del estado. Es organizada por la Asociación de Atletismo de Nuevo León (AANL). La ruta suele recorrer las principales avenidas de la ciudad de Monterrey. La convocatoria oficial para la edición de 2025 aún no ha sido publicada, por lo que no se tienen detalles sobre la ruta exacta, costos y otros pormenores. Se recomienda estar atento a las redes sociales de la AANL para futuras actualizaciones.",
+        "date": "2025-03-23"
     },
     {
         "name": "Circuito de las Estaciones Verano Monterrey",
@@ -34,7 +36,8 @@
         "tel": "",
         "social": "https://www.asdeporte.com/",
         "photos": [],
-        "description": "El Circuito de las Estaciones es una serie de carreras que se realizan a lo largo del año, cada una representando una estación. La edición de verano en Monterrey es organizada por Asdeporte. Aún no se ha publicado la convocatoria oficial para 2025, por lo que no se tienen detalles específicos de la ruta y otros pormenores. Se recomienda visitar el sitio web de Asdeporte para obtener la información más reciente."
+        "description": "El Circuito de las Estaciones es una serie de carreras que se realizan a lo largo del año, cada una representando una estación. La edición de verano en Monterrey es organizada por Asdeporte. Aún no se ha publicado la convocatoria oficial para 2025, por lo que no se tienen detalles específicos de la ruta y otros pormenores. Se recomienda visitar el sitio web de Asdeporte para obtener la información más reciente.",
+        "date": "2025-07-06"
     },
   {
     "name": "Trote Jaguar",
@@ -45,7 +48,8 @@
     "tel": "8183143992",
     "social": "https://trotime.com.mx/",
     "photos":[],
-    "description": "Organizado por Trotime (U-ERRE también mencionada como organizadora). Tiene lugar en el Campus Centro de la U-ERRE en Monterrey. Presenta distancias de 5K y 10K. [1, 2, 9]"
+    "description": "Organizado por Trotime (U-ERRE también mencionada como organizadora). Tiene lugar en el Campus Centro de la U-ERRE en Monterrey. Presenta distancias de 5K y 10K. [1, 2, 9]",
+    "date": "2025-07-06"
   },
   {
     "name": "5K Y 10K Fuerza Laboral 15° Edición",
@@ -56,7 +60,8 @@
     "tel": "8113664871",
     "social": "",
     "photos":[],
-    "description": "15ª edición de la carrera Fuerza Laboral, organizada por el Instituto del Deporte de los Trabajadores NL. Presenta distancias de 5K y 10K. Se lleva a cabo alrededor del área del Monumento Obrero / Macroplaza en Monterrey. [1, 2]"
+    "description": "15ª edición de la carrera Fuerza Laboral, organizada por el Instituto del Deporte de los Trabajadores NL. Presenta distancias de 5K y 10K. Se lleva a cabo alrededor del área del Monumento Obrero / Macroplaza en Monterrey. [1, 2]",
+    "date": "2025-07-20"
   },
   {
     "name": "5k y 10k Super Héroes Run 9° Edición",
@@ -67,7 +72,8 @@
     "tel": "8183143992",
     "social": "https://www.trotime.com.mx/listado-fichas-inscripcion?edicionEventoId=05434314-5afa-44a6-b5ab-a84754dbce11",
     "photos":[],
-    "description": "9ª edición de la Super Héroes Run, organizada por Trotime. Una carrera temática con distancias de 5K y 10K, celebrada en el Parque Fundidora, Monterrey. [1, 6, 11]"
+    "description": "9ª edición de la Super Héroes Run, organizada por Trotime. Una carrera temática con distancias de 5K y 10K, celebrada en el Parque Fundidora, Monterrey. [1, 6, 11]",
+    "date": "2025-07-27"
   },
   {
     "name": "5k, 10k y 2K caminata Señor de la Expiración 26° Edición",
@@ -78,7 +84,8 @@
     "tel": "8111589090",
     "social": "",
     "photos":[],
-    "description": "26ª edición organizada por la Parroquia y Santuario de Nuestra Sra. de Guadalupe. Ofrece una caminata de 2K, y carreras de 5K y 10K en Guadalupe, N.L. [1, 2]"
+    "description": "26ª edición organizada por la Parroquia y Santuario de Nuestra Sra. de Guadalupe. Ofrece una caminata de 2K, y carreras de 5K y 10K en Guadalupe, N.L. [1, 2]",
+    "date": "2025-08-03"
   },
   {
     "name": "5 Y 10K RUN FOR MIND",
@@ -89,7 +96,8 @@
     "tel": "8183143992",
     "social": "https://trotime.com.mx/",
     "photos":[],
-    "description": "Una carrera de 5K y 10K destinada a crear conciencia o recaudar fondos para la salud mental, organizada por Comenzar de Nuevo A.C. y operada por Trotime. Celebrada en el Parque Fundidora. [1, 2, 6]"
+    "description": "Una carrera de 5K y 10K destinada a crear conciencia o recaudar fondos para la salud mental, organizada por Comenzar de Nuevo A.C. y operada por Trotime. Celebrada en el Parque Fundidora. [1, 2, 6]",
+    "date": "2025-08-11"
   },
   {
     "name": "Medio Maraton Montemorelos 4a edición",
@@ -100,7 +108,8 @@
     "tel": "8113182546",
     "social": "https://asdeporte.com/evento/medio-marato-n-montemorelos-jev/datos-del-evento",
     "photos":[],
-    "description": "4ª edición del Medio Maratón de Montemorelos, que también ofrece una distancia de 5K. Organizado por Deporte con Propósito y el Municipio de Montemorelos. Salida en la Plaza Principal de Montemorelos. [1, 17]"
+    "description": "4ª edición del Medio Maratón de Montemorelos, que también ofrece una distancia de 5K. Organizado por Deporte con Propósito y el Municipio de Montemorelos. Salida en la Plaza Principal de Montemorelos. [1, 17]",
+    "date": ""
   },
   {
     "name": "5K Y 10K SABA",
@@ -111,7 +120,8 @@
     "tel": "8181009258",
     "social": "https://asdeporte.com/",
     "photos":[],
-    "description": "Una carrera de 5K y 10K organizada por Asdeporte, que tiene lugar en la Plaza Zaragoza en Monterrey. [1]"
+    "description": "Una carrera de 5K y 10K organizada por Asdeporte, que tiene lugar en la Plaza Zaragoza en Monterrey. [1]",
+    "date": "2025-08-10"
   },
   {
     "name": "Héroes Ocultos 12° edición",
@@ -122,7 +132,8 @@
     "tel": "8183143992",
     "social": "https://trotime.com.mx/",
     "photos":[],
-    "description": "12ª edición de la carrera Héroes Ocultos, apoyando una causa de Futuro Héroes Ocultos A.C. y operada por Trotime. Ofrece distancias de 5K, 10K y 15K en el circuito de Valle Oriente. [1, 2, 6]"
+    "description": "12ª edición de la carrera Héroes Ocultos, apoyando una causa de Futuro Héroes Ocultos A.C. y operada por Trotime. Ofrece distancias de 5K, 10K y 15K en el circuito de Valle Oriente. [1, 2, 6]",
+    "date": "2025-08-17"
   },
   {
     "name": "6k y 10k Chipinque Trail",
@@ -133,7 +144,8 @@
     "tel": "8182660090",
     "social": "https://www.chipinque.org.mx/",
     "photos":[],
-    "description": "Una carrera de montaña en el Parque Ecológico Chipinque, que ofrece distancias de 6K y 10K. Organizada por Idemsport en colaboración con el Parque Chipinque. [1, 2, 6]"
+    "description": "Una carrera de montaña en el Parque Ecológico Chipinque, que ofrece distancias de 6K y 10K. Organizada por Idemsport en colaboración con el Parque Chipinque. [1, 2, 6]",
+    "date": "2025-08-24"
   },
   {
     "name": "3K/5K/10K Carrera Soriana",
@@ -144,7 +156,8 @@
     "tel": "8182660090",
     "social": "",
     "photos":[],
-    "description": "Carrera Soriana que ofrece distancias de 3K, 5K y 10K. Organizada por MX Race/Soriana, con apoyo de Idemsport. Tiene lugar en el Parque Fundidora. [2, 6]"
+    "description": "Carrera Soriana que ofrece distancias de 3K, 5K y 10K. Organizada por MX Race/Soriana, con apoyo de Idemsport. Tiene lugar en el Parque Fundidora. [2, 6]",
+    "date": "2025-08-30"
   },
   {
     "name": "5K y 1K San Vicente de Paul",
@@ -155,7 +168,8 @@
     "tel": "8183143992",
     "social": "https://trotime.com.mx/",
     "photos":[],
-    "description": "Una carrera comunitaria con distancias de 1K y 5K en Santa Catarina, organizada por la Parroquia San Vicente de Paul y operada por Trotime. [1, 2]"
+    "description": "Una carrera comunitaria con distancias de 1K y 5K en Santa Catarina, organizada por la Parroquia San Vicente de Paul y operada por Trotime. [1, 2]",
+    "date": "2025-08-31"
   },
   {
     "name": "5k y 10k iOS Offices 12° Edición",
@@ -166,7 +180,8 @@
     "tel": "80007010",
     "social": "https://iosoffices.com/",
     "photos":[],
-    "description": "12ª edición de la carrera iOS Offices, presentando distancias de 5K y 10K. Celebrada en el circuito de Valle Oriente, operada por Trotime. [1, 2, 6]"
+    "description": "12ª edición de la carrera iOS Offices, presentando distancias de 5K y 10K. Celebrada en el circuito de Valle Oriente, operada por Trotime. [1, 2, 6]",
+    "date": "2025-09-07"
   },
   {
     "name": "Carrera BBVA solo empleados",
@@ -177,7 +192,8 @@
     "tel": "8181009258",
     "social": "https://asdeporte.com/",
     "photos":[],
-    "description": "Una carrera exclusiva para empleados de BBVA, organizada por Asdeporte. Tiene lugar en el Parque Fundidora. Las distancias específicas no están listadas públicamente. [1]"
+    "description": "Una carrera exclusiva para empleados de BBVA, organizada por Asdeporte. Tiene lugar en el Parque Fundidora. Las distancias específicas no están listadas públicamente. [1]",
+    "date": ""
   },
   {
     "name": "5K y 10K CRUZ ROJA",
@@ -188,7 +204,8 @@
     "tel": "8183143992",
     "social": "https://www.cruzrojamexicana.org.mx/",
     "photos":[],
-    "description": "Una carrera de 5K y 10K en apoyo a la Cruz Roja, operada por Trotime. Tiene lugar en el área de la Macroplaza de Monterrey. [1, 2]"
+    "description": "Una carrera de 5K y 10K en apoyo a la Cruz Roja, operada por Trotime. Tiene lugar en el área de la Macroplaza de Monterrey. [1, 2]",
+    "date": "2025-09-07"
   },
   {
     "name": "10k Borregos TEC",
@@ -199,7 +216,8 @@
     "tel": "8183143992",
     "social": "https://tec.mx/es/deportes",
     "photos":[],
-    "description": "La carrera anual 10K Borregos, asociada con el TEC de Monterrey (ITESM) y operada por Trotime. Celebrada en Monterrey, típicamente alrededor del campus universitario. [1, 2]"
+    "description": "La carrera anual 10K Borregos, asociada con el TEC de Monterrey (ITESM) y operada por Trotime. Celebrada en Monterrey, típicamente alrededor del campus universitario. [1, 2]",
+    "date": "2025-09-14"
   },
   {
     "name": "10K 5K Y 2.5K TERRA REGIA 4° Edición",
@@ -210,7 +228,8 @@
     "tel": "8182660090",
     "social": "https://idemsport.com/",
     "photos":[],
-    "description": "4ª edición de la carrera Terra Regia, que ofrece distancias de 2.5K, 5K y 10K. Organizada por Idemsport en el área de Dominio Cumbres. [1, 2]"
+    "description": "4ª edición de la carrera Terra Regia, que ofrece distancias de 2.5K, 5K y 10K. Organizada por Idemsport en el área de Dominio Cumbres. [1, 2]",
+    "date": "2025-09-21"
   },
   {
     "name": "5k y 10k Carrera Fundación de Monterrey 21ª Edición",
@@ -221,7 +240,8 @@
     "tel": "8151027145",
     "social": "https://www.monterrey.gob.mx/deporte/",
     "photos":[],
-    "description": "21ª edición de la Carrera Fundación de Monterrey, organizada por el Municipio de Monterrey. Presenta distancias de 5K y 10K. [1, 2]"
+    "description": "21ª edición de la Carrera Fundación de Monterrey, organizada por el Municipio de Monterrey. Presenta distancias de 5K y 10K. [1, 2]",
+    "date": "2025-09-21"
   },
   {
     "name": "10K/5K Bimbo 10ª Ed.",
@@ -232,7 +252,8 @@
     "tel": "8181009258",
     "social": "https://www.asdeporte.com/",
     "photos":[],
-    "description": "10ª edición de la carrera Bimbo 5K/10K, parte de la serie global. Organizada por Bimbo, operada por Asdeporte en Monterrey. Tiene lugar en el Parque Fundidora. [2, 4, 8]"
+    "description": "10ª edición de la carrera Bimbo 5K/10K, parte de la serie global. Organizada por Bimbo, operada por Asdeporte en Monterrey. Tiene lugar en el Parque Fundidora. [2, 4, 8]",
+    "date": "2025-09-28"
   },
   {
     "name": "6K/12K Adidas Split",
@@ -243,7 +264,8 @@
     "tel": "8122351680",
     "social": "https://www.adidas.mx/running",
     "photos":[],
-    "description": "Parte de la serie Adidas Split, ofreciendo distancias de 6K y 12K. Organizada por Hub Sport. Tiene lugar en el área de la Macroplaza. [2, 4]"
+    "description": "Parte de la serie Adidas Split, ofreciendo distancias de 6K y 12K. Organizada por Hub Sport. Tiene lugar en el área de la Macroplaza. [2, 4]",
+    "date": "2025-10-05"
   },
   {
     "name": "21K Regio 11ª Ed.",
@@ -254,7 +276,8 @@
     "tel": "8122351680",
     "social": "https://krono.mx/",
     "photos":[],
-    "description": "11ª edición del medio maratón 21K Regio. Organizado por Krono. Una importante carrera de ruta en Monterrey. [2, 4, 19, 20]"
+    "description": "11ª edición del medio maratón 21K Regio. Organizado por Krono. Una importante carrera de ruta en Monterrey. [2, 4, 19, 20]",
+    "date": "2025-10-12"
   },
   {
     "name": "10K/5K/RRF Rosa Fuerte – Benavides 11ª Ed.",
@@ -265,7 +288,8 @@
     "tel": "8182660090",
     "social": "https://www.benavides.com.mx/",
     "photos":[],
-    "description": "11ª edición de la carrera Rosa Fuerte, apoyando la concientización sobre el cáncer de mama, patrocinada por Farmacias Benavides. Ofrece distancias de 5K y 10K en Monterrey. [2, 4]"
+    "description": "11ª edición de la carrera Rosa Fuerte, apoyando la concientización sobre el cáncer de mama, patrocinada por Farmacias Benavides. Ofrece distancias de 5K y 10K en Monterrey. [2, 4]",
+    "date": "2025-10-19"
   },
   {
     "name": "15K Gatorade 8ª Ed.",
@@ -276,7 +300,8 @@
     "tel": "",
     "social": "https://www.gatorade.com.mx/",
     "photos":[],
-    "description": "8ª edición de la carrera Gatorade 15K. Tiene lugar alrededor del Estadio BBVA. [2, 4]"
+    "description": "8ª edición de la carrera Gatorade 15K. Tiene lugar alrededor del Estadio BBVA. [2, 4]",
+    "date": "2025-10-26"
   },
   {
     "name": "5K/10K Duendes 25ª Ed.",
@@ -287,7 +312,8 @@
     "tel": "8125709249",
     "social": "",
     "photos":[],
-    "description": "25ª edición de la carrera Duendes, organizada por el Club Duendes. Un evento de larga tradición que ofrece distancias de 5K y 10K en Calzada del Valle / Humberto Lobo en San Pedro. [2, 4]"
+    "description": "25ª edición de la carrera Duendes, organizada por el Club Duendes. Un evento de larga tradición que ofrece distancias de 5K y 10K en Calzada del Valle / Humberto Lobo en San Pedro. [2, 4]",
+    "date": "2025-10-26"
   },
   {
     "name": "3K/10K Ternium",
@@ -298,7 +324,8 @@
     "tel": "",
     "social": "https://www.ternium.com/",
     "photos":[],
-    "description": "Carrera organizada por Ternium, que ofrece distancias de 3K y 10K. Tiene lugar en Calzada del Valle en San Pedro. [2]"
+    "description": "Carrera organizada por Ternium, que ofrece distancias de 3K y 10K. Tiene lugar en Calzada del Valle en San Pedro. [2]",
+    "date": "2025-11-02"
   },
   {
     "name": "Fieles Difuntos",
@@ -309,7 +336,8 @@
     "tel": "8122351680",
     "social": "https://krono.mx/",
     "photos":[],
-    "description": "Una carrera temática en torno a 'Fieles Difuntos', organizada por Krono. Tiene lugar en el Parque Niños Héroes. Las distancias específicas no se detallan. [2, 4, 19]"
+    "description": "Una carrera temática en torno a 'Fieles Difuntos', organizada por Krono. Tiene lugar en el Parque Niños Héroes. Las distancias específicas no se detallan. [2, 4, 19]",
+    "date": "2025-11-02"
   },
   {
     "name": "10K/5K/3K Simicarrera 10ª Ed.",
@@ -320,7 +348,8 @@
     "tel": "8181009258",
     "social": "https://www.farmaciasdesimilares.com.mx/",
     "photos":[],
-    "description": "10ª edición de la Simicarrera, patrocinada por Farmacias Similares y operada por Asdeporte. Ofrece distancias de 3K, 5K y 10K en el Parque Fundidora. [2, 4]"
+    "description": "10ª edición de la Simicarrera, patrocinada por Farmacias Similares y operada por Asdeporte. Ofrece distancias de 3K, 5K y 10K en el Parque Fundidora. [2, 4]",
+    "date": "2025-11-09"
   },
   {
     "name": "15K/30K Adidas Split",
@@ -331,7 +360,8 @@
     "tel": "8122351680",
     "social": "https://www.adidas.mx/running",
     "photos":[],
-    "description": "Parte de la serie Adidas Split, ofreciendo distancias más largas de 15K y 30K. Organizada por Hub Sport. Tiene lugar en el área de la Macroplaza. [2, 4]"
+    "description": "Parte de la serie Adidas Split, ofreciendo distancias más largas de 15K y 30K. Organizada por Hub Sport. Tiene lugar en el área de la Macroplaza. [2, 4]",
+    "date": "2025-11-09"
   },
   {
     "name": "21K Nuevo León 23ª Ed.",
@@ -342,7 +372,8 @@
     "tel": "8183143992",
     "social": "https://asociaciondeatletismonl.com/",
     "photos":[],
-    "description": "23ª edición del prestigioso medio maratón 21K Nuevo León, organizado por la Asociación de Atletismo de Nuevo León (AANL). Un evento principal en el calendario de carreras de Monterrey, que típicamente comienza alrededor de la Macroplaza. [2, 4, 6, 21]"
+    "description": "23ª edición del prestigioso medio maratón 21K Nuevo León, organizado por la Asociación de Atletismo de Nuevo León (AANL). Un evento principal en el calendario de carreras de Monterrey, que típicamente comienza alrededor de la Macroplaza. [2, 4, 6, 21]",
+    "date": "2025-11-16"
   },
   {
     "name": "A Correr Familia",
@@ -353,7 +384,8 @@
     "tel": "",
     "social": "https://www.multimedios.com/deportes",
     "photos":[],
-    "description": "Un evento de carrera orientado a la familia organizado por Multimedios. Las distancias específicas y la ubicación para la edición 2025 no se detallan. [2, 4]"
+    "description": "Un evento de carrera orientado a la familia organizado por Multimedios. Las distancias específicas y la ubicación para la edición 2025 no se detallan. [2, 4]",
+    "date": ""
   },
   {
     "name": "Circuito de las estaciones invierno",
@@ -364,7 +396,8 @@
     "tel": "8181009258",
     "social": "https://asdeporte.com/",
     "photos":[],
-    "description": "La edición de invierno de la serie 'Circuito de las Estaciones' por Asdeporte. Tiene lugar en el Parque Fundidora. Las distancias específicas usualmente se alinean con otros eventos de la serie (5K, 10K, posiblemente 15K). [2, 4, 7, 18]"
+    "description": "La edición de invierno de la serie 'Circuito de las Estaciones' por Asdeporte. Tiene lugar en el Parque Fundidora. Las distancias específicas usualmente se alinean con otros eventos de la serie (5K, 10K, posiblemente 15K). [2, 4, 7, 18]",
+    "date": ""
   },
   {
     "name": "5K Navideño",
@@ -375,7 +408,8 @@
     "tel": "8111611247",
     "social": "https://apodaca.gob.mx/deportes/",
     "photos":[],
-    "description": "Una carrera de 5K con temática navideña organizada por el Municipio de Apodaca. [2, 4]"
+    "description": "Una carrera de 5K con temática navideña organizada por el Municipio de Apodaca. [2, 4]",
+    "date": "2025-12-07"
   },
   {
     "name": "Maratón Powerade Monterrey 43ª Edición",
@@ -388,7 +422,8 @@
     "photos": [
       "https://maratonmonterrey.mx/wp-content/uploads/2023/11/logo-mpm.png"
     ],
-    "description": "La 43ª edición del Maratón Powerade de Monterrey y la 21ª edición de su Medio Maratón. Un evento de running de primer nivel en México, que comienza y termina en el Parque Fundidora. La ruta está certificada por WA y es clasificatoria para el Maratón de Boston. Conocido por su excelente organización por parte de la Asociación de Clubes de Corredores del Estado de Nuevo León, excelentes amenidades para los corredores (chaqueta de finalista, medalla, cena de carbohidratos) y una atmósfera vibrante con una importante participación comunitaria y de clubes. Cuenta con un componente benéfico 'Corredor de Valor'. Reseñas de participantes anteriores destacan su recorrido desafiante con algunas ondulaciones pero con potencial rápido en general, buen apoyo y una experiencia memorable. [2, 3, 5, 13, 15, 22, 23, 24]"
+    "description": "La 43ª edición del Maratón Powerade de Monterrey y la 21ª edición de su Medio Maratón. Un evento de running de primer nivel en México, que comienza y termina en el Parque Fundidora. La ruta está certificada por WA y es clasificatoria para el Maratón de Boston. Conocido por su excelente organización por parte de la Asociación de Clubes de Corredores del Estado de Nuevo León, excelentes amenidades para los corredores (chaqueta de finalista, medalla, cena de carbohidratos) y una atmósfera vibrante con una importante participación comunitaria y de clubes. Cuenta con un componente benéfico 'Corredor de Valor'. Reseñas de participantes anteriores destacan su recorrido desafiante con algunas ondulaciones pero con potencial rápido en general, buen apoyo y una experiencia memorable. [2, 3, 5, 13, 15, 22, 23, 24]",
+    "date": "2025-12-14"
   },
   {
     "name": "10K Run Santa Run 8ª Ed.",
@@ -399,7 +434,8 @@
     "tel": "8183143992",
     "social": "https://trotime.com.mx/",
     "photos":[],
-    "description": "8ª edición de la Run Santa Run 10K. Una carrera festiva con temática navideña organizada por Trotime en el Parque Fundidora. [2, 4]"
+    "description": "8ª edición de la Run Santa Run 10K. Una carrera festiva con temática navideña organizada por Trotime en el Parque Fundidora. [2, 4]",
+    "date": "2025-12-21"
   },
   {
     "name": "5K/10K Reto Final 12ª Ed.",
@@ -410,6 +446,7 @@
     "tel": "8183143992",
     "social": "https://trotime.com.mx/",
     "photos":[],
-    "description": "12ª edición de la carrera Reto Final, marcando el fin de año. Organizada por Trotime con distancias de 5K y 10K en el Parque Fundidora. [2, 4]"
+    "description": "12ª edición de la carrera Reto Final, marcando el fin de año. Organizada por Trotime con distancias de 5K y 10K en el Parque Fundidora. [2, 4]",
+    "date": "2025-12-31"
   }
 ]
