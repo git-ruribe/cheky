@@ -614,6 +614,281 @@
         .nav-btn:hover:not(:disabled) { color: var(--orange); }
         .nav-btn:disabled { color: #a0a0a0a0; cursor: not-allowed; }
 
+        /* Challenge Modal Styles */
+        .challenge-modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 1000;
+        }
+
+        .challenge-modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .challenge-modal-content {
+            background: var(--cream);
+            padding: 30px 25px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            max-width: 90%;
+            width: 400px;
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+            border: 3px solid var(--primary-brown);
+            font-family: 'Lato', sans-serif;
+            color: var(--dark-brown);
+            text-align: center;
+        }
+
+        .challenge-modal-overlay.show .challenge-modal-content {
+            transform: translateY(0);
+        }
+
+        .challenge-modal-header {
+            font-family: 'Anton', sans-serif;
+            font-size: 1.8rem;
+            color: var(--primary-brown);
+            margin-bottom: 8px;
+        }
+
+        .challenge-modal-question {
+            font-size: 1.2rem;
+            line-height: 1.4;
+            margin-bottom: 25px;
+            color: var(--dark-brown);
+        }
+
+        .challenge-modal-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .challenge-option-btn {
+            background: var(--light-brown);
+            color: var(--dark-brown);
+            border: 2px solid var(--primary-brown);
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Lato', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .challenge-option-btn:hover {
+            background: var(--orange);
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .challenge-days-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .challenge-day-btn {
+            background: var(--light-brown);
+            color: var(--dark-brown);
+            border: 2px solid var(--primary-brown);
+            padding: 12px 8px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .challenge-day-btn:hover {
+            background: var(--orange);
+            color: white;
+        }
+
+        .challenge-modal-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--orange);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease;
+        }
+
+        .challenge-modal-close-btn:hover {
+            background: #E67E00;
+        }
+
+        .challenge-progress {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .challenge-progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--light-brown);
+            transition: background 0.2s ease;
+        }
+
+        .challenge-progress-dot.active {
+            background: var(--orange);
+        }
+
+        .challenge-progress-dot.completed {
+            background: var(--primary-brown);
+        }
+        .challenge-button {
+            background: var(--orange);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+            font-family: 'Lato', sans-serif;
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: fit-content;
+            margin: 1rem auto;
+        }
+
+        .challenge-button:hover {
+            background: #E67E00;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .challenge-button.accepted {
+            background: #28a745;
+        }
+
+        .challenge-button.accepted:hover {
+            background: #218838;
+        }
+
+        .challenge-success-content {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .challenge-success-message {
+            font-size: 1.2rem;
+            color: var(--dark-brown);
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .calendar-download-btn {
+            background: linear-gradient(135deg, var(--orange), #ff6b35);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+            font-family: 'Lato', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 0 auto;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .calendar-download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
+        }
+
+        .calendar-download-btn:active {
+            transform: translateY(0);
+        }
+
+        .calendar-download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .calendar-download-btn:hover::before {
+            left: 100%;
+        }
+
+        .challenge-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .challenge-secondary-btn {
+            background: transparent;
+            color: var(--primary-brown);
+            border: 2px solid var(--primary-brown);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .challenge-secondary-btn:hover {
+            background: var(--primary-brown);
+            color: white;
+        }
+
     </style>
 </head>
 
@@ -673,6 +948,24 @@
                 <button class="image-modal-action-btn image-modal-share-btn" onclick="shareCurrentImage()" title="Compartir foto">
                     <i class="fas fa-share-alt"></i>
                 </button>
+            </div>
+        </div>
+
+        <div id="challengeModal" class="challenge-modal-overlay">
+            <div class="challenge-modal-content">
+                <button class="challenge-modal-close-btn" onclick="closeChallengeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+                
+                <div class="challenge-progress">
+                    <div class="challenge-progress-dot" id="progress1"></div>
+                    <div class="challenge-progress-dot" id="progress2"></div>
+                    <div class="challenge-progress-dot" id="progress3"></div>
+                </div>
+                
+                <h3 id="challengeModalTitle" class="challenge-modal-header"></h3>
+                <p id="challengeModalQuestion" class="challenge-modal-question"></p>
+                <div id="challengeModalOptions" class="challenge-modal-options"></div>
             </div>
         </div>
     </div>
@@ -1207,10 +1500,21 @@ function importPhotos(event) {
                         <span>${restaurant.name}</span>
                     </div>`;
             }).join('');
+
+            // Verificar si ya aceptó el reto
+            const challengeAccepted = localStorage.getItem('challenge_accepted') === 'true';
+            const buttonText = challengeAccepted ? 'Reto Aceptado' : 'Lo Haré';
+            const buttonClass = challengeAccepted ? 'challenge-button accepted' : 'challenge-button';
+            const buttonIcon = challengeAccepted ? 'fas fa-check' : 'fas fa-fist-raised';
+
             return `
                 <div class="page-content restaurant-index-content">
                     <h2 class="restaurant-index-header">Tu Ruta de Cantinas</h2>
                     <p class="restaurant-index-count">${completedCount} de ${restaurants.length} registrados</p>
+                    <button class="${buttonClass}" onclick="acceptChallenge()">
+                        <i class="${buttonIcon}"></i>
+                        ${buttonText}
+                    </button>
                     <div class="restaurant-list-container">${restaurantListItems}</div>
                 </div>`;
         }
@@ -1439,8 +1743,10 @@ function importPhotos(event) {
             if (event.key === 'Escape') {
                 if (infoModal.classList.contains('show')) closeInfoModal();
                 if (imageModal.classList.contains('show')) closeImageModal();
+                if (document.getElementById('challengeModal').classList.contains('show')) closeChallengeModal();
             }
         });
+
         infoModal.addEventListener('click', function(event) { if (event.target === infoModal) closeInfoModal(); });
         imageModal.addEventListener('click', function(event) { 
             if (event.target === imageModal) { // Only close if overlay itself is clicked
@@ -1470,6 +1776,379 @@ function importPhotos(event) {
             window.open(mapUrl, '_blank');
         }
 
+        window.acceptChallenge = function() {
+            const challengeAccepted = localStorage.getItem('challenge_accepted') === 'true';
+            
+            if (!challengeAccepted) {
+                openChallengeModal();
+            } else {
+                // Si ya está aceptado, mostrar resumen del plan
+                showChallengeStatus();
+            }
+        };
+
+        let challengeStep = 1;
+        let challengeData = {};
+
+        window.openChallengeModal = function() {
+            challengeStep = 1;
+            challengeData = {};
+            showChallengeStep();
+            document.getElementById('challengeModal').classList.add('show');
+        };
+
+        window.closeChallengeModal = function() {
+            document.getElementById('challengeModal').classList.remove('show');
+        };
+
+        function showChallengeStep() {
+            updateProgressDots();
+            
+            if (challengeStep === 1) {
+                showRhythmQuestion();
+            } else if (challengeStep === 2) {
+                showDayQuestion();
+            } else if (challengeStep === 3) {
+                showTimeQuestion();
+            }
+        }
+
+        function updateProgressDots() {
+            for (let i = 1; i <= 3; i++) {
+                const dot = document.getElementById(`progress${i}`);
+                dot.classList.remove('active', 'completed');
+                
+                if (i < challengeStep) {
+                    dot.classList.add('completed');
+                } else if (i === challengeStep) {
+                    dot.classList.add('active');
+                }
+            }
+        }
+
+        function showRhythmQuestion() {
+            document.getElementById('challengeModalTitle').textContent = '🎯 ¡Vamos a planear!';
+            document.getElementById('challengeModalQuestion').textContent = '¿Con qué frecuencia quieres explorar? ¡Vamos a crear un plan!';
+            
+            document.getElementById('challengeModalOptions').innerHTML = `
+                <button class="challenge-option-btn" onclick="selectRhythm('weekly')">
+                    <i class="fas fa-calendar-week"></i>
+                    Una vez a la semana (Ritmo Constante)
+                </button>
+                <button class="challenge-option-btn" onclick="selectRhythm('biweekly')">
+                    <i class="fas fa-calendar-alt"></i>
+                    Una vez cada 15 días (Ritmo Relajado)
+                </button>
+                <button class="challenge-option-btn" onclick="selectRhythm('flexible')">
+                    <i class="fas fa-user-clock"></i>
+                    ¡A mi propio paso! (Sin plan)
+                </button>
+            `;
+        }
+
+        function showDayQuestion() {
+            document.getElementById('challengeModalTitle').textContent = '📅 Día Perfecto';
+            document.getElementById('challengeModalQuestion').textContent = 'Perfecto. ¿Qué día de la semana te funciona mejor?';
+            
+            const days = [
+                { key: 'monday', label: 'Lun', icon: 'fas fa-moon' },
+                { key: 'tuesday', label: 'Mar', icon: 'fas fa-coffee' },
+                { key: 'wednesday', label: 'Mié', icon: 'fas fa-sun' },
+                { key: 'thursday', label: 'Jue', icon: 'fas fa-star' },
+                { key: 'friday', label: 'Vie', icon: 'fas fa-cocktail' },
+                { key: 'saturday', label: 'Sáb', icon: 'fas fa-heart' },
+                { key: 'sunday', label: 'Dom', icon: 'fas fa-home' }
+            ];
+            
+            document.getElementById('challengeModalOptions').innerHTML = `
+                <div class="challenge-days-grid">
+                    ${days.map(day => `
+                        <button class="challenge-day-btn" onclick="selectDay('${day.key}')">
+                            <i class="${day.icon}"></i><br>${day.label}
+                        </button>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function showTimeQuestion() {
+            document.getElementById('challengeModalTitle').textContent = '🕐 Hora Ideal';
+            document.getElementById('challengeModalQuestion').textContent = '¿Tarde o noche?';
+            
+            document.getElementById('challengeModalOptions').innerHTML = `
+                <button class="challenge-option-btn" onclick="selectTime('lunch')">
+                    <i class="fas fa-utensils"></i>
+                    En la comida (2 PM)
+                </button>
+                <button class="challenge-option-btn" onclick="selectTime('afternoon')">
+                    <i class="fas fa-sun"></i>
+                    Tarde (5 PM)
+                </button>
+                <button class="challenge-option-btn" onclick="selectTime('evening')">
+                    <i class="fas fa-moon"></i>
+                    Noche (8 PM)
+                </button>
+            `;
+        }
+
+        window.selectRhythm = function(rhythm) {
+            challengeData.rhythm = rhythm;
+            
+            if (rhythm === 'flexible') {
+                // Si eligió flexible, saltar directo al final
+                finalizeChallengeSetup();
+            } else {
+                challengeStep = 2;
+                showChallengeStep();
+            }
+        };
+
+        window.selectDay = function(day) {
+            challengeData.day = day;
+            challengeStep = 3;
+            showChallengeStep();
+        };
+
+        window.selectTime = function(time) {
+            challengeData.time = time;
+            finalizeChallengeSetup();
+        };
+
+        function finalizeChallengeSetup() {
+            // Guardar configuración
+            localStorage.setItem('challenge_accepted', 'true');
+            localStorage.setItem('challenge_config', JSON.stringify(challengeData));
+            
+            // Mostrar pantalla de confirmación
+            showChallengeSuccess();
+            
+            // Analytics
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'challenge_configured', {
+                    'event_category': 'engagement',
+                    'rhythm': challengeData.rhythm,
+                    'day': challengeData.day || 'flexible',
+                    'time': challengeData.time || 'flexible'
+                });
+            }
+        }
+
+        function showChallengeSuccess() {
+            document.getElementById('challengeModalTitle').textContent = '🎉 ¡Perfecto!';
+            
+            const config = challengeData;
+            let planDescription = '';
+            
+            if (config.rhythm === 'flexible') {
+                planDescription = 'Tu plan flexible está listo. ¡Explora a tu ritmo!';
+            } else {
+                const rhythmText = config.rhythm === 'weekly' ? 'semanal' : 'quincenal';
+                const dayNames = {
+                    monday: 'lunes', tuesday: 'martes', wednesday: 'miércoles',
+                    thursday: 'jueves', friday: 'viernes', saturday: 'sábados', sunday: 'domingos'
+                };
+                const timeText = {
+                    'lunch': 'al mediodía',
+                    'afternoon': 'en las tardes', 
+                    'evening': 'en las noches'
+                }[config.time];
+                
+                planDescription = `Tu plan ${rhythmText} los ${dayNames[config.day]} en las ${timeText} está listo.`;
+            }
+            
+            document.getElementById('challengeModalQuestion').textContent = '';
+            
+            const showCalendarButton = config.rhythm !== 'flexible';
+            
+            document.getElementById('challengeModalOptions').innerHTML = `
+                <div class="challenge-success-content">
+                    <p class="challenge-success-message">
+                        ¡Genial! ${planDescription}<br><br>
+                        ${showCalendarButton ? 'Para que no se te olvide, hemos creado un archivo de calendario para ti.' : '¡Disfruta explorando las cantinas tradicionales!'}
+                    </p>
+                    
+                    <div class="challenge-actions">
+                        ${showCalendarButton ? `
+                            <button class="calendar-download-btn" onclick="downloadCalendarFile()">
+                                <i class="fas fa-calendar-plus"></i>
+                                Añadir a mi calendario
+                            </button>
+                        ` : ''}
+                        
+                        <button class="challenge-secondary-btn" onclick="finishChallengeSetup()">
+                            ${showCalendarButton ? 'Continuar sin calendario' : '¡Empezar a explorar!'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.finishChallengeSetup = function() {
+            closeChallengeModal();
+            showSuccessMessage('🎯 ¡Reto configurado! ¡A explorar cantinas!');
+            renderCurrentPage();
+        };
+
+        window.showChallengeStatus = function() {
+            const config = JSON.parse(localStorage.getItem('challenge_config') || '{}');
+            let statusMessage = '';
+            
+            if (config.rhythm === 'flexible') {
+                statusMessage = '🎯 Tu plan: Explorar a tu propio ritmo';
+                showSuccessMessage(statusMessage);
+            } else {
+                const rhythmText = config.rhythm === 'weekly' ? 'cada semana' : 'cada 15 días';
+                const dayNames = {
+                    monday: 'lunes', tuesday: 'martes', wednesday: 'miércoles',
+                    thursday: 'jueves', friday: 'viernes', saturday: 'sábados', sunday: 'domingos'
+                };
+                const timeText = {
+                    'lunch': 'al mediodía',
+                    'afternoon': 'en las tardes', 
+                    'evening': 'en las noches'
+                }[config.time];
+                
+                statusMessage = `🎯 Tu plan: ${rhythmText} los ${dayNames[config.day]} ${timeText}`;
+                
+                // Ofrecer descargar calendario de nuevo
+                const shouldShowCalendarOption = confirm(statusMessage + '\n\n¿Quieres descargar tu calendario de eventos?');
+                if (shouldShowCalendarOption) {
+                    challengeData = config; // Restaurar datos para la descarga
+                    downloadCalendarFile();
+                } else {
+                    showSuccessMessage(statusMessage);
+                }
+            }
+        };
+
+        window.downloadCalendarFile = function() {
+            const config = challengeData;
+            const icsContent = generateICSFile(config);
+            downloadFile(icsContent, 'cheky-cantinas-tradicionales.ics', 'text/calendar');
+            
+            // Analytics
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'calendar_downloaded', {
+                    'event_category': 'engagement',
+                    'rhythm': config.rhythm,
+                    'day': config.day,
+                    'time': config.time
+                });
+            }
+            
+            showSuccessMessage('📅 ¡Calendario descargado! Revisa tu carpeta de descargas');
+            
+            // Cerrar modal y actualizar página
+            setTimeout(() => {
+                closeChallengeModal();
+                renderCurrentPage();
+            }, 1500);
+        };
+
+        function generateICSFile(config) {
+            const now = new Date();
+            const formatDate = (date) => {
+                return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+            };
+            
+            // Obtener el próximo día objetivo
+            const getNextTargetDay = (targetDay) => {
+                const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+                const targetDayIndex = dayNames.indexOf(targetDay);
+                const today = new Date();
+                const todayIndex = today.getDay();
+                
+                let daysUntilTarget = targetDayIndex - todayIndex;
+                if (daysUntilTarget <= 0) {
+                    daysUntilTarget += 7;
+                }
+                
+                const nextTargetDay = new Date(today);
+                nextTargetDay.setDate(today.getDate() + daysUntilTarget);
+                return nextTargetDay;
+            };
+            
+            const firstEventDate = getNextTargetDay(config.day);
+            
+            // Configurar hora
+            const timeConfig = {
+                'lunch': { hour: 14, label: 'Mediodía' },      // 2 PM
+                'afternoon': { hour: 17, label: 'Tarde' },     // 5 PM
+                'evening': { hour: 20, label: 'Noche' }        // 8 PM
+            };
+            firstEventDate.setHours(hour, 0, 0, 0);
+            
+            const endTime = new Date(firstEventDate);
+            endTime.setHours(hour + 1, 0, 0, 0); // 1 hora de duración
+            
+            // Determinar frecuencia y número de eventos
+            const frequency = config.rhythm === 'weekly' ? 'WEEKLY' : 'WEEKLY';
+            const interval = config.rhythm === 'weekly' ? 1 : 2;
+            const numberOfEvents = 12; // 12 eventos en total
+            
+            // Calcular fecha final
+            const lastEventDate = new Date(firstEventDate);
+            const weeksToAdd = interval * (numberOfEvents - 1);
+            lastEventDate.setDate(firstEventDate.getDate() + (weeksToAdd * 7));
+            
+            const rhythmText = config.rhythm === 'weekly' ? 'Semanal' : 'Quincenal';
+            const timeText = config.time === 'afternoon' ? 'Tarde' : 'Noche';
+            
+            let icsContent = `BEGIN:VCALENDAR
+        VERSION:2.0
+        PRODID:-//cheky.app//Cantinas Tradicionales//ES
+        CALSCALE:GREGORIAN
+        METHOD:PUBLISH
+        X-WR-CALNAME:Cheky: Cantinas Tradicionales de Monterrey
+        X-WR-CALDESC:Tu ruta ${rhythmText.toLowerCase()} para explorar las mejores cantinas tradicionales de Monterrey
+        X-WR-TIMEZONE:America/Monterrey
+
+        BEGIN:VEVENT
+        UID:cheky-cantinas-${formatDate(now)}@cheky.app
+        DTSTART:${formatDate(firstEventDate)}
+        DTEND:${formatDate(endTime)}
+        DTSTAMP:${formatDate(now)}
+        SUMMARY:🍺 Tu Cheky de la Semana: Visita una Cantina
+        DESCRIPTION:¡Es hora de tu aventura ${config.rhythm === 'weekly' ? 'semanal' : 'quincenal'}! No te olvides de completar tu Cheky.\\n\\n🎯 Elige una de las cantinas de la lista y disfruta\\n📸 Toma una foto y guárdala en tu álbum\\n🍺 Prueba los sabores tradicionales de Monterrey\\n\\nLink a tu progreso: https://cheky.app/\\n\\n¡Salud y que disfrutes la experiencia!
+        LOCATION:Monterrey, Nuevo León, México
+        CATEGORIES:PERSONAL,ENTRETENIMIENTO
+        PRIORITY:5
+        RRULE:FREQ=${frequency};INTERVAL=${interval};COUNT=${numberOfEvents}
+        TRANSP:OPAQUE
+        STATUS:CONFIRMED
+        BEGIN:VALARM
+        TRIGGER:-PT2H
+        ACTION:DISPLAY
+        DESCRIPTION:🍺 Recordatorio: Tu Cheky de cantinas en 2 horas
+        END:VALARM
+        BEGIN:VALARM
+        TRIGGER:-PT1D
+        ACTION:DISPLAY
+        DESCRIPTION:🗓️ Mañana es tu día de Cheky: ¡Prepárate para explorar una cantina tradicional!
+        END:VALARM
+        END:VEVENT
+
+        END:VCALENDAR`;
+
+            return icsContent;
+        }
+
+        function downloadFile(content, filename, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            link.style.display = 'none';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Limpiar URL del blob después de un momento
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }        
 
         
     </script>
