@@ -694,11 +694,23 @@
             gap: 10px;
         }
 
-        .challenge-option-btn:hover {
-            background: var(--orange);
-            color: white;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        /* Solo aplicar hover en dispositivos que lo soportan */
+        @media (hover: hover) and (pointer: fine) {
+            .challenge-option-btn:hover {
+                background: var(--orange);
+                color: white;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            }
+        }
+
+        /* Estados específicos para dispositivos táctiles */
+        @media (hover: none) {
+            .challenge-option-btn:active {
+                background: var(--orange);
+                color: white;
+                transform: scale(0.98);
+            }
         }
 
         .challenge-days-grid {
@@ -721,9 +733,21 @@
             font-family: 'Lato', sans-serif;
         }
 
-        .challenge-day-btn:hover {
-            background: var(--orange);
-            color: white;
+        /* Solo aplicar hover en dispositivos que lo soportan */
+        @media (hover: hover) and (pointer: fine) {
+            .challenge-day-btn:hover {
+                background: var(--orange);
+                color: white;
+            }
+        }
+
+        /* Estados específicos para dispositivos táctiles */
+        @media (hover: none) {
+            .challenge-day-btn:active {
+                background: var(--orange);
+                color: white;
+                transform: scale(0.95);
+            }
         }
 
         .challenge-modal-close-btn {
@@ -791,18 +815,22 @@
             margin: 1rem auto;
         }
 
-        .challenge-button:hover {
-            background: #E67E00;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        @media (hover: hover) and (pointer: fine) {
+            .challenge-button:hover {
+                background: #E67E00;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            }
         }
 
         .challenge-button.accepted {
             background: #28a745;
         }
 
-        .challenge-button.accepted:hover {
-            background: #218838;
+        @media (hover: hover) and (pointer: fine) {
+            .challenge-button.accepted:hover {
+                background: #218838;
+            }
         }
 
         .challenge-success-content {
@@ -839,9 +867,15 @@
             overflow: hidden;
         }
 
-        .calendar-download-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
+        @media (hover: hover) and (pointer: fine) {
+            .calendar-download-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
+            }
+            
+            .calendar-download-btn:hover::before {
+                left: 100%;
+            }
         }
 
         .calendar-download-btn:active {
@@ -884,9 +918,11 @@
             font-family: 'Lato', sans-serif;
         }
 
-        .challenge-secondary-btn:hover {
-            background: var(--primary-brown);
-            color: white;
+        @media (hover: hover) and (pointer: fine) {
+            .challenge-secondary-btn:hover {
+                background: var(--primary-brown);
+                color: white;
+            }
         }
 
     </style>
