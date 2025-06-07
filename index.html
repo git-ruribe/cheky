@@ -2070,16 +2070,18 @@ function importPhotos(event) {
             
             const firstEventDate = getNextTargetDay(config.day);
             
-            // Configurar hora
+            // ⭐ CONFIGURAR HORA CON LA NUEVA OPCIÓN
             const timeConfig = {
                 'lunch': { hour: 14, label: 'Mediodía' },      // 2 PM
                 'afternoon': { hour: 17, label: 'Tarde' },     // 5 PM
                 'evening': { hour: 20, label: 'Noche' }        // 8 PM
             };
-            firstEventDate.setHours(hour, 0, 0, 0);
+            
+            const selectedTime = timeConfig[config.time];
+            firstEventDate.setHours(selectedTime.hour, 0, 0, 0);
             
             const endTime = new Date(firstEventDate);
-            endTime.setHours(hour + 1, 0, 0, 0); // 1 hora de duración
+            endTime.setHours(selectedTime.hour + 1, 0, 0, 0); // 1 hora de duración
             
             // Determinar frecuencia y número de eventos
             const frequency = config.rhythm === 'weekly' ? 'WEEKLY' : 'WEEKLY';
@@ -2092,7 +2094,6 @@ function importPhotos(event) {
             lastEventDate.setDate(firstEventDate.getDate() + (weeksToAdd * 7));
             
             const rhythmText = config.rhythm === 'weekly' ? 'Semanal' : 'Quincenal';
-            const timeText = config.time === 'afternoon' ? 'Tarde' : 'Noche';
             
             let icsContent = `BEGIN:VCALENDAR
         VERSION:2.0
@@ -2132,7 +2133,6 @@ function importPhotos(event) {
 
             return icsContent;
         }
-
         function downloadFile(content, filename, mimeType) {
             const blob = new Blob([content], { type: mimeType });
             const url = URL.createObjectURL(blob);
