@@ -2081,126 +2081,94 @@ function importPhotos(event) {
             }, 1500);
         };
 
-        function generateICSFile(config) {
-            const now = new Date();
-            const formatDate = (date) => {
-                return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
-            };
-            
-            // Función para formatear fecha local (sin zona horaria)
-            const formatLocalDate = (date) => {
-                const year = date.getFullYear();
-                const month = String(date.getMonth() + 1).padStart(2, '0');
-                const day = String(date.getDate()).padStart(2, '0');
-                const hours = String(date.getHours()).padStart(2, '0');
-                const minutes = String(date.getMinutes()).padStart(2, '0');
-                const seconds = String(date.getSeconds()).padStart(2, '0');
-                return `${year}${month}${day}T${hours}${minutes}${seconds}`;
-            };
-            
-            // Obtener el próximo día objetivo
-            const getNextTargetDay = (targetDay) => {
-                const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-                const targetDayIndex = dayNames.indexOf(targetDay);
-                const today = new Date();
-                const todayIndex = today.getDay();
-                
-                let daysUntilTarget = targetDayIndex - todayIndex;
-                if (daysUntilTarget <= 0) {
-                    daysUntilTarget += 7;
-                }
-                
-                const nextTargetDay = new Date(today);
-                nextTargetDay.setDate(today.getDate() + daysUntilTarget);
-                return nextTargetDay;
-            };
-            
-            const firstEventDate = getNextTargetDay(config.day);
-            
-            // Configurar hora con la nueva opción
-            const timeConfig = {
-                'lunch': { hour: 14, label: 'Mediodía' },
-                'afternoon': { hour: 17, label: 'Tarde' },
-                'evening': { hour: 20, label: 'Noche' }
-            };
-            
-            const selectedTime = timeConfig[config.time];
-            firstEventDate.setHours(selectedTime.hour, 0, 0, 0);
-            
-            const endTime = new Date(firstEventDate);
-            endTime.setHours(selectedTime.hour + 1, 0, 0, 0);
-            
-            // Determinar frecuencia y número de eventos
-            const frequency = config.rhythm === 'weekly' ? 'WEEKLY' : 'WEEKLY';
-            const interval = config.rhythm === 'weekly' ? 1 : 2;
-            const numberOfEvents = 12;
-            
-            const rhythmText = config.rhythm === 'weekly' ? 'Semanal' : 'Quincenal';
-            
-            // Crear descripción sin caracteres problemáticos
-            const description = `¡Es hora de tu aventura ${config.rhythm === 'weekly' ? 'semanal' : 'quincenal'}! No te olvides de completar tu Cheky.\\n\\n` +
-                `🎯 Elige una de las cantinas de la lista y disfruta\\n` +
-                `📸 Toma una foto y guardala en tu album\\n` +
-                `🍺 Prueba los sabores tradicionales de Monterrey\\n\\n` +
-                `Link a tu progreso: https://cheky.app/\\n\\n` +
-                `¡Salud y que disfrutes la experiencia!`;
-            
-            // Generar UID único
-            const uid = `cheky-cantinas-${Date.now()}@cheky.app`;
-            
-            let icsContent = `BEGIN:VCALENDAR\r
-        VERSION:2.0\r
-        PRODID:-//cheky.app//Cantinas Tradicionales//ES\r
-        CALSCALE:GREGORIAN\r
-        METHOD:PUBLISH\r
-        X-WR-CALNAME:Cheky: Cantinas Tradicionales de Monterrey\r
-        X-WR-CALDESC:Tu ruta ${rhythmText.toLowerCase()} para explorar las mejores cantinas tradicionales de Monterrey\r
-        BEGIN:VTIMEZONE\r
-        TZID:America/Monterrey\r
-        BEGIN:STANDARD\r
-        DTSTART:20071104T020000\r
-        RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU\r
-        TZNAME:CST\r
-        TZOFFSETFROM:-0500\r
-        TZOFFSETTO:-0600\r
-        END:STANDARD\r
-        BEGIN:DAYLIGHT\r
-        DTSTART:20070311T020000\r
-        RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU\r
-        TZNAME:CDT\r
-        TZOFFSETFROM:-0600\r
-        TZOFFSETTO:-0500\r
-        END:DAYLIGHT\r
-        END:VTIMEZONE\r
-        BEGIN:VEVENT\r
-        UID:${uid}\r
-        DTSTART;TZID=America/Monterrey:${formatLocalDate(firstEventDate)}\r
-        DTEND;TZID=America/Monterrey:${formatLocalDate(endTime)}\r
-        DTSTAMP:${formatDate(now)}\r
-        SUMMARY:🍺 Tu Cheky de la Semana: Visita una Cantina\r
-        DESCRIPTION:${description}\r
-        LOCATION:Monterrey, Nuevo Leon, Mexico\r
-        CATEGORIES:PERSONAL,ENTRETENIMIENTO\r
-        PRIORITY:5\r
-        RRULE:FREQ=${frequency};INTERVAL=${interval};COUNT=${numberOfEvents}\r
-        TRANSP:OPAQUE\r
-        STATUS:CONFIRMED\r
-        BEGIN:VALARM\r
-        TRIGGER:-PT2H\r
-        ACTION:DISPLAY\r
-        DESCRIPTION:🍺 Recordatorio: Tu Cheky de cantinas en 2 horas\r
-        END:VALARM\r
-        BEGIN:VALARM\r
-        TRIGGER:-PT1D\r
-        ACTION:DISPLAY\r
-        DESCRIPTION:🗓️ Manana es tu dia de Cheky: ¡Preparate para explorar una cantina tradicional!\r
-        END:VALARM\r
-        END:VEVENT\r
-        END:VCALENDAR\r
-        `;
-
-            return icsContent;
-        }      
+function generateICSFile(config) {
+    const now = new Date();
+    
+    // Función para formatear fecha local (sin zona horaria)
+    const formatLocalDate = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+        return `${year}${month}${day}T${hours}${minutes}${seconds}`;
+    };
+    
+    // Obtener el próximo día objetivo
+    const getNextTargetDay = (targetDay) => {
+        const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+        const targetDayIndex = dayNames.indexOf(targetDay);
+        const today = new Date();
+        const todayIndex = today.getDay();
+        
+        let daysUntilTarget = targetDayIndex - todayIndex;
+        if (daysUntilTarget <= 0) {
+            daysUntilTarget += 7;
+        }
+        
+        const nextTargetDay = new Date(today);
+        nextTargetDay.setDate(today.getDate() + daysUntilTarget);
+        return nextTargetDay;
+    };
+    
+    const firstEventDate = getNextTargetDay(config.day);
+    
+    // Configurar hora
+    const timeConfig = {
+        'lunch': { hour: 14, label: 'Mediodia' },
+        'afternoon': { hour: 17, label: 'Tarde' },
+        'evening': { hour: 20, label: 'Noche' }
+    };
+    
+    const selectedTime = timeConfig[config.time];
+    firstEventDate.setHours(selectedTime.hour, 0, 0, 0);
+    
+    const endTime = new Date(firstEventDate);
+    endTime.setHours(selectedTime.hour + 1, 0, 0, 0);
+    
+    // Determinar frecuencia y número de eventos
+    const interval = config.rhythm === 'weekly' ? 1 : 2;
+    const numberOfEvents = 12;
+    
+    // Generar UID único
+    const uid = `cheky-cantinas-${Date.now()}@cheky.app`;
+    
+    // Crear descripción simple sin caracteres problemáticos
+    const description = `Es hora de tu aventura ${config.rhythm === 'weekly' ? 'semanal' : 'quincenal'}! No te olvides de completar tu Cheky. Elige una de las cantinas de la lista y disfruta. Link: https://cheky.app/`;
+    
+    // **IMPORTANTE**: Usar solo \n para saltos de línea internos del ICS
+    const icsLines = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//cheky.app//Cantinas Tradicionales//ES',
+        'CALSCALE:GREGORIAN',
+        'METHOD:PUBLISH',
+        'X-WR-CALNAME:Cheky: Cantinas Tradicionales de Monterrey',
+        'X-WR-CALDESC:Tu ruta para explorar las mejores cantinas tradicionales de Monterrey',
+        'BEGIN:VEVENT',
+        `UID:${uid}`,
+        `DTSTART:${formatLocalDate(firstEventDate)}`,
+        `DTEND:${formatLocalDate(endTime)}`,
+        `DTSTAMP:${formatLocalDate(now)}`,
+        'SUMMARY:Tu Cheky de la Semana: Visita una Cantina',
+        `DESCRIPTION:${description}`,
+        'LOCATION:Monterrey, Nuevo Leon, Mexico',
+        'CATEGORIES:PERSONAL',
+        `RRULE:FREQ=WEEKLY;INTERVAL=${interval};COUNT=${numberOfEvents}`,
+        'STATUS:CONFIRMED',
+        'BEGIN:VALARM',
+        'TRIGGER:-PT2H',
+        'ACTION:DISPLAY',
+        'DESCRIPTION:Recordatorio: Tu Cheky de cantinas en 2 horas',
+        'END:VALARM',
+        'END:VEVENT',
+        'END:VCALENDAR'
+    ];
+    
+    // Unir con \r\n (CRLF) que es el estándar para ICS
+    return icsLines.join('\r\n') + '\r\n';
+}  
         
         function downloadFile(content, filename, mimeType) {
             // Crear el blob con el tipo MIME correcto para ICS
