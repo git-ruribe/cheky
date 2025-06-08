@@ -1039,7 +1039,9 @@
             contentPages = [
                 { type: 'cover' },
                 { type: 'restaurantIndex' },
-                ...restaurants.map(restaurant => ({ type: 'restaurant', data: restaurant })),
+                ...restaurants
+                    .sort((a, b) => new Date(a.date + 'T12:00:00') - new Date(b.date + 'T12:00:00'))
+                    .map(restaurant => ({ type: 'restaurant', data: restaurant })),
                 { type: 'finalPage' }
             ];
             renderCurrentPage();
@@ -1547,16 +1549,72 @@ function importPhotos(event) {
 
         function generateRestaurantIndexContent() {
             let completedCount = 0;
-            const restaurantListItems = restaurants.map(restaurant => {
+
+            // Agrupar carreras por mes
+        const carrerasPorMes = {};
+        restaurants.forEach(restaurant => {
+            const fecha = new Date(restaurant.date);
+            const mesAnio = fecha.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+            
+            if (!carrerasPorMes[mesAnio]) {
+                carrerasPorMes[mesAnio] = [];
+            }
+            carrerasPorMes[mesAnio].push(restaurant);
+        });
+
+        // Ordenar meses cronológicamente
+        const mesesOrdenados = Object.keys(carrerasPorMes).sort((a, b) => {
+            const fechaA = new Date(carrerasPorMes[a][0].date);
+            const fechaB = new Date(carrerasPorMes[b][0].date);
+            return fechaA - fechaB;
+        });
+
+        // Generar HTML agrupado por mes
+        let restaurantListItems = '';
+        mesesOrdenados.forEach(mes => {
+            // Ordenar carreras dentro del mes por fecha
+            const carrerasDelMes = carrerasPorMes[mes].sort((a, b) => new Date(a.date) - new Date(b.date));
+            
+            restaurantListItems += `
+                <div style="
+                    font-family: 'Anton', sans-serif; 
+                    font-size: 1.1rem; 
+                    color: var(--primary-blue); 
+                    margin: 15px 0 8px 0; 
+                    text-align: center;
+                    text-transform: capitalize;
+                ">${mes}</div>
+            `;
+            
+            carrerasDelMes.forEach(restaurant => {
                 const hasPhoto = localStorage.getItem('user_photo_' + restaurant.name);
                 if (hasPhoto) completedCount++;
                 const iconClass = hasPhoto ? 'fas fa-circle-check' : 'far fa-circle';
-                return `
-                    <div class="restaurant-list-item" onclick="navigateToRestaurantPage('${restaurant.name.replace(/'/g, "\\'")}')">
-                        <i class="${iconClass}"></i>
-                        <span>${restaurant.name}</span>
-                    </div>`;
-            }).join('');
+                
+
+            const [year, month, day] = restaurant.date.split('-');
+            const fecha = new Date(year, month - 1, day);
+            const dia = fecha.getDate().toString().padStart(2, '0');
+
+            restaurantListItems += `
+                <div class="restaurant-list-item" onclick="navigateToRestaurantPage('${restaurant.name.replace(/'/g, "\\'")}')">
+                    <div style="
+                        background: var(--dark-blue);
+                        color: var(--light-gray);
+                        padding: 4px 8px;
+                        border-radius: 6px;
+                        font-weight: 700;
+                        font-size: 0.9rem;
+                        min-width: 28px;
+                        text-align: center;
+                        flex-shrink: 0;
+                    ">${dia}</div>
+                    <i class="${iconClass}"></i>
+                    <span>${restaurant.name}</span>
+                </div>
+            `;
+            });
+        });
 
             // Verificar si ya aceptó el reto
             const challengeAccepted = localStorage.getItem('runMty01challenge_accepted') === 'true';
@@ -1603,6 +1661,14 @@ function importPhotos(event) {
                 <div class="page-content restaurant-content-wrapper">
                     
                     <h2 class="restaurant-title">${restaurant.name}</h2>
+                    <div style="
+                        font-family: 'Lato', sans-serif;
+                        font-size: 1rem;
+                        color: var(--medium-gray);
+                        text-align: center;
+                        margin-bottom: 15px;
+                        font-weight: 600;
+                    ">${formatearFecha(restaurant.date)}</div>
                     <div class="photo-display-area" onclick="${photoAreaOnClick}">
                         ${photoAreaContent}
                     </div>
@@ -1616,13 +1682,14 @@ function importPhotos(event) {
                         '${restaurant.description.replace(/'/g, "\\'").replace(/\n/g, "\\n")}',
                         '${(restaurant.photos && restaurant.photos.length > 0 ? restaurant.photos[0] : '').replace(/'/g, "\\'")}',
                         '${restaurant.coordinates.replace(/'/g, "\\'")}',
+                        '${restaurant.date.replace(/'/g, "\\'")}', 
                     )">
                         Sobre esta Carrera <i class="fas fa-info-circle"></i>
                     </button>
                 </div>`;
         }
 
-        window.openInfoModal = function(name, type, address, mapUrl, tel, social, description, officialPhotoUrl, coordinates) {
+        window.openInfoModal = function(name, type, address, mapUrl, tel, social, description, officialPhotoUrl, coordinates, date) {
             const latLng = coordinates.split(',').map(coord => parseFloat(coord.trim()));
             const lat = latLng[0];
             const lng = latLng[1];
@@ -1634,6 +1701,7 @@ function importPhotos(event) {
             }
             modalBodyEl.innerHTML = `
                 ${officialPhotoHTML}
+                <p class="modal-info-details"><strong>Fecha:</strong> ${date}</p>
                 <p class="modal-info-details"><strong>Tipo:</strong> ${type}</p>
                 <p class="modal-info-details">
                     <strong>Dirección:</strong> <a onclick="openMapSmart(${lat},${lng},'${name.replace(/'/g, "\\'")}')" target="_blank" rel="noopener noreferrer">${address}</a>
@@ -2319,6 +2387,15 @@ function generateICSFile(config) {
             console.log('📊 Analytics Event:', eventName, eventData);
         }
 
+        function formatearFecha(fechaISO) {
+            const fecha = new Date(fechaISO + 'T12:00:00');
+            return fecha.toLocaleDateString('es-ES', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+        }
         
     </script>
 </body>
