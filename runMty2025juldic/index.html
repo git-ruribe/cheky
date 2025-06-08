@@ -1741,8 +1741,6 @@ function importPhotos(event) {
                 </p>
                 <p style="text-align: justify;">${formattedDescription}</p>
                 <div class="modal-social-icons-container">
-                    ${tel !== 'null' && tel !== '' ? `<a href="tel:${tel}" class="modal-social-icon" title="Llamar a ${name}"><i class="fas fa-phone"></i></a>` : ''}
-                    <a onclick="openMapSmart(${lat},${lng},'${name.replace(/'/g, "\\'")}')" target="_blank" rel="noopener noreferrer" class="modal-social-icon" title="Ver mapa de ${name}"><i class="fas fa-map-marker-alt"></i></a>
                     ${social !== 'null' && social !== '' ? `<a href="${social}" target="_blank" rel="noopener noreferrer" class="modal-social-icon" title="Sitio web o red social de ${name}"><i class="fas fa-link"></i></a>` : ''}
                 </div>`;
             infoModal.classList.add('show');
