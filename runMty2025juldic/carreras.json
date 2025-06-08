@@ -24,7 +24,7 @@
         "tel": "",
         "social": "https://asdeporte.com/evento/cto--de-las-estaciones-verano-monterrey---zona-norte-2025-kbc/datos-del-evento",
         "photos": [],
-        "description": "El Circuito de las Estaciones es una serie de carreras que se realizan a lo largo del año, cada una representando una estación. La edición de verano en Monterrey es organizada por Asdeporte. Aún no se ha publicado la convocatoria oficial para 2025, por lo que no se tienen detalles específicos de la ruta y otros pormenores. Se recomienda visitar el sitio web de Asdeporte para obtener la información más reciente.",
+        "description": "El Circuito de las Estaciones es una serie de carreras que se realizan a lo largo del año, cada una representando una estación. La edición de verano en Monterrey es organizada por Asdeporte. Se recomienda visitar el sitio web de Asdeporte para obtener la información más reciente.",
         "date": "2025-07-06"
     },
   {
@@ -36,7 +36,7 @@
     "tel": "8183143992",
     "social": "https://trotime.com.mx/ficha-inscripcion?productoId=1203d397-1a3f-4c6f-84fd-9f3257355cdc&edicionEventoId=bc421edd-574a-47f2-8a7f-2da9d3f76218",
     "photos":[],
-    "description": "Organizado por Trotime (U-ERRE también mencionada como organizadora). Tiene lugar en el Campus Centro de la U-ERRE en Monterrey. Presenta distancias de 5K y 10K. [1, 2, 9]",
+    "description": "Organizado por Trotime (U-ERRE también mencionada como organizadora). Tiene lugar en el Campus Centro de la U-ERRE en Monterrey. Presenta distancias de 5K y 10K.",
     "date": "2025-07-06"
   },
   {
@@ -46,7 +46,7 @@
     "mapUrl": "",
     "coordinates": "",
     "tel": "8113664871",
-    "social": "",
+    "social": "https://www.trotime.com.mx/convocatoria?edicionEventoId=9b28e46e-4b3e-4a1e-97fa-e666a6ff7682",
     "photos":[],
     "description": "15ª edición de la carrera Fuerza Laboral, organizada por el Instituto del Deporte de los Trabajadores NL. Presenta distancias de 5K y 10K. Se lleva a cabo alrededor del área del Monumento Obrero / Macroplaza en Monterrey.",
     "date": "2025-07-20"
@@ -64,15 +64,15 @@
     "date": "2025-07-27"
   },
   {
-    "name": "5k, 10k y 2K caminata Señor de la Expiración 26° Edición",
+    "name": "5k, 10k y 2K caminata Señor de la Expiración",
     "type": "2K walk, 5K, 10K, urban",
-    "address": "Guadalupe, N.L.",
+    "address": "",
     "mapUrl": "",
     "coordinates": "",
     "tel": "8111589090",
     "social": "",
     "photos":[],
-    "description": "26ª edición organizada por la Parroquia y Santuario de Nuestra Sra. de Guadalupe. Ofrece una caminata de 2K, y carreras de 5K y 10K en Guadalupe, N.L.",
+    "description": "26ª edición organizada por la Parroquia y Santuario de Nuestra Sra. de Guadalupe. Ofrece una caminata de 2K, y carreras de 5K y 10K",
     "date": "2025-08-03"
   },
   {
