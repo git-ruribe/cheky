@@ -1038,6 +1038,7 @@
         function initializeAlbumApp() {
             contentPages = [
                 { type: 'cover' },
+                { type: 'instructions' },
                 { type: 'restaurantIndex' },
                 ...restaurants
                     .sort((a, b) => new Date(a.date + 'T12:00:00') - new Date(b.date + 'T12:00:00'))
@@ -1538,11 +1539,11 @@ function importPhotos(event) {
         function generateCoverContent() {
             return `
                 <div class="page-content cover-page">
-                    <h1 class="cover-title">Club Exatec Running Monterrey</h1>
-                    <h2 class="cover-subtitle">Mi Album de Carreras 2S 2025</h2>
+                    <h1 class="cover-title">Correr en Monterrey 2025</h1>
+                    <h2 class="cover-subtitle">Mi Album de Carreras<br>Julio-Diciembre</h2>
                     <img src="CarreraMty.png" onerror="this.onerror=null;this.src='https://placehold.co/150x150/D2B48C/654321?text=Error';" alt="Comida del Noreste" class="cover-image">
                     <div class="cover-presented">
-                        presentado por <span class="cheky-highlight">cheky.app</span>
+                        presentado por:<br><span class="cheky-highlight">Club EXATEC Running Monterrey</span>
                     </div>
                 </div>`;
         }
@@ -1715,7 +1716,17 @@ function importPhotos(event) {
             infoModal.classList.add('show');
         };
 
-        window.closeInfoModal = function() { infoModal.classList.remove('show'); };
+        window.closeInfoModal = function() { 
+            infoModal.classList.remove('show');
+            
+            // Si tiene el atributo para ir al índice, navegar allí
+            if (infoModal.hasAttribute('data-goto-index')) {
+                infoModal.removeAttribute('data-goto-index');
+                setTimeout(() => {
+                    navigateToPage(2, 'forward'); // Página 2 es el índice (0=portada, 1=instrucciones, 2=índice)
+                }, 300); // Pequeño delay para que se vea la animación del modal cerrándose
+            }
+        };
 
         window.openImageModal = function(imageUrl) {
             if (!imageUrl || imageUrl.startsWith('https://placehold.co/')) {
@@ -1808,7 +1819,9 @@ function importPhotos(event) {
                 contentHTML = generateRestaurantContent(pageData.data); 
             } else if (pageData.type === 'finalPage') {
                 contentHTML = generateFinalPageContent();
-            }
+            } else if (pageData.type === 'instructions') {
+                contentHTML = generateInstructionsContent();
+            }    
             currentPageEl.innerHTML = contentHTML;
             updateNavigation();
         }
@@ -1822,7 +1835,7 @@ function importPhotos(event) {
             if (contentPages[currentPageIndex].type === 'restaurant') {
                 pageIndicatorEl.textContent = "Índice"
                 pageIndicatorEl.classList.add('index-link');
-                pageIndicatorEl.onclick = () => navigateToPage(1, 'backward');
+                pageIndicatorEl.onclick = () => navigateToPage(2, 'backward');
             } else {
                 pageIndicatorEl.textContent = ""
                 pageIndicatorEl.classList.remove('index-link');
@@ -2396,6 +2409,82 @@ function generateICSFile(config) {
                 day: 'numeric' 
             });
         }
+
+        function generateInstructionsContent() {
+            return `
+                <div class="page-content restaurant-content-wrapper">
+                    <h2 class="restaurant-title">¡Bienvenido a cheky.app! 🎯</h2>
+                    
+                    <div style="
+                        background: var(--light-gray);
+                        border: 2px solid var(--light-blue);
+                        border-radius: 12px;
+                        padding: 20px;
+                        margin: 15px 0;
+                        text-align: left;
+                        font-family: 'Lato', sans-serif;
+                        line-height: 1.6;
+                        color: var(--dark-blue);
+                        flex-grow: 1;
+                        overflow-y: auto;
+                    ">
+                        <p><strong>🚀 ¡Tu nueva plataforma favorita está aquí!</strong></p>
+                        
+                        <p>cheky.app te ayuda a cumplir tus retos de una forma súper divertida. ¿Cómo funciona? ¡Es facilísimo!</p>
+                        
+                        <p><strong>📋 Paso 1:</strong> Explora la lista de carreras increíbles que tenemos para ti</p>
+                        
+                        <p><strong>📸 Paso 2:</strong> Cuando vayas a una carrera, toca la zona gris de la foto y sube tu selfie. ¡Esa es tu forma de marcar la actividad como completada!</p>
+                        
+                        <p><strong>ℹ️ Paso 3:</strong> En cada página hay un botón naranja con información súper útil del evento</p>
+                        
+                        <p><strong>🏆 ¡Y listo!</strong> Así de fácil vas creando tu álbum personal de logros</p>
+                        
+                        <p style="
+                            background: var(--sky-blue);
+                            padding: 10px;
+                            border-radius: 8px;
+                            border-left: 4px solid var(--accent-orange);
+                            margin-top: 15px;
+                        ">
+                            <strong>💡 Tip:</strong> Tus fotos se guardan de forma privada en tu dispositivo. ¡Solo tú las ves!
+                        </p>
+                    </div>
+                    
+                    <div class="photo-display-area" onclick="selectUserPhoto('demo_instructions', event)" style="max-height: 120px; margin: 10px 0;">
+                        <div class="user-photo-placeholder-overlay">
+                            <div class="user-photo-placeholder-center">
+                                <i class="fas fa-camera user-photo-placeholder-icon" style="font-size: 2rem;"></i>
+                                <p class="user-photo-text" style="font-size: 0.9rem;">¡Prueba subiendo una foto aquí!</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="info-button" onclick="showInstructionsInfo()" style="margin-top: 10px;">
+                        ¡Empecemos! <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>`;
+        }
+
+        window.showInstructionsInfo = function() {
+            modalTitleEl.textContent = '🎯 ¡Listo para empezar!';
+            modalBodyEl.innerHTML = `
+                <p style="font-size: 1.1rem; text-align: center; margin-bottom: 20px;">
+                    <strong>¡Perfecto! Ya sabes cómo funciona.</strong>
+                </p>
+                <p>Ahora ve al índice de carreras y comienza tu aventura. Recuerda:</p>
+                <ul style="text-align: left; margin: 15px 0;">
+                    <li>📸 Sube fotos para marcar como completado</li>
+                    <li>ℹ️ Usa el botón naranja para info de cada carrera</li>
+                    <li>🏆 ¡Disfruta creando tu álbum personal!</li>
+                </ul>
+                <p style="text-align: center; font-weight: 600; color: var(--accent-orange);">
+                    ¡Que comience la diversión! 🎉
+                </p>
+            `;
+            infoModal.setAttribute('data-goto-index', 'true');
+            infoModal.classList.add('show');
+        };
         
     </script>
 </body>
