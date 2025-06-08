@@ -82,7 +82,7 @@
     "mapUrl": "",
     "coordinates": "",
     "tel": "8183143992",
-    "social": "https://trotime.com.mx/",
+    "social": "https://trotime.com.mx/convocatoria?edicionEventoId=299a1469-00a0-4786-b5ec-bdf8b00ce5ad",
     "photos":[],
     "description": "Una carrera de 5K y 10K destinada a crear conciencia o recaudar fondos para la salud mental, organizada por Comenzar de Nuevo A.C. y operada por Trotime. Celebrada en el Parque Fundidora.",
     "date": "2025-08-11"
@@ -106,9 +106,9 @@
     "mapUrl": "",
     "coordinates": "",
     "tel": "8181009258",
-    "social": "https://asdeporte.com/",
+    "social": "https://asdeporte.com/evento/carrera-saba--corre-sin-tabu-es-monterrey-2025-kgy/datos-del-evento",
     "photos":[],
-    "description": "Una carrera de 5K y 10K organizada por Asdeporte, que tiene lugar en la Plaza Zaragoza en Monterrey.",
+    "description": "¡Bienvenidos a la primera edición de la Carrera Saba® Corre Sin Tabúes Monterrey 2025! Una carrera de 5K y 10K organizada por Asdeporte, que tiene lugar en la Plaza Zaragoza en Monterrey.",
     "date": "2025-08-10"
   },
   {
@@ -118,7 +118,7 @@
     "mapUrl": "",
     "coordinates": "",
     "tel": "8183143992",
-    "social": "https://trotime.com.mx/",
+    "social": "https://trotime.com.mx/convocatoria?edicionEventoId=9c86429a-5512-4af7-b89b-2aef4e7c9235",
     "photos":[],
     "description": "12ª edición de la carrera Héroes Ocultos, apoyando una causa de Futuro Héroes Ocultos A.C. y operada por Trotime. Ofrece distancias de 5K, 10K y 15K en el circuito de Valle Oriente.",
     "date": "2025-08-17"
@@ -130,7 +130,7 @@
     "mapUrl": "",
     "coordinates": "",
     "tel": "8182660090",
-    "social": "https://www.chipinque.org.mx/",
+    "social": "https://idemsport.com/evento/chipinquetrail2025/",
     "photos":[],
     "description": "Una carrera de montaña en el Parque Ecológico Chipinque, que ofrece distancias de 6K y 10K. Organizada por Idemsport en colaboración con el Parque Chipinque.",
     "date": "2025-08-24"
@@ -142,22 +142,10 @@
     "mapUrl": "",
     "coordinates": "",
     "tel": "8182660090",
-    "social": "",
+    "social": "https://idemsport.com/evento/carrerasoriana-2025/",
     "photos":[],
     "description": "Carrera Soriana que ofrece distancias de 3K, 5K y 10K. Organizada por MX Race/Soriana, con apoyo de Idemsport. Tiene lugar en el Parque Fundidora.",
     "date": "2025-08-30"
-  },
-  {
-    "name": "5K y 1K San Vicente de Paul",
-    "type": "1K, 5K, urban",
-    "address": "Santa Catarina, N.L.",
-    "mapUrl": "",
-    "coordinates": "",
-    "tel": "8183143992",
-    "social": "https://trotime.com.mx/",
-    "photos":[],
-    "description": "Una carrera comunitaria con distancias de 1K y 5K en Santa Catarina, organizada por la Parroquia San Vicente de Paul y operada por Trotime.",
-    "date": "2025-08-31"
   },
   {
     "name": "5k y 10k iOS Offices 12° Edición",
@@ -166,31 +154,19 @@
     "mapUrl": "",
     "coordinates": "",
     "tel": "80007010",
-    "social": "https://iosoffices.com/",
+    "social": "https://trotime.com.mx/convocatoria?edicionEventoId=287e3ef7-8613-4edb-9796-2d06f5a2e269",
     "photos":[],
     "description": "12ª edición de la carrera iOS Offices, presentando distancias de 5K y 10K. Celebrada en el circuito de Valle Oriente, operada por Trotime.",
     "date": "2025-09-07"
   },
   {
-    "name": "5K y 10K CRUZ ROJA",
+    "name": "5k y 10k Borregos TEC",
     "type": "5K, 10K, urban",
-    "address": "Macroplaza, Monterrey",
+    "address": "Monterrey (alrededor del campus del TEC de Monterrey)",
     "mapUrl": "",
     "coordinates": "",
     "tel": "8183143992",
-    "social": "https://www.cruzrojamexicana.org.mx/",
-    "photos":[],
-    "description": "Una carrera de 5K y 10K en apoyo a la Cruz Roja, operada por Trotime. Tiene lugar en el área de la Macroplaza de Monterrey.",
-    "date": "2025-09-07"
-  },
-  {
-    "name": "10k Borregos TEC",
-    "type": "10K, urban",
-    "address": "Monterrey (probablemente alrededor del campus del TEC de Monterrey)",
-    "mapUrl": "",
-    "coordinates": "",
-    "tel": "8183143992",
-    "social": "https://tec.mx/es/deportes",
+    "social": "https://trotime.com.mx/convocatoria?edicionEventoId=10774d7d-ad59-4b4d-8004-345417fe9e7a",
     "photos":[],
     "description": "La carrera anual 10K Borregos, asociada con el TEC de Monterrey (ITESM) y operada por Trotime. Celebrada en Monterrey, típicamente alrededor del campus universitario.",
     "date": "2025-09-14"
@@ -202,7 +178,7 @@
     "mapUrl": "",
     "coordinates": "",
     "tel": "8182660090",
-    "social": "https://idemsport.com/",
+    "social": "",
     "photos":[],
     "description": "4ª edición de la carrera Terra Regia, que ofrece distancias de 2.5K, 5K y 10K. Organizada por Idemsport en el área de Dominio Cumbres.",
     "date": "2025-09-21"
