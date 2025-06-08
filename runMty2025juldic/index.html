@@ -1371,7 +1371,7 @@ async function handlePhotoUpload(event) {
         showLoadingIndicator(false);
         
         // Mostrar mensaje de éxito
-        showSuccessMessage(`📸 Foto vintage guardada (${Math.round(processedSize/1024)}KB)`);
+        showSuccessMessage(`📸 Foto guardada (${Math.round(processedSize/1024)}KB)`);
         
     } catch (error) {
         console.error('Error al procesar imagen:', error);
