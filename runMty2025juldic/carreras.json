@@ -13,7 +13,8 @@
             "https://maratonmonterrey.mx/wp-content/uploads/2023/07/playera-maraton-monterrey-2023-300x300.png"
         ],
         "description": "El Maratón Powerade Monterrey es uno de los maratones más importantes de México. Se celebra anualmente en diciembre y atrae a miles de corredores de todo el mundo. El recorrido es mayormente plano y rápido, ideal para buscar una marca personal. El evento cuenta con una gran organización y un ambiente festivo.La información para la edición de 2025 aún no está completamente disponible, pero se espera que la ruta y la organización sean similares a las de años anteriores.",
-        "date": "2025-12-14"
+        "date": "2025-12-14",
+    "destacada":"si"
     },
     {
         "name": "Circuito de las Estaciones Verano Monterrey",
@@ -121,7 +122,8 @@
     "social": "https://trotime.com.mx/convocatoria?edicionEventoId=9c86429a-5512-4af7-b89b-2aef4e7c9235",
     "photos":[],
     "description": "12ª edición de la carrera Héroes Ocultos, apoyando una causa de Futuro Héroes Ocultos A.C. y operada por Trotime. Ofrece distancias de 5K, 10K y 15K en el circuito de Valle Oriente.",
-    "date": "2025-08-17"
+    "date": "2025-08-17",
+    "destacada":"si"
   },
   {
     "name": "6k y 10k Chipinque Trail",
@@ -242,7 +244,8 @@
     "social": "",
     "photos":[],
     "description": "8ª edición de la carrera Gatorade 15K. Tiene lugar alrededor del Estadio BBVA.",
-    "date": "2025-10-26"
+    "date": "2025-10-26",
+    "destacada":"si"
   },
   {
     "name": "5K/10K Duendes 25ª Ed.",
@@ -254,7 +257,8 @@
     "social": "",
     "photos":[],
     "description": "25ª edición de la carrera Duendes, organizada por el Club Duendes. Un evento de larga tradición que ofrece distancias de 5K y 10K en Calzada del Valle / Humberto Lobo en San Pedro.",
-    "date": "2025-10-26"
+    "date": "2025-10-26",
+    "destacada":"si"
   },
   {
     "name": "3K/10K Ternium",
@@ -314,7 +318,8 @@
     "social": "https://asociaciondeatletismonl.com/",
     "photos":[],
     "description": "23ª edición del prestigioso medio maratón 21K Nuevo León, organizado por la Asociación de Atletismo de Nuevo León (AANL). Un evento principal en el calendario de carreras de Monterrey, que típicamente comienza alrededor de la Macroplaza.",
-    "date": "2025-11-16"
+    "date": "2025-11-16",
+    "destacada":"si"
   },
   {
     "name": "A Correr Familia",
@@ -374,6 +379,7 @@
     "social": "",
     "photos":[],
     "description": "12ª edición de la carrera Reto Final, marcando el fin de año. Organizada por Trotime con distancias de 5K y 10K en el Parque Fundidora.",
-    "date": "2025-12-31"
+    "date": "2025-12-31",
+    "destacada":"si"
   }
 ]
