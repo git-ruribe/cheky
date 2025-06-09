@@ -1002,6 +1002,222 @@
             box-shadow: 0 6px 16px rgba(243, 156, 18, 0.5);
         }
 
+        .trophy-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh; /* Para móviles modernos */
+            background: rgba(27, 79, 114, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 1400;
+            padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0);
+        }
+
+        #photoSelectionModal {
+            z-index: 1600 !important; /* Más alto que el modal de trofeos */
+        }
+
+        .trophy-modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .trophy-modal-content {
+            background: var(--sky-blue);
+            width: 95vw;
+            height: 95vh;
+            height: 95dvh;
+            max-width: 400px;
+            max-height: 700px;
+            border-radius: 20px;
+            border: 3px solid var(--primary-blue);
+            box-shadow: 0 15px 40px rgba(27, 79, 114, 0.5);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trophy-modal-header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            padding: 20px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .trophy-modal-header h2 {
+            font-family: 'Anton', sans-serif;
+            font-size: 1.5rem;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .trophy-modal-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .trophy-profile-section {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+
+        .trophy-profile-photo {
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            border: 4px solid var(--accent-orange);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--light-gray);
+            position: relative;
+            box-shadow: 0 8px 20px rgba(243, 156, 18, 0.3);
+        }
+
+        .trophy-profile-photo:hover {
+            transform: scale(1.08);
+            box-shadow: 0 12px 25px rgba(243, 156, 18, 0.5);
+            border-color: var(--fresh-green);
+        }
+
+        .trophy-profile-photo::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--accent-orange), var(--fresh-green), var(--primary-blue));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .trophy-profile-photo:hover::after {
+            opacity: 1;
+        }
+
+        .trophy-profile-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .trophy-photo-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--medium-gray);
+            text-align: center;
+            font-size: 0.7rem;
+            padding: 5px;
+        }
+
+        .trophy-photo-placeholder i {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .trophy-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            justify-items: center;
+        }
+
+        .trophy-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .trophy-item.earned {
+            transform: scale(1.1);
+        }
+
+        .trophy-icon {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .trophy-icon.earned {
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            animation: trophy-glow 2s ease-in-out infinite alternate;
+        }
+
+        .trophy-icon.locked {
+            color: var(--medium-gray);
+        }
+
+        .trophy-label {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--dark-blue);
+        }
+
+        .trophy-modal-footer {
+            background: var(--dark-blue);
+            color: var(--sky-blue);
+            text-align: center;
+            padding: 15px;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        @keyframes trophy-glow {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        /* Scrollbar para el cuerpo del modal */
+        .trophy-modal-body::-webkit-scrollbar { width: 6px; }
+        .trophy-modal-body::-webkit-scrollbar-track { background: var(--light-blue); border-radius: 3px; }
+        .trophy-modal-body::-webkit-scrollbar-thumb { background: var(--primary-blue); border-radius: 3px; }
+
+        .trophy-stats {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid var(--light-blue);
+        }
+
+        .trophy-stats-text {
+            font-family: 'Lato', sans-serif;
+            font-size: 1.1rem;
+            color: var(--dark-blue);
+            font-weight: 600;
+        }
+
+        .trophy-stats-text strong {
+            color: var(--primary-blue);
+            font-size: 1.3rem;
+        }
     </style>
 </head>
 
@@ -1079,6 +1295,37 @@
                 <h3 id="challengeModalTitle" class="challenge-modal-header"></h3>
                 <p id="challengeModalQuestion" class="challenge-modal-question"></p>
                 <div id="challengeModalOptions" class="challenge-modal-options"></div>
+            </div>
+        </div>
+
+        <div id="trophyModal" class="trophy-modal-overlay">
+            <div class="trophy-modal-content">
+                <button class="modal-close-btn" onclick="closeTrophyModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+                
+                <div class="trophy-modal-header">
+                    <h2>CUMPLIENDO MIS METAS</h2>
+                </div>
+                
+                <div class="trophy-modal-body">
+                    <div class="trophy-profile-section">
+                        <div class="trophy-profile-photo" onclick="selectTrophyPhoto()">
+                            <div class="trophy-photo-placeholder">
+                                <i class="fas fa-camera"></i>
+                                <span>Toca para añadir tu foto favorita</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="trophy-grid">
+                        <!-- Los trofeos se generarán aquí -->
+                    </div>
+                </div>
+                
+                <div class="trophy-modal-footer">
+                    presentado por cheky.app
+                </div>
             </div>
         </div>
     </div>
@@ -1687,7 +1934,10 @@ function importPhotos(event) {
                 <div class="page-content restaurant-index-content">
                     <h2 class="restaurant-index-header">Carreras MTY 2025 2S</h2>
                     <p class="restaurant-index-count">${completedCount} carreras completadas</p>
-
+                    <button class="challenge-button" onclick="openTrophyModal()" style="margin: 15px auto;">
+                        <i class="fas fa-trophy"></i>
+                        Ver mis logros
+                    </button>
                     <div class="restaurant-list-container">${restaurantListItems}</div>
                 </div>`;
         }
@@ -2509,6 +2759,8 @@ function generateICSFile(config) {
                         </p>
                     </div>
                     
+
+                    <!-- Botón para iniciar 
                     <div class="photo-display-area" onclick="selectUserPhoto('demo_instructions', event)" style="max-height: 120px; margin: 10px 0;">
                         <div class="user-photo-placeholder-overlay">
                             <div class="user-photo-placeholder-center">
@@ -2518,9 +2770,11 @@ function generateICSFile(config) {
                         </div>
                     </div>
                     
+                    
                     <button class="info-button" onclick="showInstructionsInfo()" style="margin-top: 10px;">
                         ¡Empecemos! <i class="fas fa-arrow-right"></i>
                     </button>
+                    -->
                 </div>`;
         }
 
@@ -2543,6 +2797,193 @@ function generateICSFile(config) {
             infoModal.setAttribute('data-goto-index', 'true');
             infoModal.classList.add('show');
         };
+
+        // Variables globales para trofeos
+        let trophyPhotoInput;
+        let currentTrophyPhoto = null;
+
+        // Inicializar input de foto de trofeo
+        document.addEventListener('DOMContentLoaded', function() {
+            trophyPhotoInput = document.getElementById('trophyPhotoInput');
+            if (trophyPhotoInput) {
+                trophyPhotoInput.addEventListener('change', handleTrophyPhotoUpload);
+            }
+        });
+
+        // Configuración de trofeos
+        const trophyConfig = [
+            { count: 1, icon: 'fas fa-medal', label: 'Primera Carrera', description: 'Tu primer paso' },
+            { count: 3, icon: 'fas fa-trophy', label: '3 Carreras', description: 'Tomando ritmo' },
+            { count: 5, icon: 'fas fa-crown', label: '5 Carreras', description: 'Runner dedicado' },
+            { count: 10, icon: 'fas fa-star', label: '10 Carreras', description: 'Estrella del running' },
+            { count: 15, icon: 'fas fa-gem', label: '15 Carreras', description: 'Gema del deporte' },
+            { count: 20, icon: 'fas fa-fire', label: '20 Carreras', description: 'Leyenda running' }
+        ];
+
+        window.openTrophyModal = function() {
+            generateTrophyContent();
+            document.getElementById('trophyModal').classList.add('show');
+        };
+
+        window.closeTrophyModal = function() {
+            document.getElementById('trophyModal').classList.remove('show');
+        };
+
+        function generateTrophyContent() {
+            const completedCount = getCompletedRacesCount();
+            const savedTrophyPhoto = localStorage.getItem('trophy_profile_photo');
+            
+            // Actualizar foto de perfil
+            const profilePhotoEl = document.querySelector('.trophy-profile-photo');
+            if (savedTrophyPhoto) {
+                profilePhotoEl.innerHTML = `<img src="${savedTrophyPhoto}" alt="Tu foto de perfil">`;
+            } else {
+                profilePhotoEl.innerHTML = `
+                    <div class="trophy-photo-placeholder">
+                        <i class="fas fa-camera"></i>
+                        <span>Toca para añadir tu foto favorita</span>
+                    </div>`;
+            }
+            
+        // Generar trofeos
+        const trophyGrid = document.querySelector('.trophy-grid');
+        trophyGrid.innerHTML = trophyConfig.map(trophy => {
+            const isEarned = completedCount >= trophy.count;
+            const earnedClass = isEarned ? 'earned' : 'locked';
+            
+            return `
+                <div class="trophy-item ${earnedClass}">
+                    <i class="trophy-icon ${earnedClass} ${trophy.icon}"></i>
+                    <div class="trophy-label">${trophy.label}</div>
+                </div>
+            `;
+        }).join('') + `
+            <div class="trophy-stats">
+                <span class="trophy-stats-text">Carreras completadas: <strong>${completedCount}</strong></span>
+            </div>
+        `;
+        }
+
+        function getCompletedRacesCount() {
+            let count = 0;
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('user_photo_')) {
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        window.selectTrophyPhoto = function() {
+            const availablePhotos = getAvailablePhotos();
+            
+            if (availablePhotos.length === 0) {
+                showSuccessMessage('📸 Primero sube fotos en las carreras');
+                return;
+            }
+            
+            showPhotoSelectionModal(availablePhotos);
+        };
+
+        function getAvailablePhotos() {
+            const photos = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('user_photo_')) {
+                    const raceName = key.replace('user_photo_', '');
+                    const photoData = localStorage.getItem(key);
+                    photos.push({ name: raceName, data: photoData });
+                }
+            }
+            return photos;
+        }
+
+        function showPhotoSelectionModal(photos) {
+            const selectionHTML = `
+                <div id="photoSelectionModal" class="modal-overlay show">
+                    <div class="modal-content" style="max-width: 350px;">
+                        <h3 class="modal-header">Elige tu foto favorita</h3>
+                        <div class="modal-body" style="max-height: 400px;">
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                                ${photos.map(photo => `
+                                    <div style="
+                                        border: 2px solid var(--light-blue);
+                                        border-radius: 8px;
+                                        overflow: hidden;
+                                        cursor: pointer;
+                                        transition: border-color 0.2s ease;
+                                    " onclick="selectPhotoForTrophy('${photo.data}', '${photo.name}')">
+                                        <img src="${photo.data}" style="width: 100%; height: 80px; object-fit: cover;">
+                                        <div style="padding: 5px; font-size: 0.8rem; text-align: center; background: var(--light-gray);">
+                                            ${photo.name}
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <button class="modal-close-btn" onclick="closePhotoSelectionModal()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', selectionHTML);
+        }
+
+        window.selectPhotoForTrophy = function(photoData, raceName) {
+            localStorage.setItem('trophy_profile_photo', photoData);
+            closePhotoSelectionModal();
+            generateTrophyContent();
+            showSuccessMessage(`📸 Foto de ${raceName} seleccionada`);
+        };
+
+        window.closePhotoSelectionModal = function() {
+            const modal = document.getElementById('photoSelectionModal');
+            if (modal) {
+                modal.remove();
+            }
+        };
+
+        async function handleTrophyPhotoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            try {
+                showLoadingIndicator(true);
+                const processedDataUrl = await compressImageWithVintageFilter(file, 400, 400, 0.8);
+                localStorage.setItem('trophy_profile_photo', processedDataUrl);
+                generateTrophyContent();
+                showLoadingIndicator(false);
+                showSuccessMessage('📸 Foto de perfil guardada');
+            } catch (error) {
+                console.error('Error al procesar imagen:', error);
+                showLoadingIndicator(false);
+                alert('Error al procesar la imagen.');
+            }
+            
+            event.target.value = '';
+        }
+
+        // Cerrar modal con Escape
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                if (document.getElementById('trophyModal').classList.contains('show')) {
+                    closeTrophyModal();
+                }
+                if (document.getElementById('photoSelectionModal')) {
+                    closePhotoSelectionModal();
+                }
+            }
+        });
+
+        // Cerrar modal clickeando fuera
+        document.getElementById('trophyModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeTrophyModal();
+            }
+        });
         
     </script>
 </body>
