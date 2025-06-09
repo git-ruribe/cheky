@@ -1218,6 +1218,213 @@
             color: var(--primary-blue);
             font-size: 1.3rem;
         }
+
+        .achievement-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+            z-index: 2000;
+        }
+
+        .achievement-modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .achievement-modal-content {
+            background: var(--sky-blue);
+            width: 90vw;
+            max-width: 400px;
+            border-radius: 25px;
+            border: 4px solid var(--accent-orange);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+            transform: scale(0.5) rotate(-10deg);
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .achievement-modal-overlay.show .achievement-modal-content {
+            transform: scale(1) rotate(0deg);
+        }
+
+        .achievement-header {
+            background: linear-gradient(135deg, var(--accent-orange), #FFB347);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .achievement-header h2 {
+            font-family: 'Anton', sans-serif;
+            font-size: 1.8rem;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: achievement-pulse 1s ease-in-out infinite alternate;
+        }
+
+        .achievement-body {
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .achievement-trophy {
+            margin-bottom: 20px;
+            animation: achievement-bounce 1s ease-in-out infinite alternate;
+        }
+
+        .achievement-trophy i {
+            font-size: 4rem;
+            color: #FFD700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        }
+
+        .achievement-title {
+            font-family: 'Anton', sans-serif;
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .achievement-description {
+            font-family: 'Lato', sans-serif;
+            font-size: 1.1rem;
+            color: var(--dark-blue);
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .achievement-progress {
+            background: var(--light-blue);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 2px solid var(--primary-blue);
+        }
+
+        .achievement-progress-text {
+            font-family: 'Lato', sans-serif;
+            font-weight: 600;
+            color: var(--dark-blue);
+            margin-bottom: 8px;
+        }
+
+        .achievement-progress-bar {
+            background: white;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+            border: 1px solid var(--primary-blue);
+        }
+
+        .achievement-progress-fill {
+            background: linear-gradient(90deg, var(--fresh-green), var(--accent-orange));
+            height: 100%;
+            transition: width 1s ease-in-out;
+            animation: achievement-progress-shine 2s ease-in-out infinite;
+        }
+
+        .achievement-footer {
+            padding: 20px;
+        }
+
+        .achievement-continue-btn {
+            background: linear-gradient(135deg, var(--fresh-green), #27AE60);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
+            font-family: 'Lato', sans-serif;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .achievement-continue-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.6);
+        }
+
+        /* Confeti */
+        .confetti-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            opacity: 0.8;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        .confetti:nth-child(odd) {
+            background: var(--accent-orange);
+            animation-delay: 0s;
+        }
+
+        .confetti:nth-child(even) {
+            background: var(--fresh-green);
+            animation-delay: 0.5s;
+        }
+
+        .confetti:nth-child(3n) {
+            background: var(--primary-blue);
+            animation-delay: 1s;
+        }
+
+        /* Animaciones */
+        @keyframes achievement-pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        @keyframes achievement-bounce {
+            0% { transform: translateY(0px) rotate(-5deg); }
+            100% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        @keyframes achievement-progress-shine {
+            0% { box-shadow: inset 0 0 0 rgba(255, 255, 255, 0); }
+            50% { box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5); }
+            100% { box-shadow: inset 0 0 0 rgba(255, 255, 255, 0); }
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
     </style>
 </head>
 
@@ -1328,6 +1535,42 @@
                 </div>
             </div>
         </div>
+
+        <div id="achievementModal" class="achievement-modal-overlay">
+            <div class="achievement-modal-content">
+                <div class="confetti-container"></div>
+                
+                <div class="achievement-header">
+                    <h2>🎉 ¡NUEVO LOGRO! 🎉</h2>
+                </div>
+                
+                <div class="achievement-body">
+                    <div class="achievement-trophy">
+                        <!-- El trofeo se generará aquí -->
+                    </div>
+                    
+                    <div class="achievement-title">
+                        <!-- El título se generará aquí -->
+                    </div>
+                    
+                    <div class="achievement-description">
+                        <!-- La descripción se generará aquí -->
+                    </div>
+                    
+                    <div class="achievement-progress">
+                        <!-- El progreso se generará aquí -->
+                    </div>
+                </div>
+                
+                <div class="achievement-footer">
+                    <button class="achievement-continue-btn" onclick="closeAchievementModal()">
+                        <i class="fas fa-star"></i>
+                        ¡Continuar!
+                    </button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <input type="file" id="userPhotoInput" accept="image/*" style="display:none;">
@@ -1337,6 +1580,8 @@
         let restaurants = [];
         let contentPages = [];
         let currentPageIndex = 0;
+
+        const PHOTO_PREFIX = 'runmty_photo_';
 
         // Nueva función para inicializar la app después de cargar el JSON
         function initializeAlbumApp() {
@@ -1634,7 +1879,7 @@ async function handlePhotoUpload(event) {
         console.log(`✨ Filtro vintage aplicado y comprimido: ${originalInfo.sizeKB}KB → ${Math.round(processedSize/1024)}KB (${compressionRatio}% reducción)`);
         
         // Guardar imagen procesada
-        localStorage.setItem('user_photo_' + currentRestaurantForUpload, processedDataUrl);
+        localStorage.setItem(PHOTO_PREFIX + currentRestaurantForUpload, processedDataUrl);
         
         // Actualizar vista
         renderCurrentPage();
@@ -1644,6 +1889,11 @@ async function handlePhotoUpload(event) {
         
         // Mostrar mensaje de éxito
         showSuccessMessage(`📸 Foto guardada (${Math.round(processedSize/1024)}KB)`);
+
+        // Verificar logros
+        const oldCount = getCompletedRacesCount() - 1; // Restamos 1 porque ya se guardó la nueva
+        const newCount = getCompletedRacesCount();
+        checkForNewAchievements(newCount, oldCount);
         
     } catch (error) {
         console.error('Error al procesar imagen:', error);
@@ -1798,7 +2048,7 @@ function exportPhotos() {
     const photos = {};
     for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
-        if (key.startsWith('user_photo_')) {
+        if (key.startsWith(PHOTO_PREFIX)) {
             photos[key] = localStorage.getItem(key);
         }
     }
@@ -1825,7 +2075,7 @@ function importPhotos(event) {
             const photos = JSON.parse(e.target.result);
             
             Object.keys(photos).forEach(key => {
-                if (key.startsWith('user_photo_')) {
+                if (key.startsWith(PHOTO_PREFIX)) {
                     localStorage.setItem(key, photos[key]);
                 }
             });
@@ -1892,7 +2142,7 @@ function importPhotos(event) {
             `;
             
             carrerasDelMes.forEach(restaurant => {
-                const hasPhoto = localStorage.getItem('user_photo_' + restaurant.name);
+                const hasPhoto = localStorage.getItem(PHOTO_PREFIX + restaurant.name);
                 if (hasPhoto) completedCount++;
                 const iconClass = hasPhoto ? 'fas fa-circle-check' : 'far fa-circle';
                 
@@ -1943,7 +2193,7 @@ function importPhotos(event) {
         }
 
         function generateRestaurantContent(restaurant) {
-            const savedUserPhoto = localStorage.getItem('user_photo_' + restaurant.name);
+            const savedUserPhoto = localStorage.getItem(PHOTO_PREFIX + restaurant.name);
             let photoAreaContent;
             let photoAreaOnClick;
 
@@ -2045,8 +2295,8 @@ function importPhotos(event) {
             currentImageRestaurant = null;
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
-                if (key.startsWith('user_photo_') && localStorage.getItem(key) === imageUrl) {
-                    currentImageRestaurant = key.replace('user_photo_', '');
+                if (key.startsWith(PHOTO_PREFIX) && localStorage.getItem(key) === imageUrl) {
+                    currentImageRestaurant = key.replace(PHOTO_PREFIX, '');
                     break;
                 }
             }
@@ -2061,7 +2311,7 @@ function importPhotos(event) {
             if (!currentImageRestaurant) return;
             
             if (confirm('¿Estás seguro de que quieres eliminar esta foto?')) {
-                localStorage.removeItem('user_photo_' + currentImageRestaurant);
+                localStorage.removeItem(PHOTO_PREFIX + currentImageRestaurant);
                 closeImageModal();
                 renderCurrentPage();
                 showSuccessMessage('📸 Foto eliminada');
@@ -2868,7 +3118,7 @@ function generateICSFile(config) {
             let count = 0;
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
-                if (key.startsWith('user_photo_')) {
+                if (key.startsWith(PHOTO_PREFIX)) {
                     count++;
                 }
             }
@@ -2890,8 +3140,8 @@ function generateICSFile(config) {
             const photos = [];
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
-                if (key.startsWith('user_photo_')) {
-                    const raceName = key.replace('user_photo_', '');
+                if (key.startsWith(PHOTO_PREFIX)) {
+                    const raceName = key.replace(PHOTO_PREFIX, '');
                     const photoData = localStorage.getItem(key);
                     photos.push({ name: raceName, data: photoData });
                 }
@@ -2984,6 +3234,92 @@ function generateICSFile(config) {
                 closeTrophyModal();
             }
         });
+
+        // Función para crear confeti
+        function createConfetti() {
+            const container = document.querySelector('.confetti-container');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                container.appendChild(confetti);
+            }
+        }
+
+        // Función para mostrar el modal de logro
+        function showAchievementModal(achievementLevel, currentCount) {
+            const trophy = trophyConfig.find(t => t.count === achievementLevel);
+            if (!trophy) return;
+            
+            // Configurar contenido del modal
+            document.querySelector('.achievement-trophy').innerHTML = 
+                `<i class="${trophy.icon}"></i>`;
+            
+            document.querySelector('.achievement-title').textContent = trophy.label;
+            document.querySelector('.achievement-description').textContent = trophy.description;
+            
+            // Calcular progreso para el próximo nivel
+            const nextTrophy = trophyConfig.find(t => t.count > achievementLevel);
+            let progressHTML = '';
+            
+            if (nextTrophy) {
+                const progressPercent = (currentCount / nextTrophy.count) * 100;
+                progressHTML = `
+                    <div class="achievement-progress-text">
+                        Progreso hacia "${nextTrophy.label}": ${currentCount}/${nextTrophy.count}
+                    </div>
+                    <div class="achievement-progress-bar">
+                        <div class="achievement-progress-fill" style="width: ${progressPercent}%"></div>
+                    </div>
+                `;
+            } else {
+                progressHTML = `
+                    <div class="achievement-progress-text">
+                        🏆 ¡Has completado todos los logros disponibles!
+                    </div>
+                `;
+            }
+            
+            document.querySelector('.achievement-progress').innerHTML = progressHTML;
+            
+            // Crear confeti y mostrar modal
+            createConfetti();
+            document.getElementById('achievementModal').classList.add('show');
+            
+            // Analytics del logro
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'achievement_unlocked', {
+                    'event_category': 'gamification',
+                    'achievement_level': achievementLevel,
+                    'achievement_name': trophy.label,
+                    'total_completed': currentCount
+                });
+            }
+        }
+
+        // Función para cerrar el modal de logro
+        window.closeAchievementModal = function() {
+            document.getElementById('achievementModal').classList.remove('show');
+        };
+
+        // Función para verificar logros (llamar después de subir foto)
+        function checkForNewAchievements(newCount, oldCount) {
+            const achievementLevels = [1, 3, 5, 10, 15, 20];
+            
+            for (const level of achievementLevels) {
+                if (newCount >= level && oldCount < level) {
+                    // Delay para que se vea primero el mensaje de "foto guardada"
+                    setTimeout(() => {
+                        showAchievementModal(level, newCount);
+                    }, 1000);
+                    break; // Solo mostrar un logro a la vez
+                }
+            }
+        }
         
     </script>
 </body>
