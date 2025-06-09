@@ -982,17 +982,18 @@
             color: white;
             border: 2px solid var(--fresh-green);
             box-shadow: 0 4px 12px rgba(243, 156, 18, 0.4);
-            position: relative;
-            overflow: hidden;
         }
         
-        .restaurant-list-item.highlighted-runner::before {
+        .restaurant-list-item.highlighted-runner .fa-circle,
+        .restaurant-list-item.highlighted-runner .fa-circle-check {
+            color: white;
+        }
+        
+        .restaurant-list-item.highlighted-runner::after {
             content: '⭐';
-            position: absolute;
-            right: 8px;
-            top: 50%;
-            transform: translateY(-50%);
+            margin-left: auto;
             font-size: 1.2rem;
+            flex-shrink: 0;
         }
         
         .restaurant-list-item.highlighted-runner:hover {
