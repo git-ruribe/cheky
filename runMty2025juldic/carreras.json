@@ -169,7 +169,8 @@
     "social": "https://trotime.com.mx/convocatoria?edicionEventoId=10774d7d-ad59-4b4d-8004-345417fe9e7a",
     "photos":[],
     "description": "La carrera anual 10K Borregos, asociada con el TEC de Monterrey (ITESM) y operada por Trotime. Celebrada en Monterrey, típicamente alrededor del campus universitario.",
-    "date": "2025-09-14"
+    "date": "2025-09-14",
+    "destacada":"si"
   },
   {
     "name": "10K 5K Y 2.5K TERRA REGIA 4° Edición",
