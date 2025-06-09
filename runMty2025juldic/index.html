@@ -977,6 +977,30 @@
             }
         }
 
+        .restaurant-list-item.highlighted-runner {
+            background: linear-gradient(135deg, var(--accent-orange), #FFB347);
+            color: white;
+            border: 2px solid var(--fresh-green);
+            box-shadow: 0 4px 12px rgba(243, 156, 18, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .restaurant-list-item.highlighted-runner::before {
+            content: '⭐';
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+        }
+        
+        .restaurant-list-item.highlighted-runner:hover {
+            background: linear-gradient(135deg, #E67E00, #FF8C00);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(243, 156, 18, 0.5);
+        }
+
     </style>
 </head>
 
@@ -1629,8 +1653,11 @@ function importPhotos(event) {
             const fecha = new Date(year, month - 1, day);
             const dia = fecha.getDate().toString().padStart(2, '0');
 
+            const isHighlighted = restaurant.destacada === "si";
+            const itemClass = isHighlighted ? "restaurant-list-item highlighted-runner" : "restaurant-list-item";
+            
             restaurantListItems += `
-                <div class="restaurant-list-item" onclick="navigateToRestaurantPage('${restaurant.name.replace(/'/g, "\\'")}')">
+                <div class="${itemClass}" onclick="navigateToRestaurantPage('${restaurant.name.replace(/'/g, "\\'")}')">
                     <div style="
                         background: var(--dark-blue);
                         color: var(--light-gray);
