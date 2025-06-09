@@ -190,7 +190,7 @@
     "mapUrl": "",
     "coordinates": "",
     "tel": "8151027145",
-    "social": "https://www.monterrey.gob.mx/deporte/",
+    "social": "",
     "photos":[],
     "description": "21ª edición de la Carrera Fundación de Monterrey, organizada por el Municipio de Monterrey. Presenta distancias de 5K y 10K.",
     "date": "2025-09-21"
@@ -202,7 +202,7 @@
     "mapUrl": "",
     "coordinates": "",
     "tel": "8181009258",
-    "social": "https://www.asdeporte.com/",
+    "social": "https://asdeporte.com/evento/bimbo-global-race-monterrey-2025-tia/datos-del-evento",
     "photos":[],
     "description": "10ª edición de la carrera Bimbo 5K/10K, parte de la serie global. Organizada por Bimbo, operada por Asdeporte en Monterrey. Tiene lugar en el Parque Fundidora.",
     "date": "2025-09-28"
@@ -210,26 +210,14 @@
   {
     "name": "6K/12K Adidas Split",
     "type": "6K, 12K, urban",
-    "address": "Macroplaza, Monterrey",
+    "address": "Valle Oriente SPGG",
     "mapUrl": "",
     "coordinates": "",
     "tel": "8122351680",
-    "social": "https://www.adidas.mx/running",
+    "social": "https://www.hubsports.mx/eventos/adidas-splits-6k-12k-mty",
     "photos":[],
-    "description": "Parte de la serie Adidas Split, ofreciendo distancias de 6K y 12K. Organizada por Hub Sport. Tiene lugar en el área de la Macroplaza.",
+    "description": "Parte de la serie Adidas Split, ofreciendo distancias de 6K y 12K. Organizada por Hub Sport.",
     "date": "2025-10-05"
-  },
-  {
-    "name": "21K Regio 11ª Ed.",
-    "type": "21K, urban",
-    "address": "Monterrey (Centro de Monterrey)",
-    "mapUrl": "",
-    "coordinates": "25.6866142, -100.3161126 (General Monterrey, no específico del inicio)",
-    "tel": "8122351680",
-    "social": "https://krono.mx/",
-    "photos":[],
-    "description": "11ª edición del medio maratón 21K Regio. Organizado por Krono. Una importante carrera de ruta en Monterrey.",
-    "date": "2025-10-12"
   },
   {
     "name": "10K/5K/RRF Rosa Fuerte – Benavides 11ª Ed.",
@@ -238,7 +226,7 @@
     "mapUrl": "",
     "coordinates": "",
     "tel": "8182660090",
-    "social": "https://www.benavides.com.mx/",
+    "social": "",
     "photos":[],
     "description": "11ª edición de la carrera Rosa Fuerte, apoyando la concientización sobre el cáncer de mama, patrocinada por Farmacias Benavides. Ofrece distancias de 5K y 10K en Monterrey.",
     "date": "2025-10-19"
@@ -250,7 +238,7 @@
     "mapUrl": "",
     "coordinates": "",
     "tel": "",
-    "social": "https://www.gatorade.com.mx/",
+    "social": "",
     "photos":[],
     "description": "8ª edición de la carrera Gatorade 15K. Tiene lugar alrededor del Estadio BBVA.",
     "date": "2025-10-26"
@@ -274,7 +262,7 @@
     "mapUrl": "",
     "coordinates": "",
     "tel": "",
-    "social": "https://www.ternium.com/",
+    "social": "",
     "photos":[],
     "description": "Carrera organizada por Ternium, que ofrece distancias de 3K y 10K. Tiene lugar en Calzada del Valle en San Pedro.",
     "date": "2025-11-02"
@@ -286,7 +274,7 @@
     "mapUrl": "",
     "coordinates": "",
     "tel": "8122351680",
-    "social": "https://krono.mx/",
+    "social": "",
     "photos":[],
     "description": "Una carrera temática en torno a 'Fieles Difuntos', organizada por Krono. Tiene lugar en el Parque Niños Héroes. Las distancias específicas no se detallan.",
     "date": "2025-11-02"
@@ -298,7 +286,7 @@
     "mapUrl": "",
     "coordinates": "",
     "tel": "8181009258",
-    "social": "https://www.farmaciasdesimilares.com.mx/",
+    "social": "",
     "photos":[],
     "description": "10ª edición de la Simicarrera, patrocinada por Farmacias Similares y operada por Asdeporte. Ofrece distancias de 3K, 5K y 10K en el Parque Fundidora.",
     "date": "2025-11-09"
@@ -310,7 +298,7 @@
     "mapUrl": "",
     "coordinates": "",
     "tel": "8122351680",
-    "social": "https://www.adidas.mx/running",
+    "social": "https://www.hubsports.mx/eventos/adidas-splits-15k-30k-mty",
     "photos":[],
     "description": "Parte de la serie Adidas Split, ofreciendo distancias más largas de 15K y 30K. Organizada por Hub Sport. Tiene lugar en el área de la Macroplaza.",
     "date": "2025-11-09"
@@ -334,7 +322,7 @@
     "mapUrl": "",
     "coordinates": "",
     "tel": "",
-    "social": "https://www.multimedios.com/deportes",
+    "social": "",
     "photos":[],
     "description": "Un evento de carrera orientado a la familia organizado por Multimedios. Las distancias específicas y la ubicación para la edición 2025 no se detallan.",
     "date": "2025-11-30"
@@ -346,7 +334,7 @@
     "mapUrl": "",
     "coordinates": "",
     "tel": "8181009258",
-    "social": "https://asdeporte.com/",
+    "social": "https://asdeporte.com/evento/cto--de-las-estaciones-invierno-monterrey---zona-norte-2025-71m/datos-del-evento",
     "photos":[],
     "description": "La edición de invierno de la serie 'Circuito de las Estaciones' por Asdeporte. Tiene lugar en el Parque Fundidora. Las distancias específicas usualmente se alinean con otros eventos de la serie (5K, 10K, posiblemente 15K).",
     "date": "2025-11-30"
@@ -358,7 +346,7 @@
     "mapUrl": "",
     "coordinates": "",
     "tel": "8111611247",
-    "social": "https://apodaca.gob.mx/deportes/",
+    "social": "",
     "photos":[],
     "description": "Una carrera de 5K con temática navideña organizada por el Municipio de Apodaca.",
     "date": "2025-12-07"
@@ -370,7 +358,7 @@
     "mapUrl": "",
     "coordinates": "",
     "tel": "8183143992",
-    "social": "https://trotime.com.mx/",
+    "social": "",
     "photos":[],
     "description": "8ª edición de la Run Santa Run 10K. Una carrera festiva con temática navideña organizada por Trotime en el Parque Fundidora.",
     "date": "2025-12-21"
@@ -382,7 +370,7 @@
     "mapUrl": "",
     "coordinates": "",
     "tel": "8183143992",
-    "social": "https://trotime.com.mx/",
+    "social": "",
     "photos":[],
     "description": "12ª edición de la carrera Reto Final, marcando el fin de año. Organizada por Trotime con distancias de 5K y 10K en el Parque Fundidora.",
     "date": "2025-12-31"
