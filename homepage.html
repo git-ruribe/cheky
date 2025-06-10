@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheky.app - Colecciona Experiencias</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .hero-bg {
+            background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 100%), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23667eea;stop-opacity:1" /><stop offset="100%" style="stop-color:%23764ba2;stop-opacity:1" /></linearGradient></defs><rect width="1200" height="800" fill="url(%23grad1)"/><circle cx="200" cy="150" r="80" fill="rgba(255,255,255,0.1)"/><circle cx="900" cy="600" r="120" fill="rgba(255,255,255,0.05)"/><circle cx="1000" cy="200" r="60" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+        }
+        
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px -5px rgba(102, 126, 234, 0.4);
+        }
+        
+        .floating-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 9999px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Bloque 1: Hero Section -->
+    <section class="hero-bg flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-blue-900/20"></div>
+        
+        <div class="relative z-10 text-center px-6 max-w-4xl mx-auto">
+            <div class="floating-animation">
+                <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+                    Colecciona <span class="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">Experiencias</span>,<br>
+                    no solo momentos
+                </h1>
+            </div>
+            
+            <p class="text-xl md:text-2xl text-gray-200 mb-10 font-light">
+                Descubre y completa guías interactivas de las mejores experiencias en Monterrey
+            </p>
+            
+            <button onclick="scrollToGuides()" class="btn-primary text-white px-12 py-4 rounded-full text-lg font-semibold inline-flex items-center gap-3 group">
+                <span>Elige tu Reto</span>
+                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Bloque 2: Selector de Guías -->
+    <section id="guides-section" class="py-20 px-6 bg-gradient-to-br from-gray-50 to-gray-100">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                    Elige tu <span class="text-purple-600">Aventura</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Cada guía es una experiencia única diseñada para descubrir lo mejor de Monterrey
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- Guía de Cantinas -->
+                <div class="card-hover bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100 fade-in-up">
+                    <div class="relative h-64 bg-gradient-to-br from-amber-500 to-red-600 flex items-center justify-center">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="relative z-10 text-center text-white">
+                            <div class="text-6xl mb-2">🍻</div>
+                            <div class="text-sm font-medium opacity-90">EXPERIENCIA GASTRONÓMICA</div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">
+                            12 Joyas Auténticas: La Ruta de las Cantinas
+                        </h3>
+                        
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <div class="tag text-purple-700">
+                                <span>👑</span>
+                                <span>Misión Épica</span>
+                            </div>
+                            <div class="tag text-blue-700">
+                                <span>⏳</span>
+                                <span>~12-24 Semanas</span>
+                            </div>
+                            <div class="tag text-green-700">
+                                <span>🏙️</span>
+                                <span>Gastronomía / Urbano</span>
+                            </div>
+                        </div>
+                        
+                        <p class="text-gray-600 mb-6">
+                            Descubre las cantinas más auténticas de Monterrey, cada una con su propia historia y sabor único.
+                        </p>
+                        
+                        <button class="w-full bg-gradient-to-r from-amber-500 to-red-600 text-white py-3 px-6 rounded-xl font-semibold hover:shadow-lg transition-all">
+                            Ver la Guía
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Guía de Senderismo -->
+                <div class="card-hover bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100 fade-in-up">
+                    <div class="relative h-64 bg-gradient-to-br from-green-500 to-blue-600 flex items-center justify-center">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="relative z-10 text-center text-white">
+                            <div class="text-6xl mb-2">🏔️</div>
+                            <div class="text-sm font-medium opacity-90">AVENTURA NATURAL</div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">
+                            Conquistando las Alturas: Cerros de Monterrey
+                        </h3>
+                        
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <div class="tag text-orange-700">
+                                <span>⚡</span>
+                                <span>Reto de Fin de Semana</span>
+                            </div>
+                            <div class="tag text-blue-700">
+                                <span>⏳</span>
+                                <span>~2 Días</span>
+                            </div>
+                            <div class="tag text-green-700">
+                                <span>🌲</span>
+                                <span>Aventura / Naturaleza</span>
+                            </div>
+                        </div>
+                        
+                        <p class="text-gray-600 mb-6">
+                            Conquista los cerros más emblemáticos de la Sultana del Norte y disfruta vistas espectaculares.
+                        </p>
+                        
+                        <button class="w-full bg-gradient-to-r from-green-500 to-blue-600 text-white py-3 px-6 rounded-xl font-semibold hover:shadow-lg transition-all">
+                            Empezar Reto
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bloque 3: ¿Cómo Funciona? -->
+    <section class="py-20 px-6 bg-white">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="fade-in-up mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                    ¿Cómo <span class="text-purple-600">Funciona</span>?
+                </h2>
+                <p class="text-xl text-gray-600">
+                    Tres pasos simples para vivir experiencias increíbles
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-12">
+                <div class="fade-in-up text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                        <span class="text-3xl">🗺️</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">ELIGE</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Escoge una de nuestras guías curadas de experiencias únicas en Monterrey.
+                    </p>
+                </div>
+
+                <div class="fade-in-up text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                        <span class="text-3xl">📸</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">VIVE Y CAPTURA</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Realiza la experiencia y toma una foto para registrar tu logro en el momento.
+                    </p>
+                </div>
+
+                <div class="fade-in-up text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                        <span class="text-3xl">🏆</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">COLECCIONA</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Completa la guía y gana reconocimiento en tu pasaporte digital de aventuras.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bloque 4: Prueba Social -->
+    <section class="py-20 px-6 bg-gradient-to-br from-gray-50 to-gray-100">
+        <div class="max-w-6xl mx-auto text-center">
+            <div class="fade-in-up mb-12">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                    Aventuras de la <span class="text-purple-600">Comunidad Cheky</span>
+                </h2>
+                <p class="text-xl text-gray-600">
+                    Miles de experiencias ya han sido coleccionadas
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 fade-in-up">
+                <div class="aspect-square bg-gradient-to-br from-purple-400 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg">
+                    <span class="text-4xl">🌮</span>
+                </div>
+                <div class="aspect-square bg-gradient-to-br from-blue-400 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg">
+                    <span class="text-4xl">🏔️</span>
+                </div>
+                <div class="aspect-square bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl flex items-center justify-center shadow-lg">
+                    <span class="text-4xl">🎨</span>
+                </div>
+                <div class="aspect-square bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center shadow-lg">
+                    <span class="text-4xl">🎭</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bloque 5: Footer -->
+    <footer class="bg-gray-900 text-white py-12 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="mb-8">
+                <h3 class="text-3xl font-bold mb-2">Cheky.app</h3>
+                <p class="text-gray-400">Colecciona experiencias, crea recuerdos</p>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-8 mb-8">
+                <a href="#" class="text-gray-400 hover:text-white transition-colors">Proponer una Guía</a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors">Contacto</a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors">Instagram</a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors">Facebook</a>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8">
+                <p class="text-gray-400">
+                    © 2024 Cheky.app - Hecho con ❤️ en Monterrey
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling
+        function scrollToGuides() {
+            document.getElementById('guides-section').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.addEventListener('DOMContentLoaded', () => {
+            const fadeElements = document.querySelectorAll('.fade-in-up');
+            fadeElements.forEach(el => observer.observe(el));
+        });
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * -0.5;
+            const hero = document.querySelector('.hero-bg');
+            if (hero) {
+                hero.style.transform = `translateY(${rate}px)`;
+            }
+        });
+    </script>
+</body>
+</html>
