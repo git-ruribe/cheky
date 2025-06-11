@@ -180,7 +180,7 @@
 
         .cover-presented {
             position: absolute;
-            bottom: 5px;
+            bottom: 80px;
             left: 0;
             width: 100%;
             text-align: center;
@@ -2473,6 +2473,22 @@ function importPhotos(event) {
             
             return `
                 <div class="page-content cover-page">
+                                <!-- Botón de editar en la parte superior -->
+                    <div style="position: absolute; top: 20px; right: 20px; z-index: 10;">
+                        <button onclick="changeUserName()" style="
+                            background: transparent;
+                            border: 2px solid lightblue;
+                            color: lightblue;
+                            padding: 8px 16px;
+                            border-radius: 20px;
+                            font-size: 0.9rem;
+                            cursor: pointer;
+                            transition: all 0.2s ease;
+                        " onmouseover="this.style.background='white'; this.style.color='var(--primary-blue)'" 
+                        onmouseout="this.style.background='transparent'; this.style.color='white'">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
                     <h2 class="cover-subtitle">Álbum de Carreras 2025</h2>
                     <h1 class="cover-title">de ${userName}</h1>
                     <br>
@@ -2483,20 +2499,6 @@ function importPhotos(event) {
 
                     </div>
 
-                    <button onclick="changeUserName()" style="
-                        background: transparent;
-                        border: 2px solid lightblue;
-                        color: lightblue;
-                        padding: 8px 16px;
-                        border-radius: 20px;
-                        font-size: 0.9rem;
-                        cursor: pointer;
-                        margin-top: 15px;
-                        transition: all 0.2s ease;
-                    " onmouseover="this.style.background='white'; this.style.color='var(--primary-blue)'" 
-                    onmouseout="this.style.background='transparent'; this.style.color='white'">
-                        <i class="fas fa-edit"></i>
-                    </button>
                 </div>`;
         }   
 
