@@ -180,7 +180,7 @@
 
         .cover-presented {
             position: absolute;
-            bottom: 24px;
+            bottom: 5px;
             left: 0;
             width: 100%;
             text-align: center;
@@ -1582,7 +1582,7 @@
         let contentPages = [];
         let currentPageIndex = 0;
 
-        const PHOTO_PREFIX = 'runmty_photo_';
+        const PHOTO_PREFIX = 'extrunmty_photo_';
 
         function initializeAlbumApp() {
             const completedRaces = getCompletedRacesList();
@@ -2241,7 +2241,7 @@ function importPhotos(event) {
         });
 
             // Verificar si ya aceptó el reto
-            const challengeAccepted = localStorage.getItem('runMty01challenge_accepted') === 'true';
+            const challengeAccepted = localStorage.getItem('extrunmty01challenge_accepted') === 'true';
             const buttonText = challengeAccepted ? 'Reto Aceptado' : 'Lo Haré';
             const buttonClass = challengeAccepted ? 'challenge-button accepted' : 'challenge-button';
             const buttonIcon = challengeAccepted ? 'fas fa-check' : 'fas fa-fist-raised';
@@ -2460,8 +2460,8 @@ function importPhotos(event) {
         }
 
         function generateCoverContent() {
-            const userName = localStorage.getItem('user_name') || 'Mi';
-            const profilePhoto = localStorage.getItem('trophy_profile_photo');
+            const userName = localStorage.getItem('EXATECuser_name') || 'Mi';
+            const profilePhoto = localStorage.getItem('exttrophy_profile_photo');
     
             // Determinar qué imagen usar
             let coverImageHTML;
@@ -2480,6 +2480,9 @@ function importPhotos(event) {
                     <div class="cover-presented">
                         presentado por:<br><span class="cheky-highlight">Club EXATEC Running Monterrey</span>
                                             <!-- Botón para cambiar nombre -->
+
+                    </div>
+
                     <button onclick="changeUserName()" style="
                         background: transparent;
                         border: 2px solid lightblue;
@@ -2494,22 +2497,186 @@ function importPhotos(event) {
                     onmouseout="this.style.background='transparent'; this.style.color='white'">
                         <i class="fas fa-edit"></i>
                     </button>
-                    </div>
-
-
                 </div>`;
+        }   
+
+        function changeUserName() {
+            openUserProfileModal();
         }
 
-        window.changeUserName = function() {
-            const currentName = localStorage.getItem('user_name') || '';
-            const newName = prompt('¿Cómo te llamas?', currentName);
+        function openUserProfileModal() {
+            const currentName = localStorage.getItem('EXATECuser_name') || '';
+            const currentPhoto = localStorage.getItem('exttrophy_profile_photo');
             
-            if (newName && newName.trim()) {
-                localStorage.setItem('user_name', newName.trim());
-                renderCurrentPage();
-                showSuccessMessage(`👋 ¡Hola ${newName.trim()}!`);
+            let photoPreviewHTML;
+            if (currentPhoto) {
+                photoPreviewHTML = `
+                    <div class="profile-photo-preview" style="position: relative;">
+                        <img src="${currentPhoto}" style="
+                            width: 120px;
+                            height: 120px;
+                            border-radius: 50%;
+                            object-fit: cover;
+                            border: 3px solid var(--primary-blue);
+                            display: block;
+                            margin: 0 auto;
+                        ">
+                        <button onclick="selectProfilePhoto()" style="
+                            position: absolute;
+                            bottom: 0;
+                            right: calc(50% - 75px);
+                            background: var(--accent-orange);
+                            color: white;
+                            border: none;
+                            border-radius: 50%;
+                            width: 35px;
+                            height: 35px;
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+                        ">
+                            <i class="fas fa-camera" style="font-size: 0.9rem;"></i>
+                        </button>
+                    </div>
+                `;
+            } else {
+                photoPreviewHTML = `
+                    <div class="profile-photo-upload" onclick="selectProfilePhoto()" style="
+                        width: 120px;
+                        height: 120px;
+                        border-radius: 50%;
+                        border: 3px dashed var(--primary-blue);
+                        background: var(--light-gray);
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        margin: 0 auto;
+                        transition: all 0.2s ease;
+                    ">
+                        <i class="fas fa-camera" style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 5px;"></i>
+                        <span style="font-size: 0.8rem; color: var(--dark-blue); text-align: center;">Añadir foto</span>
+                    </div>
+                `;
             }
-        };
+            
+            const modalHTML = `
+                <div id="userProfileModal" class="modal-overlay show">
+                    <div class="modal-content" style="max-width: 400px;">
+                        <h3 class="modal-header">👤 Mi Perfil</h3>
+                        <div class="modal-body">
+                            <div style="text-align: center; margin-bottom: 20px;">
+                                ${photoPreviewHTML}
+                                <p style="font-size: 0.9rem; color: var(--medium-gray); margin-top: 10px;">
+                                    Esta foto aparecerá en la portada de tu álbum
+                                </p>
+                            </div>
+                            
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--dark-blue);">
+                                    Tu nombre:
+                                </label>
+                                <input type="text" id="userNameInput" placeholder="Escribe tu nombre" value="${currentName}" style="
+                                    width: 100%; 
+                                    padding: 12px; 
+                                    border: 2px solid var(--light-blue);
+                                    border-radius: 8px; 
+                                    font-size: 1.1rem;
+                                    font-family: 'Lato', sans-serif;
+                                ">
+                            </div>
+                            
+                            <div style="display: flex; gap: 10px;">
+                                <button class="info-button" onclick="saveUserProfile()" style="
+                                    flex: 1; margin: 0;
+                                ">
+                                    <i class="fas fa-save"></i>
+                                    Guardar
+                                </button>
+                                <button class="info-button" onclick="closeUserProfileModal()" style="
+                                    flex: 1; margin: 0; background: var(--medium-gray);
+                                ">
+                                    <i class="fas fa-times"></i>
+                                    Cancelar
+                                </button>
+                            </div>
+                            
+                            ${currentPhoto ? `
+                                <div style="text-align: center; margin-top: 15px;">
+                                    <button onclick="removeProfilePhoto()" style="
+                                        background: transparent;
+                                        border: 2px solid #dc3545;
+                                        color: #dc3545;
+                                        padding: 8px 16px;
+                                        border-radius: 20px;
+                                        font-size: 0.9rem;
+                                        cursor: pointer;
+                                        transition: all 0.2s ease;
+                                    ">
+                                        <i class="fas fa-trash"></i> Quitar foto
+                                    </button>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+            
+            // Enfocar el input
+            setTimeout(() => {
+                const input = document.getElementById('userNameInput');
+                input.focus();
+                if (currentName) {
+                    input.select();
+                }
+            }, 100);
+        }
+
+        function closeUserProfileModal() {
+            const modal = document.getElementById('userProfileModal');
+            if (modal) {
+                modal.remove();
+            }
+            currentRestaurantForUpload = null; // Reset
+        }
+
+        function saveUserProfile() {
+            const input = document.getElementById('userNameInput');
+            const newName = input.value.trim();
+            
+            if (newName) {
+                localStorage.setItem('EXATECuser_name', newName);
+                closeUserProfileModal();
+                renderCurrentPage();
+                showSuccessMessage(`👤 Perfil actualizado: ¡Hola ${newName}!`);
+            } else {
+                // Hacer que el input parpadee para indicar error
+                input.style.borderColor = '#dc3545';
+                input.placeholder = 'Por favor escribe tu nombre';
+                setTimeout(() => {
+                    input.style.borderColor = 'var(--light-blue)';
+                }, 2000);
+            }
+        }
+
+        function selectProfilePhoto() {
+            currentRestaurantForUpload = 'profile'; // Marcador especial para foto de perfil
+            userPhotoInput.click();
+        }
+
+        function removeProfilePhoto() {
+            if (confirm('¿Quieres quitar tu foto de perfil?')) {
+                localStorage.removeItem('exttrophy_profile_photo');
+                closeUserProfileModal();
+                renderCurrentPage();
+                showSuccessMessage('📷 Foto de perfil eliminada');
+            }
+        }
 
         function updateNavigation() {
             prevBtn.disabled = currentPageIndex === 0;
@@ -2634,7 +2801,11 @@ function importPhotos(event) {
         window.addEventListener('resize', renderCurrentPage);
         
         window.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
+                if (event.key === 'Enter' && document.getElementById('userProfileModal')) {
+                    saveUserProfile();
+                }
+                if (event.key === 'Escape') {
+                if (document.getElementById('userProfileModal')) {closeUserProfileModal();}
                 if (infoModal.classList.contains('show')) closeInfoModal();
                 if (imageModal.classList.contains('show')) closeImageModal();
                 if (document.getElementById('challengeModal').classList.contains('show')) closeChallengeModal();
@@ -2671,7 +2842,7 @@ function importPhotos(event) {
         }
 
         window.acceptChallenge = function() {
-            const challengeAccepted = localStorage.getItem('runMty01challenge_accepted') === 'true';
+            const challengeAccepted = localStorage.getItem('extrunmty01challenge_accepted') === 'true';
             
             if (!challengeAccepted) {
                 openChallengeModal();
@@ -2691,7 +2862,7 @@ function importPhotos(event) {
             // 📊 ANALYTICS: Usuario inicia el proceso del reto
             trackChallengeEvent('challenge_started', {
                 'event_label': 'Challenge Modal Opened',
-                'user_type': localStorage.getItem('runMty01challenge_accepted') ? 'returning' : 'new'
+                'user_type': localStorage.getItem('extrunmty01challenge_accepted') ? 'returning' : 'new'
             });
 
             showChallengeStep();
@@ -2700,7 +2871,7 @@ function importPhotos(event) {
 
         window.closeChallengeModal = function() {
 
-            const challengeWasInProgress = challengeStep > 1 && !localStorage.getItem('runMty01challenge_accepted');
+            const challengeWasInProgress = challengeStep > 1 && !localStorage.getItem('extrunmty01challenge_accepted');
     
             // 📊 ANALYTICS: Usuario abandona el proceso
             if (challengeWasInProgress) {
@@ -2856,11 +3027,11 @@ function importPhotos(event) {
 
         function finalizeChallengeSetup() {
             // Guardar configuración
-            localStorage.setItem('runMty01challenge_accepted', 'true');
+            localStorage.setItem('extrunmty01challenge_accepted', 'true');
             localStorage.setItem('challenge_config', JSON.stringify(challengeData));
 
             // 📊 ANALYTICS: Usuario completa la configuración del reto
-            trackChallengeEvent('runMty01challenge_accepted', {
+            trackChallengeEvent('extrunmty01challenge_accepted', {
                 'event_label': 'Challenge Configuration Complete',
                 'rhythm': challengeData.rhythm,
                 'day': challengeData.day || 'flexible',
@@ -3275,7 +3446,7 @@ function generateICSFile(config) {
 
         function generateTrophyContent() {
             const completedCount = getCompletedRacesCount();
-            const savedTrophyPhoto = localStorage.getItem('trophy_profile_photo');
+            const savedTrophyPhoto = localStorage.getItem('exttrophy_profile_photo');
             
             // Actualizar foto de perfil
             const profilePhotoEl = document.querySelector('.trophy-profile-photo');
@@ -3392,7 +3563,7 @@ function generateICSFile(config) {
             document.body.insertAdjacentHTML('beforeend', selectionHTML);
         }
         window.selectPhotoForTrophy = function(photoData, raceName) {
-            localStorage.setItem('trophy_profile_photo', photoData);
+            localStorage.setItem('exttrophy_profile_photo', photoData);
             closePhotoSelectionModal();
             generateTrophyContent();
             
@@ -3425,7 +3596,7 @@ function generateICSFile(config) {
             try {
                 showLoadingIndicator(true);
                 const processedDataUrl = await compressImageWithVintageFilter(file, 400, 400, 0.8);
-                localStorage.setItem('trophy_profile_photo', processedDataUrl);
+                localStorage.setItem('exttrophy_profile_photo', processedDataUrl);
                 generateTrophyContent();
                 showLoadingIndicator(false);
                 showSuccessMessage('📸 Foto de perfil guardada');
@@ -3632,59 +3803,134 @@ function generateICSFile(config) {
     };
 
     // Modificar la función handlePhotoUpload existente para manejar ambos casos
-    async function handlePhotoUpload(event) {
-        const file = event.target.files[0];
-        if (!file) return;
+        async function handlePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
 
-        try {
-            showLoadingIndicator(true);
-            
-            const originalInfo = {
-                name: file.name,
-                size: file.size,
-                sizeKB: Math.round(file.size / 1024),
-            };
-            
-            console.log('Procesando imagen:', originalInfo.name, `(${originalInfo.sizeKB}KB)`);
+            try {
+                // Mostrar indicador de carga
+                showLoadingIndicator(true);
+                
+                // Obtener información del archivo original
+                const originalInfo = {
+                    name: file.name,
+                    size: file.size,
+                    sizeKB: Math.round(file.size / 1024),
+                };
+                
+                console.log('Procesando imagen:', originalInfo.name, `(${originalInfo.sizeKB}KB)`);
 
-            gtag('event', 'cheky_completed', {
-                'cheky_list_name': 'Carreras Monterrey',
-                'cheky_item_name': originalInfo.name
-            });
-            
-            const processedDataUrl = await compressImageWithVintageFilter(file, 800, 600, 0.8);
-            
-            const processedSize = Math.round(processedDataUrl.length * 0.75);
-            const compressionRatio = Math.round((1 - processedSize / originalInfo.size) * 100);
-            
-            console.log(`✨ Filtro vintage aplicado: ${originalInfo.sizeKB}KB → ${Math.round(processedSize/1024)}KB`);
-            
-            // Verificar si es para el modal de participación o para edición directa
-            if (currentRaceForParticipation) {
-                // Para modal de participación - mostrar preview
-                showPhotoPreviewInModal(processedDataUrl);
-                currentRaceForParticipation = null; // Reset
-            } else if (currentRestaurantForUpload) {
-                // Para edición directa (método anterior)
-                localStorage.setItem(PHOTO_PREFIX + currentRestaurantForUpload, processedDataUrl);
-                renderCurrentPage();
-                const oldCount = getCompletedRacesCount() - 1;
-                const newCount = getCompletedRacesCount();
-                checkForNewAchievements(newCount, oldCount);
+                gtag('event', 'cheky_completed', {
+                    'cheky_list_name': 'Carreras Monterrey',
+                    'cheky_item_name': originalInfo.name
+                });
+                
+                // Comprimir imagen CON filtro vintage automático
+                const processedDataUrl = await compressImageWithVintageFilter(file, 800, 600, 0.8);
+                
+                // Calcular tamaño procesado
+                const processedSize = Math.round(processedDataUrl.length * 0.75);
+                const compressionRatio = Math.round((1 - processedSize / originalInfo.size) * 100);
+                
+                console.log(`✨ Filtro vintage aplicado y comprimido: ${originalInfo.sizeKB}KB → ${Math.round(processedSize/1024)}KB (${compressionRatio}% reducción)`);
+                
+                // *** MANEJAR DIFERENTES CASOS DE USO ***
+                
+                // Caso 1: Foto de perfil
+                if (currentRestaurantForUpload === 'profile') {
+                    localStorage.setItem('exttrophy_profile_photo', processedDataUrl);
+                    
+                    // Actualizar preview en el modal si está abierto
+                    const modal = document.getElementById('userProfileModal');
+                    if (modal) {
+                        const photoContainer = modal.querySelector('.profile-photo-preview, .profile-photo-upload').parentNode;
+                        if (photoContainer) {
+                            photoContainer.innerHTML = `
+                                <div class="profile-photo-preview" style="position: relative;">
+                                    <img src="${processedDataUrl}" style="
+                                        width: 120px;
+                                        height: 120px;
+                                        border-radius: 50%;
+                                        object-fit: cover;
+                                        border: 3px solid var(--primary-blue);
+                                        display: block;
+                                        margin: 0 auto;
+                                    ">
+                                    <button onclick="selectProfilePhoto()" style="
+                                        position: absolute;
+                                        bottom: 0;
+                                        right: calc(50% - 75px);
+                                        background: var(--accent-orange);
+                                        color: white;
+                                        border: none;
+                                        border-radius: 50%;
+                                        width: 35px;
+                                        height: 35px;
+                                        cursor: pointer;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+                                    ">
+                                        <i class="fas fa-camera" style="font-size: 0.9rem;"></i>
+                                    </button>
+                                </div>
+                                <p style="font-size: 0.9rem; color: var(--medium-gray); margin-top: 10px;">
+                                    Esta foto aparecerá en la portada de tu álbum
+                                </p>
+                            `;
+                        }
+                    }
+                    
+                    currentRestaurantForUpload = null;
+                    showLoadingIndicator(false);
+                    showSuccessMessage('📸 Foto de perfil actualizada');
+                    return;
+                }
+                
+                // Caso 2: Para modal de participación - mostrar preview
+                if (currentRaceForParticipation) {
+                    showPhotoPreviewInModal(processedDataUrl);
+                    currentRaceForParticipation = null;
+                    showLoadingIndicator(false);
+                    showSuccessMessage(`📸 Foto procesada (${Math.round(processedSize/1024)}KB)`);
+                    return;
+                }
+                
+                // Caso 3: Para edición directa de carrera existente
+                if (currentRestaurantForUpload && currentRestaurantForUpload !== 'profile') {
+                    // Contar ANTES de guardar
+                    const oldCount = getCompletedRacesCount();
+                    
+                    // Guardar imagen procesada
+                    localStorage.setItem(PHOTO_PREFIX + currentRestaurantForUpload, processedDataUrl);
+                    
+                    // Actualizar vista
+                    renderCurrentPage();
+                    
+                    // Verificar logros
+                    const newCount = getCompletedRacesCount();
+                    checkForNewAchievements(newCount, oldCount);
+                    
+                    currentRestaurantForUpload = null;
+                    showLoadingIndicator(false);
+                    showSuccessMessage(`📸 Foto guardada (${Math.round(processedSize/1024)}KB)`);
+                    return;
+                }
+                
+                // Si llegamos aquí, no hay contexto válido
+                showLoadingIndicator(false);
+                showSuccessMessage('📸 Foto procesada pero no se pudo guardar (contexto desconocido)');
+                
+            } catch (error) {
+                console.error('Error al procesar imagen:', error);
+                showLoadingIndicator(false);
+                alert('Error al procesar la imagen. Por favor, intenta con otra imagen.');
             }
             
-            showLoadingIndicator(false);
-            showSuccessMessage(`📸 Foto procesada (${Math.round(processedSize/1024)}KB)`);
-            
-        } catch (error) {
-            console.error('Error al procesar imagen:', error);
-            showLoadingIndicator(false);
-            alert('Error al procesar la imagen. Por favor, intenta con otra imagen.');
+            // Limpiar input
+            event.target.value = '';
         }
-        
-        event.target.value = '';
-    }
-
     // Función para mostrar preview de foto en el modal
         function showPhotoPreviewInModal(photoData) {
             const uploadArea = document.querySelector('#raceParticipationModal .photo-upload-area');
