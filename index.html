@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>cheky.app | Restaurantes y Cantinas Tradicionales en Monterrey</title>
+    <title>🍻 cheky.app | Cantinas Tradicionales en Monterrey</title>
     <meta name="description" content="Descubre los restaurantes y cantinas más auténticos y con más historia de Monterrey. Una lista divertida para que explores y guardes los recuerdos de tu visita.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://cheky.app/">
@@ -1292,7 +1292,7 @@ async function handlePhotoUpload(event) {
         console.log('Procesando imagen:', originalInfo.name, `(${originalInfo.sizeKB}KB)`);
 
         gtag('event', 'cheky_completed', {
-            'cheky_list_name': 'Cantinas Tradicionales de Monterrey', // Variable con el nombre de la lista
+            'cheky_list_name': 'Album EXATEC carreras', // Variable con el nombre de la lista
             'cheky_item_name': originalInfo.name          // Variable con el nombre del lugar
             });
         
@@ -2142,7 +2142,7 @@ function importPhotos(event) {
                 'day': config.day,
                 'time': config.time,
                 'file_type': 'ics',
-                'file_name': 'cheky-cantinas-tradicionales.ics',
+                'file_name': 'exatec.ics',
                 'events_count': 12
             });
             
