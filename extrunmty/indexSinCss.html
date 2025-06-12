@@ -504,23 +504,22 @@ function compressImageWithVintageFilter(file, maxWidth = 800, maxHeight = 600, q
     });
 }
 
-// Función simplificada para manejar la subida de fotos con filtro automático
+        // Función simplificada para manejar la subida de fotos con filtro automático
+        // Reemplaza tu handlePhotoUpload con esta versión
         async function handlePhotoUpload(event) {
             const file = event.target.files[0];
             if (!file || !currentRaceForParticipation) return;
 
-            showLoadingIndicator(true);
+            showLoadingIndicator(true, "Subiendo y procesando foto...");
             try {
                 const processedDataUrl = await compressImageWithVintageFilter(file, 800, 600, 0.8);
                 const fileBlob = base64ToBlob(processedDataUrl);
                 const downloadURL = await uploadImageAndGetURL(currentUser.uid, `races/${currentRaceForParticipation}-${Date.now()}`, fileBlob);
                 
-                // --- INICIO DE LA LÓGICA CORREGIDA ---
-                newPhotoURLForModal = downloadURL; // Guardamos la nueva URL en nuestra variable global
-                showPhotoPreviewInModal(downloadURL); // Actualizamos la vista previa visualmente
-                // --- FIN DE LA LÓGICA CORREGIDA ---
+                newPhotoURLForModal = downloadURL;
+                showPhotoPreviewInModal(downloadURL);
 
-                showSuccessMessage("✅ Foto nueva cargada. Pulsa 'Actualizar'.");
+                showSuccessMessage("✅ Foto nueva cargada. Pulsa 'Guardar'.");
             } catch (error) {
                 console.error('Error durante la subida de la foto:', error);
                 alert('Hubo un error al subir la foto a Firebase.');
@@ -529,7 +528,6 @@ function compressImageWithVintageFilter(file, maxWidth = 800, maxHeight = 600, q
                 event.target.value = '';
             }
         }
-
 // Funciones auxiliares (mantén las que ya tienes del código anterior)
 function showLoadingIndicator(show = true) {
     let loader = document.getElementById('imageLoader');
@@ -950,183 +948,7 @@ function generateCoverContent() {
     `;
 }
 
-        function changeUserName() {
-            openUserProfileModal();
-        }
 
-        function openUserProfileModal() {
-            const currentName = localStorage.getItem('EXATECuser_name') || '';
-            const currentPhoto = localStorage.getItem('exttrophy_profile_photo');
-            
-            let photoPreviewHTML;
-            if (currentPhoto) {
-                photoPreviewHTML = `
-                    <div class="profile-photo-preview" style="position: relative;">
-                        <img src="${currentPhoto}" style="
-                            width: 120px;
-                            height: 120px;
-                            border-radius: 50%;
-                            object-fit: cover;
-                            border: 3px solid var(--primary-blue);
-                            display: block;
-                            margin: 0 auto;
-                        ">
-                        <button onclick="selectProfilePhoto()" style="
-                            position: absolute;
-                            bottom: 0;
-                            right: calc(50% - 75px);
-                            background: var(--accent-orange);
-                            color: white;
-                            border: none;
-                            border-radius: 50%;
-                            width: 35px;
-                            height: 35px;
-                            cursor: pointer;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-                        ">
-                            <i class="fas fa-camera" style="font-size: 0.9rem;"></i>
-                        </button>
-                    </div>
-                `;
-            } else {
-                photoPreviewHTML = `
-                    <div class="profile-photo-upload" onclick="selectProfilePhoto()" style="
-                        width: 120px;
-                        height: 120px;
-                        border-radius: 50%;
-                        border: 3px dashed var(--primary-blue);
-                        background: var(--light-gray);
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        justify-content: center;
-                        cursor: pointer;
-                        margin: 0 auto;
-                        transition: all 0.2s ease;
-                    ">
-                        <i class="fas fa-camera" style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 5px;"></i>
-                        <span style="font-size: 0.8rem; color: var(--dark-blue); text-align: center;">Añadir foto</span>
-                    </div>
-                `;
-            }
-            
-            const modalHTML = `
-                <div id="userProfileModal" class="modal-overlay show">
-                    <div class="modal-content" style="max-width: 400px;">
-                        <h3 class="modal-header">👤 Mi Perfil</h3>
-                        <div class="modal-body">
-                            <div style="text-align: center; margin-bottom: 20px;">
-                                ${photoPreviewHTML}
-                                <p style="font-size: 0.9rem; color: var(--medium-gray); margin-top: 10px;">
-                                    Esta foto aparecerá en la portada de tu álbum
-                                </p>
-                            </div>
-                            
-                            <div style="margin-bottom: 20px;">
-                                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--dark-blue);">
-                                    Tu nombre:
-                                </label>
-                                <input type="text" id="userNameInput" placeholder="Escribe tu nombre" value="${currentName}" style="
-                                    width: 100%; 
-                                    padding: 12px; 
-                                    border: 2px solid var(--light-blue);
-                                    border-radius: 8px; 
-                                    font-size: 1.1rem;
-                                    font-family: 'Lato', sans-serif;
-                                ">
-                            </div>
-                            
-                            <div style="display: flex; gap: 10px;">
-                                <button class="info-button" onclick="saveUserProfile()" style="
-                                    flex: 1; margin: 0;
-                                ">
-                                    <i class="fas fa-save"></i>
-                                    Guardar
-                                </button>
-                                <button class="info-button" onclick="closeUserProfileModal()" style="
-                                    flex: 1; margin: 0; background: var(--medium-gray);
-                                ">
-                                    <i class="fas fa-times"></i>
-                                    Cancelar
-                                </button>
-                            </div>
-                            
-                            ${currentPhoto ? `
-                                <div style="text-align: center; margin-top: 15px;">
-                                    <button onclick="removeProfilePhoto()" style="
-                                        background: transparent;
-                                        border: 2px solid #dc3545;
-                                        color: #dc3545;
-                                        padding: 8px 16px;
-                                        border-radius: 20px;
-                                        font-size: 0.9rem;
-                                        cursor: pointer;
-                                        transition: all 0.2s ease;
-                                    ">
-                                        <i class="fas fa-trash"></i> Quitar foto
-                                    </button>
-                                </div>
-                            ` : ''}
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            document.body.insertAdjacentHTML('beforeend', modalHTML);
-            
-            // Enfocar el input
-            setTimeout(() => {
-                const input = document.getElementById('userNameInput');
-                input.focus();
-                if (currentName) {
-                    input.select();
-                }
-            }, 100);
-        }
-
-        function closeUserProfileModal() {
-            const modal = document.getElementById('userProfileModal');
-            if (modal) {
-                modal.remove();
-            }
-            currentRestaurantForUpload = null; // Reset
-        }
-
-        function saveUserProfile() {
-            const input = document.getElementById('userNameInput');
-            const newName = input.value.trim();
-            
-            if (newName) {
-                localStorage.setItem('EXATECuser_name', newName);
-                closeUserProfileModal();
-                renderCurrentPage();
-                showSuccessMessage(`👤 Perfil actualizado: ¡Hola ${newName}!`);
-            } else {
-                // Hacer que el input parpadee para indicar error
-                input.style.borderColor = '#dc3545';
-                input.placeholder = 'Por favor escribe tu nombre';
-                setTimeout(() => {
-                    input.style.borderColor = 'var(--light-blue)';
-                }, 2000);
-            }
-        }
-
-        function selectProfilePhoto() {
-            currentRestaurantForUpload = 'profile'; // Marcador especial para foto de perfil
-            userPhotoInput.click();
-        }
-
-        function removeProfilePhoto() {
-            if (confirm('¿Quieres quitar tu foto de perfil?')) {
-                localStorage.removeItem('exttrophy_profile_photo');
-                closeUserProfileModal();
-                renderCurrentPage();
-                showSuccessMessage('📷 Foto de perfil eliminada');
-            }
-        }
 
         function updateNavigation() {
             prevBtn.disabled = currentPageIndex === 0;
@@ -1178,62 +1000,59 @@ function generateCoverContent() {
             }
         };
 
-        function openRaceParticipationModal(raceName) {
-            newPhotoURLForModal = null; 
+        // Reemplaza tu función actual con esta versión para asegurar que el ID es correcto
+        function openRaceParticipationModal(raceName, existingData = null) {
+            newPhotoURLForModal = null; // Reiniciamos la variable
             const isEdit = !!existingData;
-            const race = restaurants.find(r => r.name === raceName);
-            
+
+            let photoContentHTML;
+            if (isEdit && existingData.photoURL) {
+                photoContentHTML = `
+                    <div class="photo-preview" style="position: relative;">
+                        <img src="${existingData.photoURL}" style="width: 100%; max-height: 150px; object-fit: cover; border-radius: 6px;">
+                        <button onclick="selectPhotoForRace('${raceName}')" title="Cambiar foto" style="position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-camera" style="font-size: 0.8rem;"></i>
+                        </button>
+                    </div>`;
+            } else {
+                photoContentHTML = `
+                    <div class="photo-upload-area" onclick="selectPhotoForRace('${raceName}')" style="border: 2px dashed var(--primary-blue); border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; background: var(--light-gray);">
+                        <i class="fas fa-camera" style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 8px;"></i>
+                        <p>Toca para subir tu foto</p>
+                    </div>`;
+            }
+
             const modalHTML = `
                 <div id="raceParticipationModal" class="modal-overlay show">
                     <div class="modal-content" style="max-width: 400px;">
-                        <h3 class="modal-header">¡Registrar Participación!</h3>
+                        <h3 class="modal-header">${isEdit ? '✏️ Editar Participación' : '📝 Registrar Participación'}</h3>
                         <div class="modal-body">
                             <h4 style="text-align: center; margin-bottom: 15px;">${raceName}</h4>
-                            
                             <div style="margin-bottom: 15px;">
                                 <label style="display: block; margin-bottom: 5px; font-weight: 600;">📸 Foto de la carrera:</label>
-                                <div class="photo-upload-area" onclick="selectPhotoForRace('${raceName}')" style="
-                                    border: 2px dashed var(--primary-blue);
-                                    border-radius: 8px;
-                                    padding: 20px;
-                                    text-align: center;
-                                    cursor: pointer;
-                                    background: var(--light-gray);
-                                ">
-                                    <i class="fas fa-camera" style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 8px;"></i>
-                                    <p>Toca para subir tu foto</p>
+                                <div id="modalPhotoContainer">
+                                    ${photoContentHTML}
                                 </div>
                             </div>
-                            
                             <div style="margin-bottom: 15px;">
                                 <label style="display: block; margin-bottom: 5px; font-weight: 600;">🏃 Distancia:</label>
-                                <select id="raceDistance" style="
-                                    width: 100%; padding: 8px; border: 2px solid var(--light-blue);
-                                    border-radius: 6px; font-size: 1rem;
-                                ">
+                                <select id="raceDistance" style="width: 100%; padding: 8px; border: 2px solid var(--light-blue); border-radius: 6px; font-size: 1rem;">
                                     <option value="">Seleccionar distancia</option>
-                                    <option value="5K">5K</option>
-                                    <option value="10K">10K</option>
-                                    <option value="15K">15K</option>
-                                    <option value="21K">21K (Media Maratón)</option>
-                                    <option value="42K">42K (Maratón)</option>
-                                    <option value="Otra">Otra distancia</option>
+                                    <option value="5K" ${existingData?.distance === '5K' ? 'selected' : ''}>5K</option>
+                                    <option value="10K" ${existingData?.distance === '10K' ? 'selected' : ''}>10K</option>
+                                    <option value="15K" ${existingData?.distance === '15K' ? 'selected' : ''}>15K</option>
+                                    <option value="21K" ${existingData?.distance === '21K' ? 'selected' : ''}>21K (Media Maratón)</option>
+                                    <option value="42K" ${existingData?.distance === '42K' ? 'selected' : ''}>42K (Maratón)</option>
+                                    <option value="Otra" ${existingData?.distance === 'Otra' ? 'selected' : ''}>Otra distancia</option>
                                 </select>
                             </div>
-                            
                             <div style="margin-bottom: 20px;">
                                 <label style="display: block; margin-bottom: 5px; font-weight: 600;">⏱️ Tiempo (opcional):</label>
-                                <input type="text" id="raceTime" placeholder="ej: 25:30, 1:15:45" style="
-                                    width: 100%; padding: 8px; border: 2px solid var(--light-blue);
-                                    border-radius: 6px; font-size: 1rem;
-                                ">
+                                <input type="text" id="raceTime" placeholder="ej: 25:30" value="${existingData?.time || ''}" style="width: 100%; padding: 8px; border: 2px solid var(--light-blue); border-radius: 6px; font-size: 1rem;">
                             </div>
-                            
-                            <button class="info-button" onclick="saveRaceParticipation('${raceName}')" style="
-                                width: 100%; margin: 0;
-                            ">
+                            <button class="info-button" onclick="saveRaceParticipation('${raceName}')" style="width: 100%; margin: 0;">
                                 <i class="fas fa-save"></i>
-                                Guardar Participación
+                                ${isEdit ? 'Actualizar Participación' : 'Guardar Participación'}
                             </button>
                         </div>
                         <button class="modal-close-btn" onclick="closeRaceParticipationModal()">
@@ -1293,63 +1112,6 @@ function generateCoverContent() {
             window.open(mapUrl, '_blank');
         }
 
-        window.acceptChallenge = function() {
-            const challengeAccepted = localStorage.getItem('extrunmty01challenge_accepted') === 'true';
-            
-            if (!challengeAccepted) {
-                openChallengeModal();
-            } else {
-                // Si ya está aceptado, mostrar resumen del plan
-                showChallengeStatus();
-            }
-        };
-
-        let challengeStep = 1;
-        let challengeData = {};
-
-        window.openChallengeModal = function() {
-            challengeStep = 1;
-            challengeData = {};
-
-            // 📊 ANALYTICS: Usuario inicia el proceso del reto
-            trackChallengeEvent('challenge_started', {
-                'event_label': 'Challenge Modal Opened',
-                'user_type': localStorage.getItem('extrunmty01challenge_accepted') ? 'returning' : 'new'
-            });
-
-            showChallengeStep();
-            document.getElementById('challengeModal').classList.add('show');
-        };
-
-        window.closeChallengeModal = function() {
-
-            const challengeWasInProgress = challengeStep > 1 && !localStorage.getItem('extrunmty01challenge_accepted');
-    
-            // 📊 ANALYTICS: Usuario abandona el proceso
-            if (challengeWasInProgress) {
-                trackChallengeEvent('challenge_abandoned', {
-                    'event_label': 'Modal Closed Without Completion',
-                    'step_abandoned': challengeStep,
-                    'partial_rhythm': challengeData.rhythm || 'not_selected',
-                    'partial_day': challengeData.day || 'not_selected',
-                    'partial_time': challengeData.time || 'not_selected',
-                    'completion_percentage': Math.round((challengeStep - 1) / 3 * 100)
-                });
-            }
-            document.getElementById('challengeModal').classList.remove('show');
-        };
-
-        function showChallengeStep() {
-            updateProgressDots();
-            
-            if (challengeStep === 1) {
-                showRhythmQuestion();
-            } else if (challengeStep === 2) {
-                showDayQuestion();
-            } else if (challengeStep === 3) {
-                showTimeQuestion();
-            }
-        }
 
         function updateProgressDots() {
             for (let i = 1; i <= 3; i++) {
@@ -1364,287 +1126,6 @@ function generateCoverContent() {
             }
         }
 
-        function showRhythmQuestion() {
-            document.getElementById('challengeModalTitle').textContent = '🎯 ¡Vamos a planear!';
-            document.getElementById('challengeModalQuestion').textContent = '¿Con qué frecuencia quieres explorar? ¡Vamos a crear un plan!';
-            
-            document.getElementById('challengeModalOptions').innerHTML = `
-                <button class="challenge-option-btn" onclick="selectRhythm('weekly')">
-                    <i class="fas fa-calendar-week"></i>
-                    Una vez a la semana (Ritmo Constante)
-                </button>
-                <button class="challenge-option-btn" onclick="selectRhythm('biweekly')">
-                    <i class="fas fa-calendar-alt"></i>
-                    Una vez cada 15 días (Ritmo Relajado)
-                </button>
-                <button class="challenge-option-btn" onclick="selectRhythm('flexible')">
-                    <i class="fas fa-user-clock"></i>
-                    ¡A mi propio paso! (Sin plan)
-                </button>
-            `;
-        }
-
-        function showDayQuestion() {
-            document.getElementById('challengeModalTitle').textContent = '📅 Día Perfecto';
-            document.getElementById('challengeModalQuestion').textContent = 'Perfecto. ¿Qué día de la semana te funciona mejor?';
-            
-            const days = [
-                { key: 'monday', label: 'Lun', icon: 'fas fa-moon' },
-                { key: 'tuesday', label: 'Mar', icon: 'fas fa-coffee' },
-                { key: 'wednesday', label: 'Mié', icon: 'fas fa-sun' },
-                { key: 'thursday', label: 'Jue', icon: 'fas fa-star' },
-                { key: 'friday', label: 'Vie', icon: 'fas fa-cocktail' },
-                { key: 'saturday', label: 'Sáb', icon: 'fas fa-heart' },
-                { key: 'sunday', label: 'Dom', icon: 'fas fa-home' }
-            ];
-            
-            document.getElementById('challengeModalOptions').innerHTML = `
-                <div class="challenge-days-grid">
-                    ${days.map(day => `
-                        <button class="challenge-day-btn" onclick="selectDay('${day.key}')">
-                            <i class="${day.icon}"></i><br>${day.label}
-                        </button>
-                    `).join('')}
-                </div>
-            `;
-        }
-
-        function showTimeQuestion() {
-            document.getElementById('challengeModalTitle').textContent = '🕐 Hora Ideal';
-            document.getElementById('challengeModalQuestion').textContent = '¿Tarde o noche?';
-            
-            document.getElementById('challengeModalOptions').innerHTML = `
-                <button class="challenge-option-btn" onclick="selectTime('lunch')">
-                    <i class="fas fa-utensils"></i>
-                    En la comida (2 PM)
-                </button>
-                <button class="challenge-option-btn" onclick="selectTime('afternoon')">
-                    <i class="fas fa-sun"></i>
-                    Tarde (5 PM)
-                </button>
-                <button class="challenge-option-btn" onclick="selectTime('evening')">
-                    <i class="fas fa-moon"></i>
-                    Noche (8 PM)
-                </button>
-            `;
-        }
-
-        window.selectRhythm = function(rhythm) {
-            challengeData.rhythm = rhythm;
-
-            // 📊 ANALYTICS: Usuario selecciona frecuencia
-            trackChallengeEvent('challenge_step_rhythm', {
-                'event_label': rhythm,
-                'step_number': 1,
-                'rhythm_type': rhythm,
-                'is_flexible': rhythm === 'flexible'
-            });
-            
-            if (rhythm === 'flexible') {
-                // Si eligió flexible, saltar directo al final
-                finalizeChallengeSetup();
-            } else {
-                challengeStep = 2;
-                showChallengeStep();
-            }
-        };
-
-        window.selectDay = function(day) {
-            challengeData.day = day;
-
-            // 📊 ANALYTICS: Usuario selecciona día
-            trackChallengeEvent('challenge_step_day', {
-                'event_label': day,
-                'step_number': 2,
-                'selected_day': day,
-                'rhythm_context': challengeData.rhythm
-            });
-            challengeStep = 3;
-            showChallengeStep();
-        };
-
-        window.selectTime = function(time) {
-            challengeData.time = time;
-
-            // 📊 ANALYTICS: Usuario selecciona horario
-            trackChallengeEvent('challenge_step_time', {
-                'event_label': time,
-                'step_number': 3,
-                'selected_time': time,
-                'full_config': `${challengeData.rhythm}_${challengeData.day}_${time}`
-            });
-
-            finalizeChallengeSetup();
-        };
-
-        function finalizeChallengeSetup() {
-            // Guardar configuración
-            localStorage.setItem('extrunmty01challenge_accepted', 'true');
-            localStorage.setItem('challenge_config', JSON.stringify(challengeData));
-
-            // 📊 ANALYTICS: Usuario completa la configuración del reto
-            trackChallengeEvent('extrunmty01challenge_accepted', {
-                'event_label': 'Challenge Configuration Complete',
-                'rhythm': challengeData.rhythm,
-                'day': challengeData.day || 'flexible',
-                'time': challengeData.time || 'flexible',
-                'configuration_string': `${challengeData.rhythm}_${challengeData.day || 'flexible'}_${challengeData.time || 'flexible'}`,
-                'steps_completed': challengeData.rhythm === 'flexible' ? 1 : 3
-            });
-            
-            // Mostrar pantalla de confirmación
-            showChallengeSuccess();
-            
-            // Analytics
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'challenge_configured', {
-                    'event_category': 'engagement',
-                    'rhythm': challengeData.rhythm,
-                    'day': challengeData.day || 'flexible',
-                    'time': challengeData.time || 'flexible'
-                });
-            }
-        }
-
-        function showChallengeSuccess() {
-            document.getElementById('challengeModalTitle').textContent = '🎉 ¡Perfecto!';
-            
-            const config = challengeData;
-            let planDescription = '';
-            
-            if (config.rhythm === 'flexible') {
-                planDescription = 'Tu plan flexible está listo. ¡Explora a tu ritmo!';
-            } else {
-                const rhythmText = config.rhythm === 'weekly' ? 'semanal' : 'quincenal';
-                const dayNames = {
-                    monday: 'lunes', tuesday: 'martes', wednesday: 'miércoles',
-                    thursday: 'jueves', friday: 'viernes', saturday: 'sábados', sunday: 'domingos'
-                };
-                const timeText = {
-                    'lunch': 'al mediodía',
-                    'afternoon': 'en las tardes', 
-                    'evening': 'en las noches'
-                }[config.time];
-                
-                planDescription = `Tu plan ${rhythmText} los ${dayNames[config.day]} en las ${timeText} está listo.`;
-            }
-            
-            document.getElementById('challengeModalQuestion').textContent = '';
-            
-            const showCalendarButton = config.rhythm !== 'flexible';
-            
-            document.getElementById('challengeModalOptions').innerHTML = `
-                <div class="challenge-success-content">
-                    <p class="challenge-success-message">
-                        ¡Genial! ${planDescription}<br><br>
-                        ${showCalendarButton ? 'Para que no se te olvide, hemos creado un archivo de calendario para ti.' : '¡Disfruta explorando las carreras !'}
-                    </p>
-                    
-                    <div class="challenge-actions">
-                        ${showCalendarButton ? `
-                            <button class="calendar-download-btn" onclick="downloadCalendarFile()">
-                                <i class="fas fa-calendar-plus"></i>
-                                Añadir a mi calendario
-                            </button>
-                        ` : ''}
-                        
-                        <button class="challenge-secondary-btn" onclick="finishChallengeSetup()">
-                            ${showCalendarButton ? 'Continuar sin calendario' : '¡Empezar a explorar!'}
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-        window.finishChallengeSetup = function() {
-
-            // 📊 ANALYTICS: Usuario completa sin descargar calendario
-            trackChallengeEvent('challenge_completed_no_calendar', {
-                'event_label': 'Finished Without Calendar Download',
-                'completion_method': 'skip_calendar'
-            });
-
-            closeChallengeModal();
-            showSuccessMessage('🎯 ¡Reto configurado! ¡A explorar carreras!');
-            renderCurrentPage();
-        };
-
-        window.showChallengeStatus = function() {
-            const config = JSON.parse(localStorage.getItem('challenge_config') || '{}');
-
-            // 📊 ANALYTICS: Usuario revisa el estado de su reto existente
-            trackChallengeEvent('challenge_status_viewed', {
-                'event_label': 'Existing Challenge Status Check',
-                'current_rhythm': config.rhythm || 'unknown',
-                'current_day': config.day || 'unknown',
-                'current_time': config.time || 'unknown',
-                'has_calendar_config': Object.keys(config).length > 0
-            });
-
-            let statusMessage = '';
-            
-            if (config.rhythm === 'flexible') {
-                statusMessage = '🎯 Tu plan: Explorar a tu propio ritmo';
-                showSuccessMessage(statusMessage);
-            } else {
-                const rhythmText = config.rhythm === 'weekly' ? 'cada semana' : 'cada 15 días';
-                const dayNames = {
-                    monday: 'lunes', tuesday: 'martes', wednesday: 'miércoles',
-                    thursday: 'jueves', friday: 'viernes', saturday: 'sábados', sunday: 'domingos'
-                };
-                const timeText = {
-                    'lunch': 'al mediodía',
-                    'afternoon': 'en las tardes', 
-                    'evening': 'en las noches'
-                }[config.time];
-                
-                statusMessage = `🎯 Tu plan: ${rhythmText} los ${dayNames[config.day]} ${timeText}`;
-                
-                // Ofrecer descargar calendario de nuevo
-                const shouldShowCalendarOption = confirm(statusMessage + '\n\n¿Quieres descargar tu calendario de eventos?');
-                if (shouldShowCalendarOption) {
-                    challengeData = config; // Restaurar datos para la descarga
-                    downloadCalendarFile();
-                } else {
-                    showSuccessMessage(statusMessage);
-                }
-            }
-        };
-
-        window.downloadCalendarFile = function() {
-            const config = challengeData;
-            const icsContent = generateICSFile(config);
-            downloadFile(icsContent, 'cheky-carreras.ics', 'text/calendar');
-
-            // 📊 ANALYTICS: Usuario descarga el archivo de calendario
-            trackChallengeEvent('calendar_downloaded', {
-                'event_label': 'ICS File Download',
-                'rhythm': config.rhythm,
-                'day': config.day,
-                'time': config.time,
-                'file_type': 'ics',
-                'file_name': 'cheky-carreras-.ics',
-                'events_count': 12
-            });
-            
-            // Analytics
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'calendar_downloaded', {
-                    'event_category': 'engagement',
-                    'rhythm': config.rhythm,
-                    'day': config.day,
-                    'time': config.time
-                });
-            }
-            
-            showSuccessMessage('📅 ¡Calendario descargado! Revisa tu carpeta de descargas');
-            
-            // Cerrar modal y actualizar página
-            setTimeout(() => {
-                closeChallengeModal();
-                renderCurrentPage();
-            }, 1500);
-        };
 
 function generateICSFile(config) {
     const now = new Date();
@@ -2344,42 +1825,22 @@ function generateICSFile(config) {
         }
 
         // Función para mostrar preview de foto en el modal
-        function showPhotoPreviewInModal(photoData) {
-            const uploadArea = document.querySelector('#raceParticipationModal .photo-upload-area');
-            if (uploadArea) {
-                // Obtener el nombre de la carrera del modal actual
-                const raceName = document.querySelector('#raceParticipationModal h4').textContent;
-                
-                uploadArea.innerHTML = `
-                    <div class="photo-preview" style="position: relative;">
-                        <img src="${photoData}" style="
-                            width: 100%;
-                            max-height: 150px;
-                            object-fit: cover;
-                            border-radius: 6px;
-                        ">
-                        <button onclick="selectPhotoForRace('${raceName}')" style="
-                            position: absolute;
-                            top: 5px;
-                            right: 5px;
-                            background: rgba(0,0,0,0.7);
-                            color: white;
-                            border: none;
-                            border-radius: 50%;
-                            width: 30px;
-                            height: 30px;
-                            cursor: pointer;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                        ">
-                            <i class="fas fa-camera" style="font-size: 0.8rem;"></i>
-                        </button>
-                    </div>
-                `;
-                uploadArea.onclick = null; // Remover el onclick original
+
+            function showPhotoPreviewInModal(photoURL) {
+                const photoContainer = document.getElementById('modalPhotoContainer');
+                if (photoContainer) {
+                    photoContainer.innerHTML = `
+                        <div class="photo-preview" style="position: relative;">
+                            <img src="${photoURL}" style="width: 100%; max-height: 150px; object-fit: cover; border-radius: 6px;">
+                            <p style="font-size: 0.8rem; text-align: center; color: #28a745; margin-top: 5px; font-weight: 600;">
+                                ✓ Nueva foto lista.
+                            </p>
+                        </div>
+                    `;
+                } else {
+                    console.error("Error: No se encontró el div '#modalPhotoContainer' para actualizar la vista previa.");
+                }
             }
-        }
 
     // Funciones para cerrar modal de participación
             window.closeRaceParticipationModal = function() {
@@ -2399,16 +1860,14 @@ function generateICSFile(config) {
         openRaceParticipationModal(raceName, participationData);
     };
 
-    // Modificar openRaceParticipationModal para aceptar datos existentes
-        // Reemplaza tu función actual con esta versión completa
-        function openRaceParticipationModal(raceName, existingData = null) {
-            const isEdit = !!existingData; // Convertimos existingData a un booleano (true si no es null)
 
-            // --- Lógica para rellenar la foto ---
-            let photoAreaHTML;
+        function openRaceParticipationModal(raceName, existingData = null) {
+            newPhotoURLForModal = null; // Reiniciamos la variable
+            const isEdit = !!existingData;
+
+            let photoContentHTML;
             if (isEdit && existingData.photoURL) {
-                // Si estamos editando y hay foto, la mostramos
-                photoAreaHTML = `
+                photoContentHTML = `
                     <div class="photo-preview" style="position: relative;">
                         <img src="${existingData.photoURL}" style="width: 100%; max-height: 150px; object-fit: cover; border-radius: 6px;">
                         <button onclick="selectPhotoForRace('${raceName}')" title="Cambiar foto" style="position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
@@ -2416,15 +1875,13 @@ function generateICSFile(config) {
                         </button>
                     </div>`;
             } else {
-                // Si es nuevo registro, mostramos el área para subir
-                photoAreaHTML = `
+                photoContentHTML = `
                     <div class="photo-upload-area" onclick="selectPhotoForRace('${raceName}')" style="border: 2px dashed var(--primary-blue); border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; background: var(--light-gray);">
                         <i class="fas fa-camera" style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 8px;"></i>
                         <p>Toca para subir tu foto</p>
                     </div>`;
             }
 
-            // --- Lógica para el modal completo ---
             const modalHTML = `
                 <div id="raceParticipationModal" class="modal-overlay show">
                     <div class="modal-content" style="max-width: 400px;">
@@ -2433,7 +1890,7 @@ function generateICSFile(config) {
                             <h4 style="text-align: center; margin-bottom: 15px;">${raceName}</h4>
                             <div style="margin-bottom: 15px;">
                                 <label style="display: block; margin-bottom: 5px; font-weight: 600;">📸 Foto de la carrera:</label>
-                                ${photoAreaHTML}
+                                <div id="modalPhotoContainer">${photoContentHTML}</div>
                             </div>
                             <div style="margin-bottom: 15px;">
                                 <label style="display: block; margin-bottom: 5px; font-weight: 600;">🏃 Distancia:</label>
