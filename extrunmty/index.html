@@ -42,1391 +42,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Lato:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-blue: #2E86C1; /* Azul dinámico principal */
-            --light-blue: #AED6F1; /* Azul claro suave */
-            --sky-blue: #EBF5FB; /* Azul muy claro/cielo */
-            --dark-blue: #1B4F72; /* Azul marino oscuro */
-            --accent-orange: #F39C12; /* Naranja energético para acentos */
-            --fresh-green: #27AE60; /* Verde para logros/completado */
-            --light-gray: #F8F9FA; /* Gris muy claro */
-            --medium-gray: #6C757D; /* Gris medio */
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Lato', sans-serif;
-            background: linear-gradient(135deg, var(--sky-blue), var(--light-blue));
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .album-container {
-            max-width: 450px;
-            width: 100vw;
-            height: 100vh;
-            background: var(--primary-blue);
-            border-radius: 0;
-            box-shadow: none;
-            border: none;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        @media (min-width: 768px) {
-            body {
-                padding: 10px;
-            }
-            
-            .album-container {
-                width: 100%;
-                height: calc(100vh - 20px);
-                border-radius: 20px;
-                box-shadow: 0 20px 40px rgba(46, 134, 193, 0.3);
-                border: 8px solid var(--dark-blue);
-            }
-        }
-
-        .album-book-wrapper {
-            flex: 1;
-            position: relative;
-            perspective: 1200px;
-            overflow: hidden;
-            background: var(--sky-blue);
-            margin: 15px;
-            border-radius: 15px;
-            box-shadow: inset 0 0 15px rgba(46, 134, 193, 0.1);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .page {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: var(--sky-blue);
-            border-radius: 10px;
-            display: flex;
-            transform-style: preserve-3d;
-            backface-visibility: hidden;
-            transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
-            transform-style: preserve-3d;
-            backface-visibility: hidden;
-            overflow: hidden;
-        }
-
-        .page.flipping-forward {
-            transform: rotateY(-180deg);
-        }
-
-        .page.flipping-backward {
-            transform: rotateY(180deg);
-        }
-
-        .page-content {
-            flex: 1;
-            padding: 20px 20px 80px 20px;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        /* Portada Styles */
-        .cover-page {
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
-            color: white;
-            border-radius: inherit;
-        }
-
-        .cover-title {
-            font-family: 'Anton', sans-serif;
-            font-size: 2.8rem;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .cover-subtitle {
-            font-family: 'Lato', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            opacity: 0.9;
-        }
-
-        .cover-image {
-            width: 250px;
-            height: 250px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid white;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-            margin-bottom: 120px;
-        }
-
-        .cover-presented {
-            position: absolute;
-            bottom: 80px;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            font-size: 1.1rem;
-            color: #fff;
-            opacity: 0.92;
-            letter-spacing: 0.02em;
-            font-family: 'Lato', sans-serif;
-            z-index: 2;
-            pointer-events: none;
-        }
-        .cover-presented .cheky-highlight {
-            font-weight: 700;
-            font-family: 'Bebas Neue', sans-serif;
-            letter-spacing: 0.04em;
-            font-size: 1.5em;
-            padding: 0 6px;
-        }
-
-        /* Runner Index Page Styles */
-        .restaurant-index-content {
-            text-align: center;
-        }
-        .restaurant-index-header {
-            font-family: 'Anton', sans-serif;
-            font-size: 2rem;
-            color: var(--primary-blue);
-            margin-bottom: 0.5rem;
-        }
-        .restaurant-index-count {
-            font-size: 1.2rem;
-            color: var(--dark-blue);
-            margin-bottom: 1rem;
-            font-weight: 600;
-        }
-        .restaurant-list-container {
-            flex: 1;
-            overflow-y: auto;
-            padding-right: 8px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            padding: 8px;
-        }
-        .restaurant-list-container::-webkit-scrollbar { width: 6px; }
-        .restaurant-list-container::-webkit-scrollbar-track { background: var(--light-blue); border-radius: 3px; }
-        .restaurant-list-container::-webkit-scrollbar-thumb { background: var(--primary-blue); border-radius: 3px; }
-
-        .restaurant-list-item {
-            display: flex;
-            align-items: center;
-            background: var(--light-gray);
-            padding: 8px 12px;
-            border-radius: 8px;
-            border: 2px solid var(--light-blue);
-            box-shadow: 0 2px 6px rgba(46, 134, 193, 0.15);
-            font-size: 1.1rem;
-            color: var(--dark-blue);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-align: left;
-            gap: 8px;
-        }
-        .restaurant-list-item i { font-size: 1.1rem; flex-shrink: 0; }
-        .restaurant-list-item .fa-circle-check { color: var(--fresh-green); }
-        .restaurant-list-item .fa-circle { color: var(--medium-gray); }
-        .restaurant-list-item:hover { 
-            background-color: var(--sky-blue); 
-            border-color: var(--primary-blue);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(46, 134, 193, 0.2);
-        }
-
-        /* Runner Profile Page Specific Styles */
-        .restaurant-content-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            height: 100%;
-            padding: 20px 10px 80px 10px;
-            overflow: hidden;
-        }
-
-        .restaurant-title {
-            font-family: 'Anton', sans-serif;
-            font-size: 2rem;
-            height: 4.8rem;
-            line-height: 2.2rem;
-            color: var(--primary-blue);
-            text-align: center;
-            margin-bottom: 10px;
-            flex-shrink: 0;
-            margin-top: 10px;
-            text-shadow: 1px 1px 2px rgba(46, 134, 193, 0.2);
-        }
-
-        .photo-display-area {
-            flex-grow: 1;
-            min-height: 0;
-            width: 90%;
-            max-width: 350px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            cursor: pointer;
-            overflow: hidden;
-            margin-bottom: 15px;
-        }
-
-        .user-photo-frame {
-            background: linear-gradient(135deg, var(--light-blue), var(--sky-blue));
-            border: 3px solid var(--primary-blue);
-            border-radius: 15px;
-            padding: 8px;
-            max-width: 100%;
-            max-height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(46, 134, 193, 0.3);
-        }
-        
-        .user-photo-frame img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            border-radius: 8px;
-            display: block;
-        }
-
-        .photo-display-area img.user-photo-image {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            border-radius: 12px;
-        }
-                
-        .user-photo-placeholder-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(174, 214, 241, 0.3);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
-            color: var(--dark-blue);
-            pointer-events: none;
-            padding-bottom: 12px;
-        }
-        .user-photo-placeholder-center {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-        }
-        .user-photo-privacy-message {
-            margin-top: 18px;
-            font-size: 0.8rem;
-            color: var(--dark-blue);
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid var(--light-blue);
-            border-radius: 7px;
-            padding: 10px 12px;
-            text-align: center;
-            font-family: 'Lato', sans-serif;
-            width: 90%;
-            max-width: 320px;
-        }
-        .user-photo-placeholder-icon { font-size: 3rem; margin-bottom: 0.3rem; color: var(--primary-blue); }
-        .user-photo-text { font-size: 1rem; font-weight: 600; text-align: center; }
-        .user-photo-placeholder-overlay.hidden { display: none; }
-
-        .info-button {
-            background: var(--accent-orange);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 9999px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 3px 8px rgba(243, 156, 18, 0.3);
-            font-family: 'Lato', sans-serif;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .info-button:hover {
-            background: #E67E00;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 10px rgba(243, 156, 18, 0.4);
-        }
-
-        /* Modal Styles */
-        .modal-overlay { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(27, 79, 114, 0.8);
-            display: flex; justify-content: center; align-items: center;
-            opacity: 0; visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            z-index: 1000;
-        }
-        .modal-overlay.show { opacity: 1; visibility: visible; }
-
-        .modal-content { 
-            background: var(--sky-blue); 
-            padding: 25px; 
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(27, 79, 114, 0.4);
-            max-width: 90%; 
-            width: 380px;
-            position: relative; 
-            transform: translateY(-20px); 
-            transition: transform 0.3s ease;
-            border: 3px solid var(--primary-blue);
-            font-family: 'Lato', sans-serif; 
-            color: var(--dark-blue);
-            display: flex;
-            flex-direction: column;
-            max-height: 85vh;
-            min-height: 200px;
-        }
-        
-        .modal-overlay.show .modal-content { transform: translateY(0); }
-        .modal-header {
-            font-family: 'Anton', sans-serif; font-size: 1.6rem;
-            color: var(--primary-blue); margin-bottom: 15px; text-align: center;
-            flex-shrink: 0;
-        }
-        .modal-body {
-            font-size: 1.1rem; line-height: 1.4; 
-            overflow-y: auto; margin-bottom: 15px; padding-right: 8px; text-align: justify;
-            flex-grow: 1;
-        }
-        .modal-body::-webkit-scrollbar { width: 6px; }
-        .modal-body::-webkit-scrollbar-track { background: var(--light-blue); border-radius: 3px; }
-        .modal-body::-webkit-scrollbar-thumb { background: var(--primary-blue); border-radius: 3px; }
-        
-        .modal-official-photo {
-            width: 100%;
-            max-height: 200px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            border: 2px solid var(--light-blue);
-        }
-
-        .modal-info-details { font-size: 1rem; color: var(--dark-blue); text-align: left; margin-bottom: 0.8rem; }
-        .modal-info-details strong { color: var(--primary-blue); }
-        .modal-info-details a { color: var(--accent-orange); text-decoration: underline; }
-        .modal-info-details a:hover { color: var(--primary-blue); }
-        .modal-social-icons-container { display: flex; justify-content: center; gap: 1rem; margin-top: 1rem; margin-bottom: 0.5rem;}
-        .modal-social-icon {
-            display: flex; align-items: center; justify-content: center;
-            width: 40px; height: 40px; border-radius: 50%;
-            background: var(--primary-blue); color: white; text-decoration: none;
-            font-size: 1rem; transition: all 0.2s ease; box-shadow: 0 2px 6px rgba(46, 134, 193, 0.3);
-        }
-        .modal-social-icon:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 4px 8px rgba(46, 134, 193, 0.4);
-            background: var(--dark-blue);
-        }
-        
-        .modal-close-btn {
-            background: var(--accent-orange); 
-            color: white; 
-            border: none;
-            padding: 8px 12px; 
-            border-radius: 50%; 
-            font-size: 1.2rem; 
-            cursor: pointer; 
-            transition: all 0.2s ease; 
-            font-family: 'Lato', sans-serif; 
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 20;
-        }
-        
-        .modal-close-btn:hover { background: #E67E00; transform: translateY(-1px); }
-
-        /* Image Modal */
-        .image-modal-overlay { 
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1001;
-            background: rgba(27, 79, 114, 0.9);
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transition: opacity 0.3s, visibility 0.3s;
-        }
-        .image-modal-overlay.show {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
-        }
-        .image-modal-content {
-            position: relative;
-            background-color: rgba(255, 255, 255, 0.95);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(27, 79, 114, 0.4);
-            max-width: 90vw; 
-            max-height: 90vh;
-            display: flex; 
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            border: 2px solid var(--primary-blue);
-        }
-        .image-modal-img {
-            display: block;
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            border-radius: 6px;
-        }
-        .image-modal-close-btn {
-            position: absolute; 
-            top: 5px;
-            right: 5px;
-            background: rgba(27, 79, 114, 0.8);
-            color: white; border: none;
-            border-radius: 50%; width: 35px; height: 35px; font-size: 1.2rem;
-            cursor: pointer; display: flex; justify-content: center; align-items: center;
-            transition: background-color 0.2s ease;
-            z-index: 10; 
-        }
-        .image-modal-close-btn:hover { background: rgba(27, 79, 114, 1); }
-
-        .image-modal-action-btn {
-            position: absolute;
-            bottom: 10px;
-            background: rgba(27, 79, 114, 0.8);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.2s ease;
-            z-index: 10;
-        }
-        
-        .image-modal-delete-btn {
-            right: 70px;
-        }
-        
-        .image-modal-delete-btn:hover {
-            background: #dc3545;
-        }
-        
-        .image-modal-replace-btn {
-            right: 15px;
-        }
-        
-        .image-modal-replace-btn:hover {
-            background: var(--accent-orange);
-        }
-
-        .image-modal-share-btn {
-            right: 125px;
-        }
-        .image-modal-share-btn:hover {
-            background: var(--accent-orange);
-        }
-
-        /* Navigation bar at the bottom */
-        .navigation {
-            display: grid; 
-            grid-template-columns: 1fr auto 1fr; 
-            align-items: center;
-            padding: 12px 15px;
-            background: var(--dark-blue);
-            border-radius: 0 0 15px 15px;
-            width: 100%;
-            flex-shrink: 0;
-            position: relative;
-            bottom: auto;
-            left: auto;
-            right: auto;
-            z-index: 100;
-            min-height: 60px;
-            box-shadow: none;
-        }
-        
-        @media (max-width: 767px) {
-            .navigation {
-                position: fixed !important;
-                bottom: 0 !important;
-                left: 0 !important;
-                right: 0 !important;
-                z-index: 1000 !important;
-                border-radius: 0 !important;
-                box-shadow: 0 -2px 10px rgba(27, 79, 114, 0.4) !important;
-            }
-            
-            .album-book-wrapper {
-                margin: 15px 15px 90px 15px !important;
-            }
-        }
-        
-        @media (min-width: 768px) {
-            .album-book-wrapper {
-                margin: 15px;
-            }
-            
-            .page-content {
-                padding: 20px;
-            }
-            
-            .restaurant-content-wrapper {
-                padding: 20px 10px 15px 10px;
-            }
-        }
-
-        .nav-btn:first-child { justify-self: start; }
-        .page-indicator { 
-            justify-self: center; 
-            padding: 5px 0;
-        }
-        .page-indicator.index-link {
-            cursor: pointer;
-            color: var(--sky-blue);
-        }
-        .page-indicator.index-link:hover {
-            text-decoration: underline;
-            color: var(--accent-orange);
-        }
-
-        .nav-btn:last-child { justify-self: end; }
-        .nav-btn, .page-indicator { font-size: 1.1rem; color: var(--sky-blue); }
-        .nav-btn { background: none; border: none; cursor: pointer; padding: 5px 8px; transition: color 0.2s ease; }
-        .nav-btn:hover:not(:disabled) { color: var(--accent-orange); }
-        .nav-btn:disabled { color: rgba(174, 214, 241, 0.5); cursor: not-allowed; }
-
-        /* Challenge Modal Styles */
-        .challenge-modal-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(27, 79, 114, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            z-index: 1000;
-        }
-
-        .challenge-modal-overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .challenge-modal-content {
-            background: var(--sky-blue);
-            padding: 30px 25px;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(27, 79, 114, 0.4);
-            max-width: 90%;
-            width: 400px;
-            position: relative;
-            transform: translateY(-20px);
-            transition: transform 0.3s ease;
-            border: 3px solid var(--primary-blue);
-            font-family: 'Lato', sans-serif;
-            color: var(--dark-blue);
-            text-align: center;
-        }
-
-        .challenge-modal-overlay.show .challenge-modal-content {
-            transform: translateY(0);
-        }
-
-        .challenge-modal-header {
-            font-family: 'Anton', sans-serif;
-            font-size: 1.8rem;
-            color: var(--primary-blue);
-            margin-bottom: 8px;
-        }
-
-        .challenge-modal-question {
-            font-size: 1.2rem;
-            line-height: 1.4;
-            margin-bottom: 25px;
-            color: var(--dark-blue);
-        }
-
-        .challenge-modal-options {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .challenge-option-btn {
-            background: var(--light-gray);
-            color: var(--dark-blue);
-            border: 2px solid var(--primary-blue);
-            padding: 15px 20px;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: 'Lato', sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        @media (hover: hover) and (pointer: fine) {
-            .calendar-download-btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 6px 20px rgba(46, 134, 193, 0.5);
-            }
-            
-            .calendar-download-btn:hover::before {
-                left: 100%;
-            }
-        }
-
-        .calendar-download-btn:active {
-            transform: translateY(0);
-        }
-
-        .calendar-download-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .calendar-download-btn:hover::before {
-            left: 100%;
-        }
-
-        .challenge-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        .challenge-secondary-btn {
-            background: transparent;
-            color: var(--primary-blue);
-            border: 2px solid var(--primary-blue);
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: 'Lato', sans-serif;
-        }
-
-        @media (hover: hover) and (pointer: fine) {
-            .challenge-secondary-btn:hover {
-                background: var(--primary-blue);
-                color: white;
-            }
-        }
-
-
-        .challenge-option-btn:hover {
-            background: var(--primary-blue);
-            color: white;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(46, 134, 193, 0.3);
-        }
-        
-
-        @media (hover: none) {
-            .challenge-option-btn:active {
-                background: var(--primary-blue);
-                color: white;
-                transform: scale(0.98);
-            }
-        }
-
-        .challenge-days-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
-        .challenge-day-btn {
-            background: var(--light-gray);
-            color: var(--dark-blue);
-            border: 2px solid var(--primary-blue);
-            padding: 12px 8px;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: 'Lato', sans-serif;
-        }
-
-        @media (hover: hover) and (pointer: fine) {
-            .challenge-day-btn:hover {
-                background: var(--primary-blue);
-                color: white;
-            }
-        }
-
-        @media (hover: none) {
-            .challenge-day-btn:active {
-                background: var(--primary-blue);
-                color: white;
-                transform: scale(0.95);
-            }
-        }
-
-        .challenge-modal-close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: var(--accent-orange);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 35px;
-            height: 35px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s ease;
-        }
-
-        .challenge-modal-close-btn:hover {
-            background: #E67E00;
-        }
-
-        .challenge-progress {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
-        .challenge-progress-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--light-blue);
-            transition: background 0.2s ease;
-        }
-
-        .challenge-progress-dot.active {
-            background: var(--accent-orange);
-        }
-
-        .challenge-progress-dot.completed {
-            background: var(--fresh-green);
-        }
-        
-        .challenge-button {
-            background: var(--accent-orange);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 3px 8px rgba(243, 156, 18, 0.3);
-            font-family: 'Lato', sans-serif;
-            margin: 1rem 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: fit-content;
-            margin: 1rem auto;
-        }
-
-        @media (hover: hover) and (pointer: fine) {
-            .challenge-button:hover {
-                background: #E67E00;
-                transform: translateY(-1px);
-                box-shadow: 0 4px 10px rgba(243, 156, 18, 0.4);
-            }
-        }
-
-        .challenge-button.accepted {
-            background: var(--fresh-green);
-        }
-
-        @media (hover: hover) and (pointer: fine) {
-            .challenge-button.accepted:hover {
-                background: #219A52;
-            }
-        }
-
-        .challenge-success-content {
-            text-align: center;
-            padding: 20px 0;
-        }
-
-        .challenge-success-message {
-            font-size: 1.2rem;
-            color: var(--dark-blue);
-            margin-bottom: 20px;
-            line-height: 1.4;
-        }
-
-        .calendar-download-btn {
-            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
-            color: white;
-            border: none;
-            padding: 15px 25px;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(46, 134, 193, 0.4);
-            font-family: 'Lato', sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin: 0 auto;
-            text-decoration: none;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .calendar-download-btn:hover::before {
-            left: 100%;
-        }
-
-        .challenge-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        .challenge-secondary-btn {
-            background: transparent;
-            color: var(--primary-brown);
-            border: 2px solid var(--primary-brown);
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: 'Lato', sans-serif;
-        }
-
-        @media (hover: hover) and (pointer: fine) {
-            .challenge-secondary-btn:hover {
-                background: var(--primary-brown);
-                color: white;
-            }
-        }
-
-        .restaurant-list-item.highlighted-runner {
-            background: linear-gradient(135deg, var(--accent-orange), #FFB347);
-            color: white;
-            border: 2px solid var(--fresh-green);
-            box-shadow: 0 4px 12px rgba(243, 156, 18, 0.4);
-        }
-        
-        .restaurant-list-item.highlighted-runner .fa-circle,
-        .restaurant-list-item.highlighted-runner .fa-circle-check {
-            color: white;
-        }
-        
-        .restaurant-list-item.highlighted-runner::after {
-            content: '⭐';
-            margin-left: auto;
-            font-size: 1.2rem;
-            flex-shrink: 0;
-        }
-        
-        .restaurant-list-item.highlighted-runner:hover {
-            background: linear-gradient(135deg, #E67E00, #FF8C00);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(243, 156, 18, 0.5);
-        }
-
-        .trophy-modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            height: 100dvh; /* Para móviles modernos */
-            background: rgba(27, 79, 114, 0.95);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            z-index: 1400;
-            padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0);
-        }
-
-        #photoSelectionModal {
-            z-index: 1600 !important; /* Más alto que el modal de trofeos */
-        }
-
-        .trophy-modal-overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .trophy-modal-content {
-            background: var(--sky-blue);
-            width: 95vw;
-            height: 95vh;
-            height: 95dvh;
-            max-width: 400px;
-            max-height: 700px;
-            border-radius: 20px;
-            border: 3px solid var(--primary-blue);
-            box-shadow: 0 15px 40px rgba(27, 79, 114, 0.5);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .trophy-modal-header {
-            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
-            color: white;
-            padding: 20px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        .trophy-modal-header h2 {
-            font-family: 'Anton', sans-serif;
-            font-size: 1.5rem;
-            margin: 0;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .trophy-modal-body {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .trophy-profile-section {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-            padding: 10px;
-        }
-
-        .trophy-profile-photo {
-            width: 240px;
-            height: 240px;
-            border-radius: 50%;
-            border: 4px solid var(--accent-orange);
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: var(--light-gray);
-            position: relative;
-            box-shadow: 0 8px 20px rgba(243, 156, 18, 0.3);
-        }
-
-        .trophy-profile-photo:hover {
-            transform: scale(1.08);
-            box-shadow: 0 12px 25px rgba(243, 156, 18, 0.5);
-            border-color: var(--fresh-green);
-        }
-
-        .trophy-profile-photo::after {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, var(--accent-orange), var(--fresh-green), var(--primary-blue));
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .trophy-profile-photo:hover::after {
-            opacity: 1;
-        }
-
-        .trophy-profile-photo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .trophy-photo-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: var(--medium-gray);
-            text-align: center;
-            font-size: 0.7rem;
-            padding: 5px;
-        }
-
-        .trophy-photo-placeholder i {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-        }
-
-        .trophy-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            justify-items: center;
-        }
-
-        .trophy-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            transition: transform 0.2s ease;
-        }
-
-        .trophy-item.earned {
-            transform: scale(1.1);
-        }
-
-        .trophy-icon {
-            font-size: 2.5rem;
-            margin-bottom: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .trophy-icon.earned {
-            color: #FFD700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-            animation: trophy-glow 2s ease-in-out infinite alternate;
-        }
-
-        .trophy-icon.locked {
-            color: var(--medium-gray);
-        }
-
-        .trophy-label {
-            font-family: 'Lato', sans-serif;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--dark-blue);
-        }
-
-        .trophy-modal-footer {
-            background: var(--dark-blue);
-            color: var(--sky-blue);
-            text-align: center;
-            padding: 15px;
-            font-family: 'Lato', sans-serif;
-            font-size: 0.9rem;
-            flex-shrink: 0;
-        }
-
-        @keyframes trophy-glow {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.05); }
-        }
-
-        /* Scrollbar para el cuerpo del modal */
-        .trophy-modal-body::-webkit-scrollbar { width: 6px; }
-        .trophy-modal-body::-webkit-scrollbar-track { background: var(--light-blue); border-radius: 3px; }
-        .trophy-modal-body::-webkit-scrollbar-thumb { background: var(--primary-blue); border-radius: 3px; }
-
-        .trophy-stats {
-            grid-column: 1 / -1;
-            text-align: center;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 2px solid var(--light-blue);
-        }
-
-        .trophy-stats-text {
-            font-family: 'Lato', sans-serif;
-            font-size: 1.1rem;
-            color: var(--dark-blue);
-            font-weight: 600;
-        }
-
-        .trophy-stats-text strong {
-            color: var(--primary-blue);
-            font-size: 1.3rem;
-        }
-
-        .achievement-modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
-            z-index: 2000;
-        }
-
-        .achievement-modal-overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .achievement-modal-content {
-            background: var(--sky-blue);
-            width: 90vw;
-            max-width: 400px;
-            border-radius: 25px;
-            border: 4px solid var(--accent-orange);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            position: relative;
-            overflow: hidden;
-            transform: scale(0.5) rotate(-10deg);
-            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-
-        .achievement-modal-overlay.show .achievement-modal-content {
-            transform: scale(1) rotate(0deg);
-        }
-
-        .achievement-header {
-            background: linear-gradient(135deg, var(--accent-orange), #FFB347);
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .achievement-header h2 {
-            font-family: 'Anton', sans-serif;
-            font-size: 1.8rem;
-            margin: 0;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            animation: achievement-pulse 1s ease-in-out infinite alternate;
-        }
-
-        .achievement-body {
-            padding: 30px 20px;
-            text-align: center;
-        }
-
-        .achievement-trophy {
-            margin-bottom: 20px;
-            animation: achievement-bounce 1s ease-in-out infinite alternate;
-        }
-
-        .achievement-trophy i {
-            font-size: 4rem;
-            color: #FFD700;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-        }
-
-        .achievement-title {
-            font-family: 'Anton', sans-serif;
-            font-size: 1.5rem;
-            color: var(--primary-blue);
-            margin-bottom: 10px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-        }
-
-        .achievement-description {
-            font-family: 'Lato', sans-serif;
-            font-size: 1.1rem;
-            color: var(--dark-blue);
-            margin-bottom: 20px;
-            line-height: 1.4;
-        }
-
-        .achievement-progress {
-            background: var(--light-blue);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 2px solid var(--primary-blue);
-        }
-
-        .achievement-progress-text {
-            font-family: 'Lato', sans-serif;
-            font-weight: 600;
-            color: var(--dark-blue);
-            margin-bottom: 8px;
-        }
-
-        .achievement-progress-bar {
-            background: white;
-            border-radius: 10px;
-            height: 8px;
-            overflow: hidden;
-            border: 1px solid var(--primary-blue);
-        }
-
-        .achievement-progress-fill {
-            background: linear-gradient(90deg, var(--fresh-green), var(--accent-orange));
-            height: 100%;
-            transition: width 1s ease-in-out;
-            animation: achievement-progress-shine 2s ease-in-out infinite;
-        }
-
-        .achievement-footer {
-            padding: 20px;
-        }
-
-        .achievement-continue-btn {
-            background: linear-gradient(135deg, var(--fresh-green), #27AE60);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
-            font-family: 'Lato', sans-serif;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .achievement-continue-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.6);
-        }
-
-        /* Confeti */
-        .confetti-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 10;
-        }
-
-        .confetti {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            opacity: 0.8;
-            animation: confetti-fall 3s linear infinite;
-        }
-
-        .confetti:nth-child(odd) {
-            background: var(--accent-orange);
-            animation-delay: 0s;
-        }
-
-        .confetti:nth-child(even) {
-            background: var(--fresh-green);
-            animation-delay: 0.5s;
-        }
-
-        .confetti:nth-child(3n) {
-            background: var(--primary-blue);
-            animation-delay: 1s;
-        }
-
-        /* Animaciones */
-        @keyframes achievement-pulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.05); }
-        }
-
-        @keyframes achievement-bounce {
-            0% { transform: translateY(0px) rotate(-5deg); }
-            100% { transform: translateY(-10px) rotate(5deg); }
-        }
-
-        @keyframes achievement-progress-shine {
-            0% { box-shadow: inset 0 0 0 rgba(255, 255, 255, 0); }
-            50% { box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5); }
-            100% { box-shadow: inset 0 0 0 rgba(255, 255, 255, 0); }
-        }
-
-        @keyframes confetti-fall {
-            0% {
-                transform: translateY(-100vh) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
-
-    </style>
+    <link rel="stylesheet" href="main.css">
 </head>
 
 <!-- Google tag (gtag.js) -->
@@ -1439,25 +55,55 @@
   gtag('config', 'G-MVRXYHW6M9');
 </script>
 
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+
+<script src="firebase-logic.js"></script>
+
 <body>
-    <!-- 🍺 BOTÓN ANIMADO DE DONACIÓN -->
+
+
+    <div id="auth-container" class="fixed inset-0 bg-gray-900 bg-opacity-80 flex items-center justify-center z-50" style="display: none;">
+        <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-sm text-center">
+            <h2 class="text-2xl font-bold mb-4" id="auth-title">Iniciar Sesión</h2>
+            
+            <p id="auth-error" class="text-red-500 mb-4 h-5"></p>
+
+            <div id="name-field" class="mb-4" style="display: none;">
+                <input type="text" id="nameInput" placeholder="Tu Nombre" class="w-full p-3 border rounded">
+            </div>
+
+            <input type="email" id="emailInput" placeholder="Email" class="w-full p-3 border rounded mb-4">
+            <input type="password" id="passwordInput" placeholder="Contraseña" class="w-full p-3 border rounded mb-4">
+
+            <button id="auth-action-btn" class="w-full bg-blue-600 text-white p-3 rounded hover:bg-blue-700">
+                Entrar
+            </button>
+            <p class="mt-4">
+                <a href="#" id="auth-toggle-link" class="text-blue-600 hover:underline">¿No tienes cuenta? Regístrate</a>
+            </p>
+        </div>
+    </div>
 
     <div class="album-container">
         <div class="album-book-wrapper">
             <div id="currentPage" class="page">
                 <!-- Page content will be injected here -->
             </div>
+            <div class="navigation">
+                <button id="prevBtn" class="nav-btn">
+                    <i class="fas fa-chevron-left"></i> Anterior
+                </button>
+                <div id="pageIndicator" class="page-indicator"></div>
+                <button id="nextBtn" class="nav-btn">
+                    Siguiente <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
         </div>
 
-        <div class="navigation">
-            <button id="prevBtn" class="nav-btn">
-                <i class="fas fa-chevron-left"></i> Anterior
-            </button>
-            <div id="pageIndicator" class="page-indicator"></div>
-            <button id="nextBtn" class="nav-btn">
-                Siguiente <i class="fas fa-chevron-right"></i>
-            </button>
-        </div>
+
 
         <div id="infoModal" class="modal-overlay">
             <div class="modal-content">
@@ -1582,7 +228,12 @@
         let contentPages = [];
         let currentPageIndex = 0;
 
-        const PHOTO_PREFIX = 'extrunmty_photo_';
+        // NUEVAS VARIABLES GLOBALES PARA EL USUARIO
+        let currentUser = null;
+        let userData = { profile: {}, races: {} };
+        let newPhotoURLForModal = null; 
+
+        const PHOTO_PREFIX = 'extrunmty_photo_';    
 
         function initializeAlbumApp() {
             const completedRaces = getCompletedRacesList();
@@ -1603,24 +254,22 @@
 
         function getCompletedRacesList() {
             const completed = [];
-            
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if (key.startsWith(PHOTO_PREFIX)) {
-                    const raceName = key.replace(PHOTO_PREFIX, '');
-                    const raceInfo = restaurants.find(r => r.name === raceName);
-                    const participationData = getRaceData(raceName);
+            // userData.races ahora tiene la información de Firebase
+            if (userData.races) {
+                for (const raceName in userData.races) {
+                    // El nombre original está en la propiedad, no en la clave sanitizada
+                    const participationData = userData.races[raceName];
+                    const raceInfo = restaurants.find(r => r.name === participationData.raceName);
                     
                     if (raceInfo && participationData) {
                         completed.push({
                             raceInfo,
-                            participationData,
+                            participationData, // Este ya tiene { photoURL, distance, time }
                             date: new Date(raceInfo.date)
                         });
                     }
                 }
             }
-            
             // Ordenar por fecha
             return completed.sort((a, b) => a.date - b.date);
         }
@@ -1713,55 +362,35 @@ function compressImage(file, maxWidth = 800, maxHeight = 600, quality = 0.8) {
 }
 
 // 2. Función auxiliar para mostrar indicador de carga
-function showLoadingIndicator(show = true) {
-    let loader = document.getElementById('imageLoader');
-    
-    if (show) {
-        if (!loader) {
-            loader = document.createElement('div');
-            loader.id = 'imageLoader';
-            loader.innerHTML = `
-                <div style="
-                    position: fixed;
-                    top: 0; left: 0;
-                    width: 100vw; height: 100vh;
-                    background: rgba(0,0,0,0.8);
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    z-index: 2000;
-                    color: white;
-                    font-family: 'Lato', sans-serif;
-                    font-size: 1.2rem;
-                ">
-                    <div style="text-align: center;">
-                        <div style="
-                            width: 40px; height: 40px;
-                            border: 3px solid #f3f3f3;
-                            border-top: 3px solid #FF8C00;
-                            border-radius: 50%;
-                            animation: spin 1s linear infinite;
-                            margin: 0 auto 10px;
-                        "></div>
-                        Procesando imagen...
-                    </div>
-                </div>
-                <style>
-                    @keyframes spin {
-                        0% { transform: rotate(0deg); }
-                        100% { transform: rotate(360deg); }
-                    }
-                </style>
-            `;
-            document.body.appendChild(loader);
+        // Reemplaza tu función actual con esta versión mejorada
+        function showLoadingIndicator(show = true, message = 'Procesando...') { // Añadimos un parámetro de mensaje
+            let loader = document.getElementById('imageLoader');
+            
+            if (show) {
+                if (!loader) {
+                    loader = document.createElement('div');
+                    loader.id = 'imageLoader';
+                    // El resto de la creación del loader (el div con los estilos) sigue igual
+                    loader.innerHTML = `
+                        <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; z-index: 2000; color: white; font-family: 'Lato', sans-serif; font-size: 1.2rem;">
+                            <div style="text-align: center;">
+                                <div style="width: 40px; height: 40px; border: 3px solid #f3f3f3; border-top: 3px solid #FF8C00; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 10px;"></div>
+                                <span id="loaderMessage"></span>
+                            </div>
+                        </div>
+                        <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+                    `;
+                    document.body.appendChild(loader);
+                }
+                // Actualizamos el mensaje del loader
+                loader.querySelector('#loaderMessage').textContent = message;
+                loader.style.display = 'flex';
+            } else {
+                if (loader) {
+                    loader.style.display = 'none';
+                }
+            }
         }
-        loader.style.display = 'flex';
-    } else {
-        if (loader) {
-            loader.style.display = 'none';
-        }
-    }
-}
 
 // 3. Función para obtener información del archivo
 function getFileInfo(file) {
@@ -1875,65 +504,30 @@ function compressImageWithVintageFilter(file, maxWidth = 800, maxHeight = 600, q
     });
 }
 
-// Función simplificada para manejar la subida de fotos con filtro automático
-async function handlePhotoUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return;
+        // Función simplificada para manejar la subida de fotos con filtro automático
+        // Reemplaza tu handlePhotoUpload con esta versión
+        async function handlePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (!file || !currentRaceForParticipation) return;
 
-    try {
-        // Mostrar indicador de carga
-        showLoadingIndicator(true);
-        
-        // Obtener información del archivo original
-        const originalInfo = {
-            name: file.name,
-            size: file.size,
-            sizeKB: Math.round(file.size / 1024),
-        };
-        
-        console.log('Procesando imagen:', originalInfo.name, `(${originalInfo.sizeKB}KB)`);
+            showLoadingIndicator(true, "Subiendo y procesando foto...");
+            try {
+                const processedDataUrl = await compressImageWithVintageFilter(file, 800, 600, 0.8);
+                const fileBlob = base64ToBlob(processedDataUrl);
+                const downloadURL = await uploadImageAndGetURL(currentUser.uid, `races/${currentRaceForParticipation}-${Date.now()}`, fileBlob);
+                
+                newPhotoURLForModal = downloadURL;
+                showPhotoPreviewInModal(downloadURL);
 
-        gtag('event', 'cheky_completed', {
-            'cheky_list_name': 'Carreras Monterrey', // Variable con el nombre de la lista
-            'cheky_item_name': originalInfo.name          // Variable con el nombre del lugar
-            });
-        
-        // Comprimir imagen CON filtro vintage automático
-        const processedDataUrl = await compressImageWithVintageFilter(file, 800, 600, 0.8);
-        
-        // Calcular tamaño procesado
-        const processedSize = Math.round(processedDataUrl.length * 0.75); // Aproximación
-        const compressionRatio = Math.round((1 - processedSize / originalInfo.size) * 100);
-        
-        console.log(`✨ Filtro vintage aplicado y comprimido: ${originalInfo.sizeKB}KB → ${Math.round(processedSize/1024)}KB (${compressionRatio}% reducción)`);
-        
-        // Guardar imagen procesada
-        localStorage.setItem(PHOTO_PREFIX + currentRestaurantForUpload, processedDataUrl);
-        
-        // Actualizar vista
-        renderCurrentPage();
-        
-        // Ocultar indicador de carga
-        showLoadingIndicator(false);
-        
-        // Mostrar mensaje de éxito
-        showSuccessMessage(`📸 Foto guardada (${Math.round(processedSize/1024)}KB)`);
-
-        // Verificar logros
-        const oldCount = getCompletedRacesCount() - 1; // Restamos 1 porque ya se guardó la nueva
-        const newCount = getCompletedRacesCount();
-        checkForNewAchievements(newCount, oldCount);
-        
-    } catch (error) {
-        console.error('Error al procesar imagen:', error);
-        showLoadingIndicator(false);
-        alert('Error al procesar la imagen. Por favor, intenta con otra imagen.');
-    }
-    
-    // Limpiar input
-    event.target.value = '';
-}
-
+                showSuccessMessage("✅ Foto nueva cargada. Pulsa 'Guardar'.");
+            } catch (error) {
+                console.error('Error durante la subida de la foto:', error);
+                alert('Hubo un error al subir la foto a Firebase.');
+            } finally {
+                showLoadingIndicator(false);
+                event.target.value = '';
+            }
+        }
 // Funciones auxiliares (mantén las que ya tienes del código anterior)
 function showLoadingIndicator(show = true) {
     let loader = document.getElementById('imageLoader');
@@ -2051,72 +645,7 @@ function showSuccessMessage(message) {
     }, 3000);
 }
 
-// 6. Función para limpiar el localStorage si está muy lleno
-function cleanupStorage() {
-    try {
-        // Verificar espacio usado (aproximado)
-        const used = JSON.stringify(localStorage).length;
-        const usedMB = Math.round(used / (1024 * 1024) * 100) / 100;
-        
-        console.log(`Almacenamiento usado: ${usedMB}MB`);
-        
-        // Si usa más de 8MB, mostrar advertencia
-        if (usedMB > 8) {
-            console.warn('Almacenamiento casi lleno. Considera limpiar fotos antiguas.');
-        }
-        
-        return usedMB;
-    } catch (error) {
-        console.error('Error al verificar almacenamiento:', error);
-        return 0;
-    }
-}
 
-// 7. Función para exportar/respaldar fotos
-function exportPhotos() {
-    const photos = {};
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key.startsWith(PHOTO_PREFIX)) {
-            photos[key] = localStorage.getItem(key);
-        }
-    }
-    
-    const dataStr = JSON.stringify(photos, null, 2);
-    const dataBlob = new Blob([dataStr], {type: 'application/json'});
-    
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(dataBlob);
-    link.download = 'sabores_clasicos_fotos_respaldo.json';
-    link.click();
-    
-    URL.revokeObjectURL(link.href);
-}
-
-// 8. Función para importar fotos desde respaldo
-function importPhotos(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        try {
-            const photos = JSON.parse(e.target.result);
-            
-            Object.keys(photos).forEach(key => {
-                if (key.startsWith(PHOTO_PREFIX)) {
-                    localStorage.setItem(key, photos[key]);
-                }
-            });
-            
-            renderCurrentPage();
-            showSuccessMessage('Fotos restauradas exitosamente');
-        } catch (error) {
-            alert('Error al importar fotos: archivo inválido');
-        }
-    };
-    reader.readAsText(file);
-}
 
 
         function generateCompletedRaceContent(race, participationData) {
@@ -2132,9 +661,9 @@ function importPhotos(event) {
                         font-weight: 600;
                     ">${formatearFecha(race.date)}</div>
                     
-                    <div class="photo-display-area" onclick="openImageModal('${participationData.photo}')">
+                    <div class="photo-display-area" onclick="openImageModal('${participationData.photoURL}')">
                         <div class="user-photo-frame" style="position: relative;">
-                            <img src="${participationData.photo}" alt="Tu foto en ${race.name}" class="user-photo-image">
+                            <img src="${participationData.photoURL}" alt="Tu foto en ${race.name}" class="user-photo-image">
                             
                             <!-- Overlay con información -->
                             <div style="
@@ -2168,154 +697,92 @@ function importPhotos(event) {
                 </div>`;
         }
 
-        function generateRestaurantIndexContent() {
-            let completedCount = 0;
+        // Reemplaza la función existente con esta
+// Reemplaza tu función actual con esta versión mejorada
+function generateRestaurantIndexContent() {
+    const completedCount = getCompletedRacesCount();
+    let finalHtmlList = ''; // Usaremos esta variable para construir el HTML final
 
-            // Agrupar carreras por mes
-        const carrerasPorMes = {};
-        restaurants.forEach(restaurant => {
-            const fecha = new Date(restaurant.date);
-            const mesAnio = fecha.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
-            
-            if (!carrerasPorMes[mesAnio]) {
-                carrerasPorMes[mesAnio] = [];
-            }
-            carrerasPorMes[mesAnio].push(restaurant);
+    // --- NUEVA LÓGICA DE AGRUPACIÓN ---
+
+    // 1. Creamos un objeto para agrupar las carreras por mes y año
+    const carrerasPorMes = {};
+    restaurants.forEach(race => {
+        // Obtenemos la fecha y la formateamos a un texto como "Julio de 2025"
+        // Le añadimos T12:00 para evitar problemas de zona horaria
+        const fecha = new Date(race.date + 'T12:00:00');
+        const mesAnio = fecha.toLocaleDateString('es-ES', {
+            month: 'long',
+            year: 'numeric'
         });
-
-        // Ordenar meses cronológicamente
-        const mesesOrdenados = Object.keys(carrerasPorMes).sort((a, b) => {
-            const fechaA = new Date(carrerasPorMes[a][0].date);
-            const fechaB = new Date(carrerasPorMes[b][0].date);
-            return fechaA - fechaB;
-        });
-
-        // Generar HTML agrupado por mes
-        let restaurantListItems = '';
-        mesesOrdenados.forEach(mes => {
-            // Ordenar carreras dentro del mes por fecha
-            const carrerasDelMes = carrerasPorMes[mes].sort((a, b) => new Date(a.date) - new Date(b.date));
-            
-            restaurantListItems += `
-                <div style="
-                    font-family: 'Anton', sans-serif; 
-                    font-size: 1.1rem; 
-                    color: var(--primary-blue); 
-                    margin: 15px 0 8px 0; 
-                    text-align: center;
-                    text-transform: capitalize;
-                ">${mes}</div>
-            `;
-            
-            carrerasDelMes.forEach(restaurant => {
-                const hasPhoto = localStorage.getItem(PHOTO_PREFIX + restaurant.name);
-                if (hasPhoto) completedCount++;
-                const iconClass = hasPhoto ? 'fas fa-circle-check' : 'far fa-circle';
-                
-
-            const [year, month, day] = restaurant.date.split('-');
-            const fecha = new Date(year, month - 1, day);
-            const dia = fecha.getDate().toString().padStart(2, '0');
-
-            const isHighlighted = restaurant.destacada === "si";
-            const itemClass = isHighlighted ? "restaurant-list-item highlighted-runner" : "restaurant-list-item";
-            
-            restaurantListItems += `
-                <div class="${itemClass}" onclick="navigateToRestaurantPage('${restaurant.name.replace(/'/g, "\\'")}')">
-                    <div style="
-                        background: var(--dark-blue);
-                        color: var(--light-gray);
-                        padding: 4px 8px;
-                        border-radius: 6px;
-                        font-weight: 700;
-                        font-size: 0.9rem;
-                        min-width: 28px;
-                        text-align: center;
-                        flex-shrink: 0;
-                    ">${dia}</div>
-                    <i class="${iconClass}"></i>
-                    <span>${restaurant.name}</span>
-                </div>
-            `;
-            });
-        });
-
-            // Verificar si ya aceptó el reto
-            const challengeAccepted = localStorage.getItem('extrunmty01challenge_accepted') === 'true';
-            const buttonText = challengeAccepted ? 'Reto Aceptado' : 'Lo Haré';
-            const buttonClass = challengeAccepted ? 'challenge-button accepted' : 'challenge-button';
-            const buttonIcon = challengeAccepted ? 'fas fa-check' : 'fas fa-fist-raised';
-
-            return `
-                <div class="page-content restaurant-index-content">
-                    <h2 class="restaurant-index-header">Carreras MTY 2025 2S</h2>
-                    <p class="restaurant-index-count">${completedCount} carreras completadas</p>
-                    <button class="challenge-button" onclick="openTrophyModal()" style="margin: 15px auto;">
-                        <i class="fas fa-trophy"></i>
-                        Ver mis logros
-                    </button>
-                    <div class="restaurant-list-container">${restaurantListItems}</div>
-                </div>`;
+        
+        // Si no existe una entrada para este mes, la creamos como un array vacío
+        if (!carrerasPorMes[mesAnio]) {
+            carrerasPorMes[mesAnio] = [];
         }
 
-        function generateRestaurantContent(restaurant) {
-            const savedUserPhoto = localStorage.getItem(PHOTO_PREFIX + restaurant.name);
-            let photoAreaContent;
-            let photoAreaOnClick;
+        // Añadimos la carrera al array del mes correspondiente
+        carrerasPorMes[mesAnio].push(race);
+    });
 
-            if (savedUserPhoto) {
-                photoAreaContent = `
-                    <div class="user-photo-frame">
-                        <img src="${savedUserPhoto}" alt="Tu foto en ${restaurant.name}" class="user-photo-image">
-                    </div>`;
-                photoAreaOnClick = `openImageModal('${savedUserPhoto}')`;
-            } else {
-                photoAreaContent = `
-                    <div class="user-photo-placeholder-overlay">
-                        <div class="user-photo-placeholder-center">
-                            <i class="fas fa-camera user-photo-placeholder-icon"></i>
-                            <p class="user-photo-text">Toca para añadir tu foto</p>
-                        </div>
-                        <div class="user-photo-privacy-message">
-                            <strong>MODO PRIVADO ACTIVADO:</strong><br>
-                            Las fotos se guardan localmente en tu dispositivo en el caché del navegador, para compartirlas o verlas en tu aplicación de fotos debes dar clic en la foto y luego botón compartir.
-                        </div>
-                    </div>`;
-                photoAreaOnClick = `selectUserPhoto('${restaurant.name.replace(/'/g, "\\'")}', event)`;
-            }
+    // 2. Ordenamos los meses cronológicamente
+    const mesesOrdenados = Object.keys(carrerasPorMes).sort((a, b) => {
+        // Para ordenar, convertimos el mes de vuelta a una fecha
+        const fechaA = new Date(carrerasPorMes[a][0].date + 'T12:00:00');
+        const fechaB = new Date(carrerasPorMes[b][0].date + 'T12:00:00');
+        return fechaA - fechaB;
+    });
 
-            return `
-                <div class="page-content restaurant-content-wrapper">
-                    
-                    <h2 class="restaurant-title">${restaurant.name}</h2>
-                    <div style="
-                        font-family: 'Lato', sans-serif;
-                        font-size: 1rem;
-                        color: var(--medium-gray);
-                        text-align: center;
-                        margin-bottom: 15px;
-                        font-weight: 600;
-                    ">${formatearFecha(restaurant.date)}</div>
-                    <div class="photo-display-area" onclick="${photoAreaOnClick}">
-                        ${photoAreaContent}
+    // 3. Generamos el HTML final, iterando sobre los meses ya ordenados
+    mesesOrdenados.forEach(mes => {
+        // Añadimos el título del mes como separador
+        finalHtmlList += `<div class="month-separator">${mes}</div>`;
+
+        // Ordenamos las carreras DENTRO del mes por día
+        const carrerasDelMes = carrerasPorMes[mes].sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        carrerasDelMes.forEach(race => {
+            const sanitizedRaceName = race.name.replace(/[.#$[\]]/g, '_');
+            const isCompleted = userData.races && userData.races[sanitizedRaceName];
+            const completedClass = isCompleted ? 'completed' : '';
+            const iconClass = isCompleted ? 'fas fa-check-circle completed-icon' : 'far fa-circle';
+            const clickAction = isCompleted
+                ? `MapsToRacePageBySanitizedName('${sanitizedRaceName}')`
+                : `openRaceParticipationModal('${race.name}')`;
+
+            // Generamos el HTML del elemento de la lista (esto es igual que antes)
+            finalHtmlList += `
+                <li class="restaurant-list-item ${completedClass}" onclick="${clickAction}">
+                    <div class="restaurant-icon-container">
+                        <i class="${iconClass}"></i>
                     </div>
-                    <button class="info-button" onclick="openInfoModal(
-                        '${restaurant.name.replace(/'/g, "\\'")}',
-                        '${restaurant.type.replace(/'/g, "\\'")}',
-                        '${restaurant.address.replace(/'/g, "\\'")}',
-                        '${restaurant.mapUrl.replace(/'/g, "\\'")}',
-                        '${restaurant.tel.replace(/'/g, "\\'")}',
-                        '${restaurant.social.replace(/'/g, "\\'")}',
-                        '${restaurant.description.replace(/'/g, "\\'").replace(/\n/g, "\\n")}',
-                        '${(restaurant.photos && restaurant.photos.length > 0 ? restaurant.photos[0] : '').replace(/'/g, "\\'")}',
-                        '${restaurant.coordinates.replace(/'/g, "\\'")}',
-                        '${restaurant.date.replace(/'/g, "\\'")}', 
-                    )">
-                        Sobre esta Carrera <i class="fas fa-info-circle"></i>
-                    </button>
-                </div>`;
-        }
+                    <div class="restaurant-details">
+                        <div class="restaurant-name">${race.name}</div>
+                        <div class="restaurant-date">${race.date}</div>
+                    </div>
+                </li>
+            `;
+        });
+    });
 
+    // --- FIN DE LA NUEVA LÓGICA ---
+
+    // Devolvemos el HTML completo para la página del índice
+    return `
+        <div class="page-content restaurant-index-content">
+            <h2 class="restaurant-index-header">Calendario de Carreras 2S 2025</h2>
+            <p class="restaurant-index-count">${completedCount} de ${restaurants.length} carreras completadas</p>
+            <button class="challenge-button" onclick="openTrophyModal()" style="margin: 15px auto;">
+                <i class="fas fa-trophy"></i>
+                Ver mis logros
+            </button>
+            <div class="restaurant-list-container">
+                <ul class="restaurant-list">${finalHtmlList}</ul>
+            </div>
+        </div>`;
+}
+
+        
         window.openInfoModal = function(name, type, address, mapUrl, tel, social, description, officialPhotoUrl, coordinates, date) {
             const latLng = coordinates.split(',').map(coord => parseFloat(coord.trim()));
             const lat = latLng[0];
@@ -2374,18 +841,13 @@ function importPhotos(event) {
             modalImageEl.src = imageUrl;
             imageModal.classList.add('show');
         };      
+
         window.deleteCurrentImage = function() {
             if (!currentImageRestaurant) return;
             
             if (confirm('¿Estás seguro de que quieres eliminar esta participación completa?')) {
-                localStorage.removeItem(PHOTO_PREFIX + currentImageRestaurant);
                 closeImageModal();
-                
-                // Regenerar páginas para reflejar el cambio
-                initializeAlbumApp();
-                navigateToPage(2, 'backward'); // Volver al índice
-                
-                showSuccessMessage('🗑️ Participación eliminada');
+                deleteRaceParticipation(currentImageRestaurant); // Llama a la nueva función
             }
         };
 
@@ -2459,226 +921,34 @@ function importPhotos(event) {
             updateNavigation();
         }
 
-        function generateCoverContent() {
-            const userName = localStorage.getItem('EXATECuser_name') || 'Mi';
-            const profilePhoto = localStorage.getItem('exttrophy_profile_photo');
+function generateCoverContent() {
+    const userName = userData?.profile?.name || currentUser?.displayName || 'Mi';
+    const profilePhoto = userData?.profile?.photoURL;
     
-            // Determinar qué imagen usar
-            let coverImageHTML;
-            if (profilePhoto) {
-                coverImageHTML = `<img src="${profilePhoto}" onerror="this.onerror=null;this.src='CarreraMty.png';" alt="Mi foto de perfil" class="cover-image profile-photo">`;
-            } else {
-                coverImageHTML = `<img src="CarreraMty.png" onerror="this.onerror=null;this.src='https://placehold.co/150x150/D2B48C/654321?text=Error';" alt="Carreras" class="cover-image">`;
-            }
-            
-            return `
-                <div class="page-content cover-page">
-                                <!-- Botón de editar en la parte superior -->
-                    <div style="position: absolute; top: 20px; right: 20px; z-index: 10;">
-                        <button onclick="changeUserName()" style="
-                            background: transparent;
-                            border: 2px solid lightblue;
-                            color: lightblue;
-                            padding: 8px 16px;
-                            border-radius: 20px;
-                            font-size: 0.9rem;
-                            cursor: pointer;
-                            transition: all 0.2s ease;
-                        " onmouseover="this.style.background='white'; this.style.color='var(--primary-blue)'" 
-                        onmouseout="this.style.background='transparent'; this.style.color='white'">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                    </div>
-                    <h2 class="cover-subtitle">Álbum de Carreras 2025</h2>
-                    <h1 class="cover-title">de ${userName}</h1>
-                    <br>
-                    ${coverImageHTML}                    
-                    <div class="cover-presented">
-                        presentado por:<br><span class="cheky-highlight">Club EXATEC Running Monterrey</span>
-                                            <!-- Botón para cambiar nombre -->
+    let coverImageHTML = profilePhoto 
+        ? `<img src="${profilePhoto}" ... class="cover-image profile-photo">`
+        : `<img src="CarreraMty.png" ... class="cover-image">`;
 
-                    </div>
+    // El return DEBE ser un único elemento hijo para el flexbox
+    return `
+        <div class="page-content cover-page">
+            <div style="position: absolute; top: 20px; right: 20px; z-index: 10;">
+                <button onclick="signOutUser()" style="...">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </button>
+            </div>
+            <h2 class="cover-subtitle">Álbum de Carreras 2025</h2>
+            <h1 class="cover-title">de ${userName}</h1>
+            <br>
+            ${coverImageHTML}
+            <div class="cover-presented">
+                 presentado por:<br><span class="cheky-highlight">Club EXATEC Running Monterrey</span>
+            </div>
+        </div>
+    `;
+}
 
-                </div>`;
-        }   
 
-        function changeUserName() {
-            openUserProfileModal();
-        }
-
-        function openUserProfileModal() {
-            const currentName = localStorage.getItem('EXATECuser_name') || '';
-            const currentPhoto = localStorage.getItem('exttrophy_profile_photo');
-            
-            let photoPreviewHTML;
-            if (currentPhoto) {
-                photoPreviewHTML = `
-                    <div class="profile-photo-preview" style="position: relative;">
-                        <img src="${currentPhoto}" style="
-                            width: 120px;
-                            height: 120px;
-                            border-radius: 50%;
-                            object-fit: cover;
-                            border: 3px solid var(--primary-blue);
-                            display: block;
-                            margin: 0 auto;
-                        ">
-                        <button onclick="selectProfilePhoto()" style="
-                            position: absolute;
-                            bottom: 0;
-                            right: calc(50% - 75px);
-                            background: var(--accent-orange);
-                            color: white;
-                            border: none;
-                            border-radius: 50%;
-                            width: 35px;
-                            height: 35px;
-                            cursor: pointer;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-                        ">
-                            <i class="fas fa-camera" style="font-size: 0.9rem;"></i>
-                        </button>
-                    </div>
-                `;
-            } else {
-                photoPreviewHTML = `
-                    <div class="profile-photo-upload" onclick="selectProfilePhoto()" style="
-                        width: 120px;
-                        height: 120px;
-                        border-radius: 50%;
-                        border: 3px dashed var(--primary-blue);
-                        background: var(--light-gray);
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        justify-content: center;
-                        cursor: pointer;
-                        margin: 0 auto;
-                        transition: all 0.2s ease;
-                    ">
-                        <i class="fas fa-camera" style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 5px;"></i>
-                        <span style="font-size: 0.8rem; color: var(--dark-blue); text-align: center;">Añadir foto</span>
-                    </div>
-                `;
-            }
-            
-            const modalHTML = `
-                <div id="userProfileModal" class="modal-overlay show">
-                    <div class="modal-content" style="max-width: 400px;">
-                        <h3 class="modal-header">👤 Mi Perfil</h3>
-                        <div class="modal-body">
-                            <div style="text-align: center; margin-bottom: 20px;">
-                                ${photoPreviewHTML}
-                                <p style="font-size: 0.9rem; color: var(--medium-gray); margin-top: 10px;">
-                                    Esta foto aparecerá en la portada de tu álbum
-                                </p>
-                            </div>
-                            
-                            <div style="margin-bottom: 20px;">
-                                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--dark-blue);">
-                                    Tu nombre:
-                                </label>
-                                <input type="text" id="userNameInput" placeholder="Escribe tu nombre" value="${currentName}" style="
-                                    width: 100%; 
-                                    padding: 12px; 
-                                    border: 2px solid var(--light-blue);
-                                    border-radius: 8px; 
-                                    font-size: 1.1rem;
-                                    font-family: 'Lato', sans-serif;
-                                ">
-                            </div>
-                            
-                            <div style="display: flex; gap: 10px;">
-                                <button class="info-button" onclick="saveUserProfile()" style="
-                                    flex: 1; margin: 0;
-                                ">
-                                    <i class="fas fa-save"></i>
-                                    Guardar
-                                </button>
-                                <button class="info-button" onclick="closeUserProfileModal()" style="
-                                    flex: 1; margin: 0; background: var(--medium-gray);
-                                ">
-                                    <i class="fas fa-times"></i>
-                                    Cancelar
-                                </button>
-                            </div>
-                            
-                            ${currentPhoto ? `
-                                <div style="text-align: center; margin-top: 15px;">
-                                    <button onclick="removeProfilePhoto()" style="
-                                        background: transparent;
-                                        border: 2px solid #dc3545;
-                                        color: #dc3545;
-                                        padding: 8px 16px;
-                                        border-radius: 20px;
-                                        font-size: 0.9rem;
-                                        cursor: pointer;
-                                        transition: all 0.2s ease;
-                                    ">
-                                        <i class="fas fa-trash"></i> Quitar foto
-                                    </button>
-                                </div>
-                            ` : ''}
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            document.body.insertAdjacentHTML('beforeend', modalHTML);
-            
-            // Enfocar el input
-            setTimeout(() => {
-                const input = document.getElementById('userNameInput');
-                input.focus();
-                if (currentName) {
-                    input.select();
-                }
-            }, 100);
-        }
-
-        function closeUserProfileModal() {
-            const modal = document.getElementById('userProfileModal');
-            if (modal) {
-                modal.remove();
-            }
-            currentRestaurantForUpload = null; // Reset
-        }
-
-        function saveUserProfile() {
-            const input = document.getElementById('userNameInput');
-            const newName = input.value.trim();
-            
-            if (newName) {
-                localStorage.setItem('EXATECuser_name', newName);
-                closeUserProfileModal();
-                renderCurrentPage();
-                showSuccessMessage(`👤 Perfil actualizado: ¡Hola ${newName}!`);
-            } else {
-                // Hacer que el input parpadee para indicar error
-                input.style.borderColor = '#dc3545';
-                input.placeholder = 'Por favor escribe tu nombre';
-                setTimeout(() => {
-                    input.style.borderColor = 'var(--light-blue)';
-                }, 2000);
-            }
-        }
-
-        function selectProfilePhoto() {
-            currentRestaurantForUpload = 'profile'; // Marcador especial para foto de perfil
-            userPhotoInput.click();
-        }
-
-        function removeProfilePhoto() {
-            if (confirm('¿Quieres quitar tu foto de perfil?')) {
-                localStorage.removeItem('exttrophy_profile_photo');
-                closeUserProfileModal();
-                renderCurrentPage();
-                showSuccessMessage('📷 Foto de perfil eliminada');
-            }
-        }
 
         function updateNavigation() {
             prevBtn.disabled = currentPageIndex === 0;
@@ -2730,60 +1000,59 @@ function importPhotos(event) {
             }
         };
 
-        function openRaceParticipationModal(raceName) {
-            const race = restaurants.find(r => r.name === raceName);
-            
+        // Reemplaza tu función actual con esta versión para asegurar que el ID es correcto
+        function openRaceParticipationModal(raceName, existingData = null) {
+            newPhotoURLForModal = null; // Reiniciamos la variable
+            const isEdit = !!existingData;
+
+            let photoContentHTML;
+            if (isEdit && existingData.photoURL) {
+                photoContentHTML = `
+                    <div class="photo-preview" style="position: relative;">
+                        <img src="${existingData.photoURL}" style="width: 100%; max-height: 150px; object-fit: cover; border-radius: 6px;">
+                        <button onclick="selectPhotoForRace('${raceName}')" title="Cambiar foto" style="position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-camera" style="font-size: 0.8rem;"></i>
+                        </button>
+                    </div>`;
+            } else {
+                photoContentHTML = `
+                    <div class="photo-upload-area" onclick="selectPhotoForRace('${raceName}')" style="border: 2px dashed var(--primary-blue); border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; background: var(--light-gray);">
+                        <i class="fas fa-camera" style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 8px;"></i>
+                        <p>Toca para subir tu foto</p>
+                    </div>`;
+            }
+
             const modalHTML = `
                 <div id="raceParticipationModal" class="modal-overlay show">
                     <div class="modal-content" style="max-width: 400px;">
-                        <h3 class="modal-header">¡Registrar Participación!</h3>
+                        <h3 class="modal-header">${isEdit ? '✏️ Editar Participación' : '📝 Registrar Participación'}</h3>
                         <div class="modal-body">
                             <h4 style="text-align: center; margin-bottom: 15px;">${raceName}</h4>
-                            
                             <div style="margin-bottom: 15px;">
                                 <label style="display: block; margin-bottom: 5px; font-weight: 600;">📸 Foto de la carrera:</label>
-                                <div class="photo-upload-area" onclick="selectPhotoForRace('${raceName}')" style="
-                                    border: 2px dashed var(--primary-blue);
-                                    border-radius: 8px;
-                                    padding: 20px;
-                                    text-align: center;
-                                    cursor: pointer;
-                                    background: var(--light-gray);
-                                ">
-                                    <i class="fas fa-camera" style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 8px;"></i>
-                                    <p>Toca para subir tu foto</p>
+                                <div id="modalPhotoContainer">
+                                    ${photoContentHTML}
                                 </div>
                             </div>
-                            
                             <div style="margin-bottom: 15px;">
                                 <label style="display: block; margin-bottom: 5px; font-weight: 600;">🏃 Distancia:</label>
-                                <select id="raceDistance" style="
-                                    width: 100%; padding: 8px; border: 2px solid var(--light-blue);
-                                    border-radius: 6px; font-size: 1rem;
-                                ">
+                                <select id="raceDistance" style="width: 100%; padding: 8px; border: 2px solid var(--light-blue); border-radius: 6px; font-size: 1rem;">
                                     <option value="">Seleccionar distancia</option>
-                                    <option value="5K">5K</option>
-                                    <option value="10K">10K</option>
-                                    <option value="15K">15K</option>
-                                    <option value="21K">21K (Media Maratón)</option>
-                                    <option value="42K">42K (Maratón)</option>
-                                    <option value="Otra">Otra distancia</option>
+                                    <option value="5K" ${existingData?.distance === '5K' ? 'selected' : ''}>5K</option>
+                                    <option value="10K" ${existingData?.distance === '10K' ? 'selected' : ''}>10K</option>
+                                    <option value="15K" ${existingData?.distance === '15K' ? 'selected' : ''}>15K</option>
+                                    <option value="21K" ${existingData?.distance === '21K' ? 'selected' : ''}>21K (Media Maratón)</option>
+                                    <option value="42K" ${existingData?.distance === '42K' ? 'selected' : ''}>42K (Maratón)</option>
+                                    <option value="Otra" ${existingData?.distance === 'Otra' ? 'selected' : ''}>Otra distancia</option>
                                 </select>
                             </div>
-                            
                             <div style="margin-bottom: 20px;">
                                 <label style="display: block; margin-bottom: 5px; font-weight: 600;">⏱️ Tiempo (opcional):</label>
-                                <input type="text" id="raceTime" placeholder="ej: 25:30, 1:15:45" style="
-                                    width: 100%; padding: 8px; border: 2px solid var(--light-blue);
-                                    border-radius: 6px; font-size: 1rem;
-                                ">
+                                <input type="text" id="raceTime" placeholder="ej: 25:30" value="${existingData?.time || ''}" style="width: 100%; padding: 8px; border: 2px solid var(--light-blue); border-radius: 6px; font-size: 1rem;">
                             </div>
-                            
-                            <button class="info-button" onclick="saveRaceParticipation('${raceName}')" style="
-                                width: 100%; margin: 0;
-                            ">
+                            <button class="info-button" onclick="saveRaceParticipation('${raceName}')" style="width: 100%; margin: 0;">
                                 <i class="fas fa-save"></i>
-                                Guardar Participación
+                                ${isEdit ? 'Actualizar Participación' : 'Guardar Participación'}
                             </button>
                         </div>
                         <button class="modal-close-btn" onclick="closeRaceParticipationModal()">
@@ -2843,63 +1112,6 @@ function importPhotos(event) {
             window.open(mapUrl, '_blank');
         }
 
-        window.acceptChallenge = function() {
-            const challengeAccepted = localStorage.getItem('extrunmty01challenge_accepted') === 'true';
-            
-            if (!challengeAccepted) {
-                openChallengeModal();
-            } else {
-                // Si ya está aceptado, mostrar resumen del plan
-                showChallengeStatus();
-            }
-        };
-
-        let challengeStep = 1;
-        let challengeData = {};
-
-        window.openChallengeModal = function() {
-            challengeStep = 1;
-            challengeData = {};
-
-            // 📊 ANALYTICS: Usuario inicia el proceso del reto
-            trackChallengeEvent('challenge_started', {
-                'event_label': 'Challenge Modal Opened',
-                'user_type': localStorage.getItem('extrunmty01challenge_accepted') ? 'returning' : 'new'
-            });
-
-            showChallengeStep();
-            document.getElementById('challengeModal').classList.add('show');
-        };
-
-        window.closeChallengeModal = function() {
-
-            const challengeWasInProgress = challengeStep > 1 && !localStorage.getItem('extrunmty01challenge_accepted');
-    
-            // 📊 ANALYTICS: Usuario abandona el proceso
-            if (challengeWasInProgress) {
-                trackChallengeEvent('challenge_abandoned', {
-                    'event_label': 'Modal Closed Without Completion',
-                    'step_abandoned': challengeStep,
-                    'partial_rhythm': challengeData.rhythm || 'not_selected',
-                    'partial_day': challengeData.day || 'not_selected',
-                    'partial_time': challengeData.time || 'not_selected',
-                    'completion_percentage': Math.round((challengeStep - 1) / 3 * 100)
-                });
-            }
-            document.getElementById('challengeModal').classList.remove('show');
-        };
-
-        function showChallengeStep() {
-            updateProgressDots();
-            
-            if (challengeStep === 1) {
-                showRhythmQuestion();
-            } else if (challengeStep === 2) {
-                showDayQuestion();
-            } else if (challengeStep === 3) {
-                showTimeQuestion();
-            }
-        }
 
         function updateProgressDots() {
             for (let i = 1; i <= 3; i++) {
@@ -2914,287 +1126,6 @@ function importPhotos(event) {
             }
         }
 
-        function showRhythmQuestion() {
-            document.getElementById('challengeModalTitle').textContent = '🎯 ¡Vamos a planear!';
-            document.getElementById('challengeModalQuestion').textContent = '¿Con qué frecuencia quieres explorar? ¡Vamos a crear un plan!';
-            
-            document.getElementById('challengeModalOptions').innerHTML = `
-                <button class="challenge-option-btn" onclick="selectRhythm('weekly')">
-                    <i class="fas fa-calendar-week"></i>
-                    Una vez a la semana (Ritmo Constante)
-                </button>
-                <button class="challenge-option-btn" onclick="selectRhythm('biweekly')">
-                    <i class="fas fa-calendar-alt"></i>
-                    Una vez cada 15 días (Ritmo Relajado)
-                </button>
-                <button class="challenge-option-btn" onclick="selectRhythm('flexible')">
-                    <i class="fas fa-user-clock"></i>
-                    ¡A mi propio paso! (Sin plan)
-                </button>
-            `;
-        }
-
-        function showDayQuestion() {
-            document.getElementById('challengeModalTitle').textContent = '📅 Día Perfecto';
-            document.getElementById('challengeModalQuestion').textContent = 'Perfecto. ¿Qué día de la semana te funciona mejor?';
-            
-            const days = [
-                { key: 'monday', label: 'Lun', icon: 'fas fa-moon' },
-                { key: 'tuesday', label: 'Mar', icon: 'fas fa-coffee' },
-                { key: 'wednesday', label: 'Mié', icon: 'fas fa-sun' },
-                { key: 'thursday', label: 'Jue', icon: 'fas fa-star' },
-                { key: 'friday', label: 'Vie', icon: 'fas fa-cocktail' },
-                { key: 'saturday', label: 'Sáb', icon: 'fas fa-heart' },
-                { key: 'sunday', label: 'Dom', icon: 'fas fa-home' }
-            ];
-            
-            document.getElementById('challengeModalOptions').innerHTML = `
-                <div class="challenge-days-grid">
-                    ${days.map(day => `
-                        <button class="challenge-day-btn" onclick="selectDay('${day.key}')">
-                            <i class="${day.icon}"></i><br>${day.label}
-                        </button>
-                    `).join('')}
-                </div>
-            `;
-        }
-
-        function showTimeQuestion() {
-            document.getElementById('challengeModalTitle').textContent = '🕐 Hora Ideal';
-            document.getElementById('challengeModalQuestion').textContent = '¿Tarde o noche?';
-            
-            document.getElementById('challengeModalOptions').innerHTML = `
-                <button class="challenge-option-btn" onclick="selectTime('lunch')">
-                    <i class="fas fa-utensils"></i>
-                    En la comida (2 PM)
-                </button>
-                <button class="challenge-option-btn" onclick="selectTime('afternoon')">
-                    <i class="fas fa-sun"></i>
-                    Tarde (5 PM)
-                </button>
-                <button class="challenge-option-btn" onclick="selectTime('evening')">
-                    <i class="fas fa-moon"></i>
-                    Noche (8 PM)
-                </button>
-            `;
-        }
-
-        window.selectRhythm = function(rhythm) {
-            challengeData.rhythm = rhythm;
-
-            // 📊 ANALYTICS: Usuario selecciona frecuencia
-            trackChallengeEvent('challenge_step_rhythm', {
-                'event_label': rhythm,
-                'step_number': 1,
-                'rhythm_type': rhythm,
-                'is_flexible': rhythm === 'flexible'
-            });
-            
-            if (rhythm === 'flexible') {
-                // Si eligió flexible, saltar directo al final
-                finalizeChallengeSetup();
-            } else {
-                challengeStep = 2;
-                showChallengeStep();
-            }
-        };
-
-        window.selectDay = function(day) {
-            challengeData.day = day;
-
-            // 📊 ANALYTICS: Usuario selecciona día
-            trackChallengeEvent('challenge_step_day', {
-                'event_label': day,
-                'step_number': 2,
-                'selected_day': day,
-                'rhythm_context': challengeData.rhythm
-            });
-            challengeStep = 3;
-            showChallengeStep();
-        };
-
-        window.selectTime = function(time) {
-            challengeData.time = time;
-
-            // 📊 ANALYTICS: Usuario selecciona horario
-            trackChallengeEvent('challenge_step_time', {
-                'event_label': time,
-                'step_number': 3,
-                'selected_time': time,
-                'full_config': `${challengeData.rhythm}_${challengeData.day}_${time}`
-            });
-
-            finalizeChallengeSetup();
-        };
-
-        function finalizeChallengeSetup() {
-            // Guardar configuración
-            localStorage.setItem('extrunmty01challenge_accepted', 'true');
-            localStorage.setItem('challenge_config', JSON.stringify(challengeData));
-
-            // 📊 ANALYTICS: Usuario completa la configuración del reto
-            trackChallengeEvent('extrunmty01challenge_accepted', {
-                'event_label': 'Challenge Configuration Complete',
-                'rhythm': challengeData.rhythm,
-                'day': challengeData.day || 'flexible',
-                'time': challengeData.time || 'flexible',
-                'configuration_string': `${challengeData.rhythm}_${challengeData.day || 'flexible'}_${challengeData.time || 'flexible'}`,
-                'steps_completed': challengeData.rhythm === 'flexible' ? 1 : 3
-            });
-            
-            // Mostrar pantalla de confirmación
-            showChallengeSuccess();
-            
-            // Analytics
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'challenge_configured', {
-                    'event_category': 'engagement',
-                    'rhythm': challengeData.rhythm,
-                    'day': challengeData.day || 'flexible',
-                    'time': challengeData.time || 'flexible'
-                });
-            }
-        }
-
-        function showChallengeSuccess() {
-            document.getElementById('challengeModalTitle').textContent = '🎉 ¡Perfecto!';
-            
-            const config = challengeData;
-            let planDescription = '';
-            
-            if (config.rhythm === 'flexible') {
-                planDescription = 'Tu plan flexible está listo. ¡Explora a tu ritmo!';
-            } else {
-                const rhythmText = config.rhythm === 'weekly' ? 'semanal' : 'quincenal';
-                const dayNames = {
-                    monday: 'lunes', tuesday: 'martes', wednesday: 'miércoles',
-                    thursday: 'jueves', friday: 'viernes', saturday: 'sábados', sunday: 'domingos'
-                };
-                const timeText = {
-                    'lunch': 'al mediodía',
-                    'afternoon': 'en las tardes', 
-                    'evening': 'en las noches'
-                }[config.time];
-                
-                planDescription = `Tu plan ${rhythmText} los ${dayNames[config.day]} en las ${timeText} está listo.`;
-            }
-            
-            document.getElementById('challengeModalQuestion').textContent = '';
-            
-            const showCalendarButton = config.rhythm !== 'flexible';
-            
-            document.getElementById('challengeModalOptions').innerHTML = `
-                <div class="challenge-success-content">
-                    <p class="challenge-success-message">
-                        ¡Genial! ${planDescription}<br><br>
-                        ${showCalendarButton ? 'Para que no se te olvide, hemos creado un archivo de calendario para ti.' : '¡Disfruta explorando las carreras !'}
-                    </p>
-                    
-                    <div class="challenge-actions">
-                        ${showCalendarButton ? `
-                            <button class="calendar-download-btn" onclick="downloadCalendarFile()">
-                                <i class="fas fa-calendar-plus"></i>
-                                Añadir a mi calendario
-                            </button>
-                        ` : ''}
-                        
-                        <button class="challenge-secondary-btn" onclick="finishChallengeSetup()">
-                            ${showCalendarButton ? 'Continuar sin calendario' : '¡Empezar a explorar!'}
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-        window.finishChallengeSetup = function() {
-
-            // 📊 ANALYTICS: Usuario completa sin descargar calendario
-            trackChallengeEvent('challenge_completed_no_calendar', {
-                'event_label': 'Finished Without Calendar Download',
-                'completion_method': 'skip_calendar'
-            });
-
-            closeChallengeModal();
-            showSuccessMessage('🎯 ¡Reto configurado! ¡A explorar carreras!');
-            renderCurrentPage();
-        };
-
-        window.showChallengeStatus = function() {
-            const config = JSON.parse(localStorage.getItem('challenge_config') || '{}');
-
-            // 📊 ANALYTICS: Usuario revisa el estado de su reto existente
-            trackChallengeEvent('challenge_status_viewed', {
-                'event_label': 'Existing Challenge Status Check',
-                'current_rhythm': config.rhythm || 'unknown',
-                'current_day': config.day || 'unknown',
-                'current_time': config.time || 'unknown',
-                'has_calendar_config': Object.keys(config).length > 0
-            });
-
-            let statusMessage = '';
-            
-            if (config.rhythm === 'flexible') {
-                statusMessage = '🎯 Tu plan: Explorar a tu propio ritmo';
-                showSuccessMessage(statusMessage);
-            } else {
-                const rhythmText = config.rhythm === 'weekly' ? 'cada semana' : 'cada 15 días';
-                const dayNames = {
-                    monday: 'lunes', tuesday: 'martes', wednesday: 'miércoles',
-                    thursday: 'jueves', friday: 'viernes', saturday: 'sábados', sunday: 'domingos'
-                };
-                const timeText = {
-                    'lunch': 'al mediodía',
-                    'afternoon': 'en las tardes', 
-                    'evening': 'en las noches'
-                }[config.time];
-                
-                statusMessage = `🎯 Tu plan: ${rhythmText} los ${dayNames[config.day]} ${timeText}`;
-                
-                // Ofrecer descargar calendario de nuevo
-                const shouldShowCalendarOption = confirm(statusMessage + '\n\n¿Quieres descargar tu calendario de eventos?');
-                if (shouldShowCalendarOption) {
-                    challengeData = config; // Restaurar datos para la descarga
-                    downloadCalendarFile();
-                } else {
-                    showSuccessMessage(statusMessage);
-                }
-            }
-        };
-
-        window.downloadCalendarFile = function() {
-            const config = challengeData;
-            const icsContent = generateICSFile(config);
-            downloadFile(icsContent, 'cheky-carreras.ics', 'text/calendar');
-
-            // 📊 ANALYTICS: Usuario descarga el archivo de calendario
-            trackChallengeEvent('calendar_downloaded', {
-                'event_label': 'ICS File Download',
-                'rhythm': config.rhythm,
-                'day': config.day,
-                'time': config.time,
-                'file_type': 'ics',
-                'file_name': 'cheky-carreras-.ics',
-                'events_count': 12
-            });
-            
-            // Analytics
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'calendar_downloaded', {
-                    'event_category': 'engagement',
-                    'rhythm': config.rhythm,
-                    'day': config.day,
-                    'time': config.time
-                });
-            }
-            
-            showSuccessMessage('📅 ¡Calendario descargado! Revisa tu carpeta de descargas');
-            
-            // Cerrar modal y actualizar página
-            setTimeout(() => {
-                closeChallengeModal();
-                renderCurrentPage();
-            }, 1500);
-        };
 
 function generateICSFile(config) {
     const now = new Date();
@@ -3420,12 +1351,63 @@ function generateICSFile(config) {
         let currentTrophyPhoto = null;
 
         // Inicializar input de foto de trofeo
+        /*
         document.addEventListener('DOMContentLoaded', function() {
             trophyPhotoInput = document.getElementById('trophyPhotoInput');
             if (trophyPhotoInput) {
                 trophyPhotoInput.addEventListener('change', handleTrophyPhotoUpload);
             }
         });
+        */
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Escondemos el álbum al principio
+            document.querySelector('.album-container').style.display = 'none';
+
+            // Configuramos el observador de autenticación
+            onAuthStateChangedHandler(
+                (user) => { // Usuario logueado
+                    currentUser = user;
+                    document.getElementById('auth-container').style.display = 'none';
+                    document.querySelector('.album-container').style.display = 'block';
+                    
+                    // Cargar datos del usuario y luego la app
+                    loadInitialDataAndStartApp();
+                },
+                () => { // Usuario no logueado
+                    currentUser = null;
+                    document.querySelector('.album-container').style.display = 'none';
+                    showAuthForm(); // Mostramos el formulario de login/signup
+                }
+            );
+
+            // Lógica del formulario de autenticación
+            setupAuthFormListeners();
+        });
+
+        // NUEVA FUNCIÓN para cargar datos antes de iniciar
+        async function loadInitialDataAndStartApp() {
+            try {
+                // Cargar el JSON de carreras (esto sigue siendo local)
+                const response = await fetch('carreras.json');
+                restaurants = await response.json();
+
+                // Cargar los datos de las carreras del usuario desde Firebase
+                const userRaces = await getAllUserRaces(currentUser.uid);
+                userData.races = userRaces || {}; // Si no tiene carreras, es un objeto vacío
+
+                // Cargar perfil de usuario
+                const userProfile = await getUserProfileData(currentUser.uid);
+                userData.profile = userProfile || { name: currentUser.displayName };
+
+                // Ahora sí, inicializar el álbum
+                initializeAlbumApp();
+
+            } catch (error) {
+                console.error("Error al cargar datos iniciales:", error);
+                alert("No se pudieron cargar los datos. Intenta recargar la página.");
+            }
+        }
 
         // Configuración de trofeos
         const trophyConfig = [
@@ -3448,7 +1430,7 @@ function generateICSFile(config) {
 
         function generateTrophyContent() {
             const completedCount = getCompletedRacesCount();
-            const savedTrophyPhoto = localStorage.getItem('exttrophy_profile_photo');
+            const savedTrophyPhoto = userData?.profile?.photoURL;
             
             // Actualizar foto de perfil
             const profilePhotoEl = document.querySelector('.trophy-profile-photo');
@@ -3505,83 +1487,92 @@ function generateICSFile(config) {
 
         function getAvailablePhotos() {
             const photos = [];
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if (key.startsWith(PHOTO_PREFIX)) {
-                    const raceName = key.replace(PHOTO_PREFIX, '');
-                    const raceData = getRaceData(raceName);
-                    
-                    if (raceData && raceData.photo) {
-                        photos.push({ 
-                            name: raceName, 
-                            data: raceData.photo // Usar raceData.photo en lugar de photoData directamente
-                        });
-                    }
+
+            // Primero, nos aseguramos de que los datos del usuario se hayan cargado
+            if (!userData || !userData.races) {
+                console.warn("getAvailablePhotos: No hay datos de carreras de usuario cargados.");
+                return []; // Devuelve un array vacío si no hay nada que buscar
+            }
+
+            // Iteramos sobre las claves del objeto de carreras del usuario (ej: "Carrera_Teleton_2025")
+            for (const key in userData.races) {
+                const raceData = userData.races[key];
+                
+                // Si la carrera tiene datos y una URL de foto, la añadimos a la lista
+                if (raceData && raceData.photoURL) {
+                    photos.push({
+                        name: raceData.raceName, // Usamos el nombre original que guardamos
+                        data: raceData.photoURL  // Usamos la URL de la foto
+                    });
                 }
             }
+            
             return photos;
         }
 
-        function showPhotoSelectionModal(photos) {
-            const selectionHTML = `
-                <div id="photoSelectionModal" class="modal-overlay show">
-                    <div class="modal-content" style="max-width: 350px;">
-                        <h3 class="modal-header">Elige tu foto favorita</h3>
-                        <div class="modal-body" style="max-height: 400px;">
-                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
-                                ${photos.map(photo => {
-                                    const raceData = getRaceData(photo.name);
-                                    let extraInfo = '';
-                                    if (raceData) {
-                                        if (raceData.distance) extraInfo += raceData.distance;
-                                        if (raceData.time) extraInfo += ` • ${raceData.time}`;
-                                    }
-                                    
-                                    return `
-                                        <div style="
-                                            border: 2px solid var(--light-blue);
-                                            border-radius: 8px;
-                                            overflow: hidden;
-                                            cursor: pointer;
-                                            transition: border-color 0.2s ease;
-                                        " onclick="selectPhotoForTrophy('${photo.data}', '${photo.name}')">
-                                            <img src="${photo.data}" style="width: 100%; height: 80px; object-fit: cover;">
-                                            <div style="padding: 5px; font-size: 0.8rem; text-align: center; background: var(--light-gray);">
-                                                <div style="font-weight: 600;">${photo.name}</div>
-                                                ${extraInfo ? `<div style="font-size: 0.7rem; color: var(--medium-gray);">${extraInfo}</div>` : ''}
-                                            </div>
-                                        </div>
-                                    `;
-                                }).join('')}
+                // Reemplaza tu función actual con esta versión corregida
+                function showPhotoSelectionModal(photos) {
+                    // Para depuración, podemos ver qué datos le llegan a la función.
+                    // Abre la consola (F12) para ver este mensaje.
+                    console.log('Datos recibidos para el modal de selección de fotos:', photos);
+
+                    const selectionHTML = `
+                        <div id="photoSelectionModal" class="modal-overlay show">
+                            <div class="modal-content" style="max-width: 350px;">
+                                <h3 class="modal-header">Elige tu foto favorita</h3>
+                                <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                                        ${photos.map(photo => {
+                                            // Escapamos las comillas simples en el nombre de la carrera por si acaso
+                                            const escapedName = photo.name.replace(/'/g, "\\'");
+
+                                            // NOTA: photo.data contiene la URL de la imagen.
+                                            // Nos aseguramos de usarla en el `src` de la etiqueta `<img>`.
+                                            return `
+                                                <div class="photo-selection-item" 
+                                                    onclick="selectPhotoForTrophy('${photo.data}', '${escapedName}')"
+                                                    style="border: 2px solid var(--light-blue); border-radius: 8px; overflow: hidden; cursor: pointer;">
+                                                    
+                                                    <img src="${photo.data}" style="width: 100%; height: 100px; object-fit: cover;">
+                                                    
+                                                    <div style="padding: 8px; font-size: 0.8rem; text-align: center; background: var(--light-gray);">
+                                                        <div style="font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                            ${photo.name}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            `;
+                                        }).join('')}
+                                    </div>
+                                </div>
+                                <button class="modal-close-btn" onclick="closePhotoSelectionModal()">
+                                    <i class="fas fa-times"></i>
+                                </button>
                             </div>
                         </div>
-                        <button class="modal-close-btn" onclick="closePhotoSelectionModal()">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            document.body.insertAdjacentHTML('beforeend', selectionHTML);
-        }
-        window.selectPhotoForTrophy = function(photoData, raceName) {
-            localStorage.setItem('exttrophy_profile_photo', photoData);
-            closePhotoSelectionModal();
-            generateTrophyContent();
-            
-            // Obtener datos adicionales para mostrar mensaje más rico
-            const raceData = getRaceData(raceName);
-            let message = `📸 Foto de ${raceName} seleccionada`;
-            
-            if (raceData && raceData.distance) {
-                message += ` (${raceData.distance}`;
-                if (raceData.time) {
-                    message += ` - ${raceData.time}`;
+                    `;
+                    
+                    // Añadimos el modal al cuerpo del documento
+                    document.body.insertAdjacentHTML('beforeend', selectionHTML);
                 }
-                message += ')';
+
+        window.selectPhotoForTrophy = async function(photoData, raceName) {
+            try {
+                // Guardamos la URL en el perfil del usuario en Firebase
+                await saveUserProfileData(currentUser.uid, { photoURL: photoData });
+
+                // Actualizamos nuestro objeto de datos local
+                userData.profile.photoURL = photoData;
+                
+                closePhotoSelectionModal();
+                generateTrophyContent(); // Regenera el modal de trofeos con la nueva foto
+                renderCurrentPage(); // Regenera la portada si está visible
+
+                showSuccessMessage(`📸 Foto de perfil actualizada`);
+            } catch (error) {
+                console.error("Error al guardar foto de perfil:", error);
+                alert("No se pudo guardar la foto de perfil.");
             }
-            
-            showSuccessMessage(message);
         };
 
         window.closePhotoSelectionModal = function() {
@@ -3716,73 +1707,73 @@ function generateICSFile(config) {
             }
         }
 
-            // Nuevo formato para guardar datos de carrera
-            function saveRaceData(raceName, photoData, distance, time) {
-                const raceData = {
-                    photo: photoData,
+
+
+            // Función para obtener datos de carrera
+        function getRaceData(raceName) {
+            // Firebase no permite ciertos caracteres en las claves, así que usamos la versión "sanitizada" para buscar
+            const sanitizedRaceName = raceName.replace(/[.#$[\]]/g, '_');
+            if (userData && userData.races) {
+                return userData.races[sanitizedRaceName] || null;
+            }
+            return null;
+        }
+            
+        // Reemplaza tu función saveRaceParticipation por completo con esta
+        window.saveRaceParticipation = async function(raceName) {
+            // Usamos el nuevo indicador con un mensaje claro
+            showLoadingIndicator(true, 'Guardando en base de datos...'); 
+
+            try {
+                const distance = document.getElementById('raceDistance').value;
+                const time = document.getElementById('raceTime').value;
+                const oldRaceData = getRaceData(raceName);
+                const oldPhotoURL = oldRaceData?.photoURL || null;
+                const finalPhotoURL = newPhotoURLForModal || oldPhotoURL;
+
+                if (!finalPhotoURL) {
+                    throw new Error("No hay ninguna foto para guardar. Por favor, sube una.");
+                }
+                
+                if (oldPhotoURL && finalPhotoURL !== oldPhotoURL) {
+                    console.log(`Borrando foto antigua: ${oldPhotoURL}`);
+                    try {
+                        await deleteImageFromURL(oldPhotoURL);
+                        console.log("Foto antigua borrada con éxito.");
+                    } catch (deleteError) {
+                        console.warn("No se pudo borrar la foto antigua, pero se continuará con la actualización:", deleteError);
+                    }
+                }
+                
+                const finalRaceDataObject = {
+                    photoURL: finalPhotoURL,
                     distance: distance,
                     time: time,
                     timestamp: new Date().toISOString(),
                     raceName: raceName
                 };
-                localStorage.setItem(PHOTO_PREFIX + raceName, JSON.stringify(raceData));
-            }
 
-            // Función para obtener datos de carrera
-            function getRaceData(raceName) {
-                const data = localStorage.getItem(PHOTO_PREFIX + raceName);
-                if (!data) return null;
+                // El punto crítico es aquí:
+                await saveRaceData(currentUser.uid, raceName, finalRaceDataObject);
                 
-                // Compatibilidad con formato anterior (solo foto)
-                if (data.startsWith('data:image/')) {
-                    return { photo: data, distance: null, time: null };
-                }
+                // AÑADE ESTE LOG DE CONFIRMACIÓN
+                console.log("%c¡ÉXITO! Datos guardados en Firebase. Procediendo a actualizar la UI...", "color: green; font-weight: bold;");
+
+                const sanitizedRaceName = raceName.replace(/[.#$[\]]/g, '_');
+                userData.races[sanitizedRaceName] = finalRaceDataObject;
                 
-                return JSON.parse(data);
+                closeRaceParticipationModal();
+                initializeAlbumApp();
+                showSuccessMessage('✅ ¡Participación guardada con éxito!');
+
+            } catch (error) {
+                console.error("Error al guardar la participación:", error);
+                alert(error.message);
+            } finally {
+                showLoadingIndicator(false);
             }
-            
-        window.saveRaceParticipation = function(raceName) {
-            const photoPreview = document.querySelector('#raceParticipationModal .photo-preview img');
-            const distance = document.getElementById('raceDistance').value;
-            const time = document.getElementById('raceTime').value;
-            
-            if (!photoPreview) {
-                alert('Por favor sube una foto primero');
-                return;
-            }
-            
-            if (!distance) {
-                alert('Por favor selecciona una distancia');
-                return;
-            }
-            
-            // IMPORTANTE: Contar ANTES de guardar
-            const oldCount = getCompletedRacesCount();
-            
-            // Guardar los datos
-            saveRaceData(raceName, photoPreview.src, distance, time);
-            closeRaceParticipationModal();
-            
-            // IMPORTANTE: Contar DESPUÉS de guardar pero ANTES de regenerar páginas
-            const newCount = oldCount + 1; // Sabemos que aumentó en 1
-            
-            // Mostrar logros ANTES de regenerar páginas
-            checkForNewAchievements(newCount, oldCount);
-            
-            // Regenerar páginas 
-            initializeAlbumApp();
-            
-            // Navegar a la nueva carrera
-            const newPageIndex = getCompletedRacePageIndex(raceName);
-            if (newPageIndex !== -1) {
-                setTimeout(() => {
-                    navigateToPage(newPageIndex, 'forward');
-                }, 100); // Small delay to ensure page is ready
-            }
-            
-            showSuccessMessage('🎉 ¡Carrera registrada exitosamente!');
         };
-
+        
     // Actualizar función para contar carreras completadas
     function getCompletedRacesCount() {
         return getCompletedRacesList().length;
@@ -3807,178 +1798,58 @@ function generateICSFile(config) {
     // Modificar la función handlePhotoUpload existente para manejar ambos casos
         async function handlePhotoUpload(event) {
             const file = event.target.files[0];
-            if (!file) return;
+            if (!file || !currentRaceForParticipation) return;
 
+            showLoadingIndicator(true);
             try {
-                // Mostrar indicador de carga
-                showLoadingIndicator(true);
-                
-                // Obtener información del archivo original
-                const originalInfo = {
-                    name: file.name,
-                    size: file.size,
-                    sizeKB: Math.round(file.size / 1024),
-                };
-                
-                console.log('Procesando imagen:', originalInfo.name, `(${originalInfo.sizeKB}KB)`);
-
-                gtag('event', 'cheky_completed', {
-                    'cheky_list_name': 'Carreras Monterrey',
-                    'cheky_item_name': originalInfo.name
-                });
-                
-                // Comprimir imagen CON filtro vintage automático
                 const processedDataUrl = await compressImageWithVintageFilter(file, 800, 600, 0.8);
+                const fileBlob = base64ToBlob(processedDataUrl);
+                const downloadURL = await uploadImageAndGetURL(currentUser.uid, `races/${currentRaceForParticipation}-${Date.now()}`, fileBlob);
                 
-                // Calcular tamaño procesado
-                const processedSize = Math.round(processedDataUrl.length * 0.75);
-                const compressionRatio = Math.round((1 - processedSize / originalInfo.size) * 100);
+                newPhotoURLForModal = downloadURL;
                 
-                console.log(`✨ Filtro vintage aplicado y comprimido: ${originalInfo.sizeKB}KB → ${Math.round(processedSize/1024)}KB (${compressionRatio}% reducción)`);
-                
-                // *** MANEJAR DIFERENTES CASOS DE USO ***
-                
-                // Caso 1: Foto de perfil
-                if (currentRestaurantForUpload === 'profile') {
-                    localStorage.setItem('exttrophy_profile_photo', processedDataUrl);
-                    
-                    // Actualizar preview en el modal si está abierto
-                    const modal = document.getElementById('userProfileModal');
-                    if (modal) {
-                        const photoContainer = modal.querySelector('.profile-photo-preview, .profile-photo-upload').parentNode;
-                        if (photoContainer) {
-                            photoContainer.innerHTML = `
-                                <div class="profile-photo-preview" style="position: relative;">
-                                    <img src="${processedDataUrl}" style="
-                                        width: 120px;
-                                        height: 120px;
-                                        border-radius: 50%;
-                                        object-fit: cover;
-                                        border: 3px solid var(--primary-blue);
-                                        display: block;
-                                        margin: 0 auto;
-                                    ">
-                                    <button onclick="selectProfilePhoto()" style="
-                                        position: absolute;
-                                        bottom: 0;
-                                        right: calc(50% - 75px);
-                                        background: var(--accent-orange);
-                                        color: white;
-                                        border: none;
-                                        border-radius: 50%;
-                                        width: 35px;
-                                        height: 35px;
-                                        cursor: pointer;
-                                        display: flex;
-                                        align-items: center;
-                                        justify-content: center;
-                                        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-                                    ">
-                                        <i class="fas fa-camera" style="font-size: 0.9rem;"></i>
-                                    </button>
-                                </div>
-                                <p style="font-size: 0.9rem; color: var(--medium-gray); margin-top: 10px;">
-                                    Esta foto aparecerá en la portada de tu álbum
-                                </p>
-                            `;
-                        }
-                    }
-                    
-                    currentRestaurantForUpload = null;
-                    showLoadingIndicator(false);
-                    showSuccessMessage('📸 Foto de perfil actualizada');
-                    return;
-                }
-                
-                // Caso 2: Para modal de participación - mostrar preview
-                if (currentRaceForParticipation) {
-                    showPhotoPreviewInModal(processedDataUrl);
-                    currentRaceForParticipation = null;
-                    showLoadingIndicator(false);
-                    showSuccessMessage(`📸 Foto procesada (${Math.round(processedSize/1024)}KB)`);
-                    return;
-                }
-                
-                // Caso 3: Para edición directa de carrera existente
-                if (currentRestaurantForUpload && currentRestaurantForUpload !== 'profile') {
-                    // Contar ANTES de guardar
-                    const oldCount = getCompletedRacesCount();
-                    
-                    // Guardar imagen procesada
-                    localStorage.setItem(PHOTO_PREFIX + currentRestaurantForUpload, processedDataUrl);
-                    
-                    // Actualizar vista
-                    renderCurrentPage();
-                    
-                    // Verificar logros
-                    const newCount = getCompletedRacesCount();
-                    checkForNewAchievements(newCount, oldCount);
-                    
-                    currentRestaurantForUpload = null;
-                    showLoadingIndicator(false);
-                    showSuccessMessage(`📸 Foto guardada (${Math.round(processedSize/1024)}KB)`);
-                    return;
-                }
-                
-                // Si llegamos aquí, no hay contexto válido
-                showLoadingIndicator(false);
-                showSuccessMessage('📸 Foto procesada pero no se pudo guardar (contexto desconocido)');
-                
+                // AÑADE ESTA LÍNEA PARA VERIFICAR
+                console.log(`%cFOTO SUBIDA: La variable newPhotoURLForModal ahora es: ${newPhotoURLForModal}`, "color: blue; font-weight: bold;");
+
+                showPhotoPreviewInModal(downloadURL);
+                showSuccessMessage("✅ Foto nueva cargada. Pulsa 'Guardar'.");
+
             } catch (error) {
-                console.error('Error al procesar imagen:', error);
+                console.error('Error durante la subida de la foto:', error);
+                alert('Hubo un error al subir la foto a Firebase.');
+            } finally {
                 showLoadingIndicator(false);
-                alert('Error al procesar la imagen. Por favor, intenta con otra imagen.');
-            }
-            
-            // Limpiar input
-            event.target.value = '';
-        }
-    // Función para mostrar preview de foto en el modal
-        function showPhotoPreviewInModal(photoData) {
-            const uploadArea = document.querySelector('#raceParticipationModal .photo-upload-area');
-            if (uploadArea) {
-                // Obtener el nombre de la carrera del modal actual
-                const raceName = document.querySelector('#raceParticipationModal h4').textContent;
-                
-                uploadArea.innerHTML = `
-                    <div class="photo-preview" style="position: relative;">
-                        <img src="${photoData}" style="
-                            width: 100%;
-                            max-height: 150px;
-                            object-fit: cover;
-                            border-radius: 6px;
-                        ">
-                        <button onclick="selectPhotoForRace('${raceName}')" style="
-                            position: absolute;
-                            top: 5px;
-                            right: 5px;
-                            background: rgba(0,0,0,0.7);
-                            color: white;
-                            border: none;
-                            border-radius: 50%;
-                            width: 30px;
-                            height: 30px;
-                            cursor: pointer;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                        ">
-                            <i class="fas fa-camera" style="font-size: 0.8rem;"></i>
-                        </button>
-                    </div>
-                `;
-                uploadArea.onclick = null; // Remover el onclick original
+                // currentRaceForParticipation = null; // <-- Vamos a comentar esta línea por ahora, podría estar causando problemas.
+                event.target.value = '';
             }
         }
+
+        // Función para mostrar preview de foto en el modal
+
+            function showPhotoPreviewInModal(photoURL) {
+                const photoContainer = document.getElementById('modalPhotoContainer');
+                if (photoContainer) {
+                    photoContainer.innerHTML = `
+                        <div class="photo-preview" style="position: relative;">
+                            <img src="${photoURL}" style="width: 100%; max-height: 150px; object-fit: cover; border-radius: 6px;">
+                            <p style="font-size: 0.8rem; text-align: center; color: #28a745; margin-top: 5px; font-weight: 600;">
+                                ✓ Nueva foto lista.
+                            </p>
+                        </div>
+                    `;
+                } else {
+                    console.error("Error: No se encontró el div '#modalPhotoContainer' para actualizar la vista previa.");
+                }
+            }
 
     // Funciones para cerrar modal de participación
-    window.closeRaceParticipationModal = function() {
-        const modal = document.getElementById('raceParticipationModal');
-        if (modal) {
-            modal.remove();
-        }
-        currentRaceForParticipation = null;
-    };
+            window.closeRaceParticipationModal = function() {
+                const modal = document.getElementById('raceParticipationModal');
+                if (modal) {
+                    modal.remove();
+                }
+                currentRaceForParticipation = null;
+            };
 
     // Función para editar participación existente
     window.editRaceParticipation = function(raceName) {
@@ -3989,128 +1860,92 @@ function generateICSFile(config) {
         openRaceParticipationModal(raceName, participationData);
     };
 
-    // Modificar openRaceParticipationModal para aceptar datos existentes
-    function openRaceParticipationModal(raceName, existingData = null) {
-        const race = restaurants.find(r => r.name === raceName);
-        const isEdit = !!existingData;
-        
-        let photoAreaHTML;
-        if (existingData && existingData.photo) {
-            photoAreaHTML = `
-                <div class="photo-preview">
-                    <img src="${existingData.photo}" style="
-                        width: 100%;
-                        max-height: 150px;
-                        object-fit: cover;
-                        border-radius: 6px;
-                    ">
-                    <button onclick="selectPhotoForRace('${raceName}')" style="
-                        position: absolute;
-                        top: 5px;
-                        right: 5px;
-                        background: rgba(0,0,0,0.7);
-                        color: white;
-                        border: none;
-                        border-radius: 50%;
-                        width: 30px;
-                        height: 30px;
-                        cursor: pointer;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                    ">
-                        <i class="fas fa-camera" style="font-size: 0.8rem;"></i>
-                    </button>
-                </div>
-            `;
-        } else {
-            photoAreaHTML = `
-                <div class="photo-upload-area" onclick="selectPhotoForRace('${raceName}')" style="
-                    border: 2px dashed var(--primary-blue);
-                    border-radius: 8px;
-                    padding: 20px;
-                    text-align: center;
-                    cursor: pointer;
-                    background: var(--light-gray);
-                ">
-                    <i class="fas fa-camera" style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 8px;"></i>
-                    <p>Toca para subir tu foto</p>
-                </div>
-            `;
-        }
-        
-        const modalHTML = `
-            <div id="raceParticipationModal" class="modal-overlay show">
-                <div class="modal-content" style="max-width: 400px;">
-                    <h3 class="modal-header">${isEdit ? '✏️ Editar' : '📝 Registrar'} Participación</h3>
-                    <div class="modal-body">
-                        <h4 style="text-align: center; margin-bottom: 15px;">${raceName}</h4>
-                        
-                        <div style="margin-bottom: 15px; position: relative;">
-                            <label style="display: block; margin-bottom: 5px; font-weight: 600;">📸 Foto de la carrera:</label>
-                            ${photoAreaHTML}
-                        </div>
-                        
-                        <div style="margin-bottom: 15px;">
-                            <label style="display: block; margin-bottom: 5px; font-weight: 600;">🏃 Distancia:</label>
-                            <select id="raceDistance" style="
-                                width: 100%; padding: 8px; border: 2px solid var(--light-blue);
-                                border-radius: 6px; font-size: 1rem;
-                            ">
-                                <option value="">Seleccionar distancia</option>
-                                <option value="5K" ${existingData?.distance === '5K' ? 'selected' : ''}>5K</option>
-                                <option value="10K" ${existingData?.distance === '10K' ? 'selected' : ''}>10K</option>
-                                <option value="15K" ${existingData?.distance === '15K' ? 'selected' : ''}>15K</option>
-                                <option value="21K" ${existingData?.distance === '21K' ? 'selected' : ''}>21K (Media Maratón)</option>
-                                <option value="42K" ${existingData?.distance === '42K' ? 'selected' : ''}>42K (Maratón)</option>
-                                <option value="Otra" ${existingData?.distance === 'Otra' ? 'selected' : ''}>Otra distancia</option>
-                            </select>
-                        </div>
-                        
-                        <div style="margin-bottom: 20px;">
-                            <label style="display: block; margin-bottom: 5px; font-weight: 600;">⏱️ Tiempo (opcional):</label>
-                            <input type="text" id="raceTime" placeholder="ej: 25:30, 1:15:45" value="${existingData?.time || ''}" style="
-                                width: 100%; padding: 8px; border: 2px solid var(--light-blue);
-                                border-radius: 6px; font-size: 1rem;
-                            ">
-                        </div>
-                        
-                        <div style="display: flex; gap: 10px;">
-                            <button class="info-button" onclick="saveRaceParticipation('${raceName}')" style="
-                                flex: 1; margin: 0;
-                            ">
+
+        function openRaceParticipationModal(raceName, existingData = null) {
+            newPhotoURLForModal = null; // Reiniciamos la variable
+            const isEdit = !!existingData;
+
+            let photoContentHTML;
+            if (isEdit && existingData.photoURL) {
+                photoContentHTML = `
+                    <div class="photo-preview" style="position: relative;">
+                        <img src="${existingData.photoURL}" style="width: 100%; max-height: 150px; object-fit: cover; border-radius: 6px;">
+                        <button onclick="selectPhotoForRace('${raceName}')" title="Cambiar foto" style="position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-camera" style="font-size: 0.8rem;"></i>
+                        </button>
+                    </div>`;
+            } else {
+                photoContentHTML = `
+                    <div class="photo-upload-area" onclick="selectPhotoForRace('${raceName}')" style="border: 2px dashed var(--primary-blue); border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; background: var(--light-gray);">
+                        <i class="fas fa-camera" style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 8px;"></i>
+                        <p>Toca para subir tu foto</p>
+                    </div>`;
+            }
+
+            const modalHTML = `
+                <div id="raceParticipationModal" class="modal-overlay show">
+                    <div class="modal-content" style="max-width: 400px;">
+                        <h3 class="modal-header">${isEdit ? '✏️ Editar Participación' : '📝 Registrar Participación'}</h3>
+                        <div class="modal-body">
+                            <h4 style="text-align: center; margin-bottom: 15px;">${raceName}</h4>
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: 600;">📸 Foto de la carrera:</label>
+                                <div id="modalPhotoContainer">${photoContentHTML}</div>
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: 600;">🏃 Distancia:</label>
+                                <select id="raceDistance" style="width: 100%; padding: 8px; border: 2px solid var(--light-blue); border-radius: 6px; font-size: 1rem;">
+                                    <option value="">Seleccionar distancia</option>
+                                    <option value="5K" ${existingData?.distance === '5K' ? 'selected' : ''}>5K</option>
+                                    <option value="10K" ${existingData?.distance === '10K' ? 'selected' : ''}>10K</option>
+                                    <option value="15K" ${existingData?.distance === '15K' ? 'selected' : ''}>15K</option>
+                                    <option value="21K" ${existingData?.distance === '21K' ? 'selected' : ''}>21K (Media Maratón)</option>
+                                    <option value="42K" ${existingData?.distance === '42K' ? 'selected' : ''}>42K (Maratón)</option>
+                                    <option value="Otra" ${existingData?.distance === 'Otra' ? 'selected' : ''}>Otra distancia</option>
+                                </select>
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: 600;">⏱️ Tiempo (opcional):</label>
+                                <input type="text" id="raceTime" placeholder="ej: 25:30" value="${existingData?.time || ''}" style="width: 100%; padding: 8px; border: 2px solid var(--light-blue); border-radius: 6px; font-size: 1rem;">
+                            </div>
+                            <button class="info-button" onclick="saveRaceParticipation('${raceName}')" style="width: 100%; margin: 0;">
                                 <i class="fas fa-save"></i>
-                                ${isEdit ? 'Actualizar' : 'Guardar'}
+                                ${isEdit ? 'Actualizar Participación' : 'Guardar Participación'}
                             </button>
-                            
-                            ${isEdit ? `
-                                <button class="info-button" onclick="deleteRaceParticipation('${raceName}')" style="
-                                    flex: 1; margin: 0; background: #dc3545;
-                                ">
-                                    <i class="fas fa-trash"></i>
-                                    Eliminar
-                                </button>
-                            ` : ''}
                         </div>
+                        <button class="modal-close-btn" onclick="closeRaceParticipationModal()">
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
-                    <button class="modal-close-btn" onclick="closeRaceParticipationModal()">
-                        <i class="fas fa-times"></i>
-                    </button>
                 </div>
-            </div>
-        `;
-        
-        document.body.insertAdjacentHTML('beforeend', modalHTML);
-    }
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        }
 
     // Función para eliminar participación
-    window.deleteRaceParticipation = function(raceName) {
+    window.deleteRaceParticipation = async function(raceName) {
         if (confirm(`¿Estás seguro de eliminar tu participación en "${raceName}"?`)) {
-            localStorage.removeItem(PHOTO_PREFIX + raceName);
-            closeRaceParticipationModal();
-            initializeAlbumApp(); // Regenerar páginas
-            navigateToPage(2, 'backward'); // Volver al índice
-            showSuccessMessage('🗑️ Participación eliminada');
+            showLoadingIndicator(true);
+            try {
+                await deleteRaceData(currentUser.uid, raceName);
+                // También deberías borrar la imagen de Firebase Storage aquí (opcional, más avanzado)
+
+                // Eliminar de datos locales
+                delete userData.races[raceName.replace(/[.#$[\]]/g, '_')];
+
+                closeRaceParticipationModal();
+                initializeAlbumApp();
+                navigateToPage(2, 'backward'); // Volver al índice
+
+                showLoadingIndicator(false);
+                showSuccessMessage('🗑️ Participación eliminada');
+
+            } catch (error) {
+                showLoadingIndicator(false);
+                alert("Error al eliminar la participación.");
+                console.error(error);
+            }
         }
     };
 
@@ -4126,6 +1961,99 @@ function generateICSFile(config) {
             page.type === 'completedRace' && page.data.name === raceName
         );
     }
+
+        // =============================================================
+        // NUEVAS FUNCIONES PARA MANEJAR EL FORMULARIO DE AUTENTICACIÓN
+        // =============================================================
+
+        function showAuthForm() {
+            document.getElementById('auth-container').style.display = 'flex';
+            document.getElementById('auth-error').textContent = ''; // Limpiar errores previos
+        }
+
+        function setupAuthFormListeners() {
+            const authContainer = document.getElementById('auth-container');
+            const title = document.getElementById('auth-title');
+            const nameField = document.getElementById('name-field');
+            const actionBtn = document.getElementById('auth-action-btn');
+            const toggleLink = document.getElementById('auth-toggle-link');
+            const errorEl = document.getElementById('auth-error');
+
+            let isLogin = true;
+
+            // Listener para el botón de Entrar/Registrar
+            actionBtn.addEventListener('click', async () => {
+                const email = document.getElementById('emailInput').value;
+                const password = document.getElementById('passwordInput').value;
+                errorEl.textContent = ''; // Limpiar error
+
+                try {
+                    if (isLogin) {
+                        // --- Lógica de Iniciar Sesión ---
+                        await signIn(email, password);
+                        // El observador onAuthStateChanged se encargará del resto
+                    } else {
+                        // --- Lógica de Registro ---
+                        const name = document.getElementById('nameInput').value;
+                        if (!name) {
+                            errorEl.textContent = 'Por favor, introduce tu nombre.';
+                            return;
+                        }
+                        await signUp(email, password, name);
+                        // El observador onAuthStateChanged se encargará del resto
+                    }
+                } catch (error) {
+                    console.error("Error de autenticación:", error.message);
+                    // Traducir errores comunes de Firebase
+                    if (error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+                        errorEl.textContent = 'Email o contraseña incorrectos.';
+                    } else if (error.code === 'auth/email-already-in-use') {
+                        errorEl.textContent = 'Este email ya está registrado.';
+                    } else if (error.code === 'auth/weak-password') {
+                        errorEl.textContent = 'La contraseña debe tener al menos 6 caracteres.';
+                    } else {
+                        errorEl.textContent = 'Ocurrió un error. Intenta de nuevo.';
+                    }
+                }
+            });
+
+            // Listener para el enlace que cambia entre Login y Registro
+            toggleLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                isLogin = !isLogin;
+                errorEl.textContent = ''; // Limpiar error al cambiar
+
+                if (isLogin) {
+                    title.textContent = 'Iniciar Sesión';
+                    nameField.style.display = 'none';
+                    actionBtn.textContent = 'Entrar';
+                    toggleLink.textContent = '¿No tienes cuenta? Regístrate';
+                } else {
+                    title.textContent = 'Crear Cuenta';
+                    nameField.style.display = 'block';
+                    actionBtn.textContent = 'Registrarme';
+                    toggleLink.textContent = '¿Ya tienes cuenta? Inicia Sesión';
+                }
+            });
+        }
+
+        // Añade esta nueva función a tu script
+        function MapsToRacePageBySanitizedName(sanitizedRaceName) {
+            // Buscamos en nuestro array de páginas (contentPages) la página que corresponde a esta carrera
+            const pageIndex = contentPages.findIndex(page => 
+                page.type === 'completedRace' && 
+                page.data && 
+                page.data.name.replace(/[.#$[\]]/g, '_') === sanitizedRaceName
+            );
+
+            if (pageIndex !== -1) {
+                // Si la encontramos, navegamos directamente a ella
+                navigateToPage(pageIndex);
+            } else {
+                console.warn(`No se encontró una página para la carrera: ${sanitizedRaceName}`);
+                alert("No se pudo encontrar la página para esta carrera.");
+            }
+        }
         
     </script>
 </body>
