@@ -131,6 +131,9 @@
                 <button class="image-modal-action-btn image-modal-share-btn" onclick="shareCurrentImage()" title="Compartir foto">
                     <i class="fas fa-share-alt"></i>
                 </button>
+                <button class="image-modal-action-btn image-modal-edit-btn" onclick="" title="Editar participación">
+                    <i class="fas fa-edit"></i>
+                </button>
             </div>
         </div>
 
@@ -687,13 +690,7 @@ function showSuccessMessage(message) {
                         </div>
                     </div>
                     
-                    <div style="display: flex; gap: 10px; width: 100%;">
-                        <button class="info-button" onclick="editRaceParticipation('${race.name.replace(/'/g, "\\'")}')" style="
-                            flex: 0; background: var(--medium-gray);
-                        ">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                    </div>
+
                 </div>`;
         }
 

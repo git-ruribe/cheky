@@ -527,7 +527,7 @@
         }
         
         .image-modal-delete-btn {
-            right: 70px;
+            right: 195px;
         }
         
         .image-modal-delete-btn:hover {
@@ -535,7 +535,7 @@
         }
         
         .image-modal-replace-btn {
-            right: 15px;
+            right: 135px;
         }
         
         .image-modal-replace-btn:hover {
@@ -543,10 +543,14 @@
         }
 
         .image-modal-share-btn {
-            right: 125px;
+            right: 15px;
         }
         .image-modal-share-btn:hover {
             background: var(--accent-orange);
+        }
+
+        .image-modal-edit-btn {
+            right: 75px;
         }
 
         /* Navigation bar at the bottom */
