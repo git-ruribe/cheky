@@ -527,7 +527,7 @@
         }
         
         .image-modal-delete-btn {
-            right: 195px;
+            left: 15px;
         }
         
         .image-modal-delete-btn:hover {
@@ -551,6 +551,9 @@
 
         .image-modal-edit-btn {
             right: 75px;
+        }
+        .image-modal-edit-btn:hover {
+            background: var(--accent-orange);
         }
 
         /* Navigation bar at the bottom */
@@ -1408,4 +1411,122 @@
                 transform: translateY(100vh) rotate(720deg);
                 opacity: 0;
             }
+        }
+        /* Estilos para el Muro Comunitario */
+        .community-wall {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .community-wall-header {
+            text-align: center;
+            font-family: 'Anton', sans-serif;
+            color: var(--primary-blue);
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            flex-shrink: 0;
+        }
+        .community-wall-subheader {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: var(--medium-gray);
+            flex-shrink: 0;
+        }
+        #community-wall-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 0 10px;
+        }
+        .post-separator {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            color: var(--dark-blue);
+            margin: 25px 0 10px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--light-blue);
+        }
+        .community-post {
+            width: 100%;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .community-post img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .post-caption {
+            background: white;
+            padding: 10px;
+            font-size: 0.9rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .post-caption .fa-user-circle {
+            color: var(--medium-gray);
+        }
+        /* Estilos para el interruptor de Privacidad */
+        .privacy-toggle-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f0f4f8;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            margin-bottom: 25px;
+        }
+        .privacy-label {
+            font-weight: 600;
+            color: var(--dark-blue);
+            font-size: 0.9rem;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 28px;
+        }
+        .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+        input:checked + .slider {
+            background-color: #28a745; /* Color verde cuando está activo */
+        }
+        input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+        .slider.round {
+            border-radius: 28px;
+        }
+        .slider.round:before {
+            border-radius: 50%;
         }

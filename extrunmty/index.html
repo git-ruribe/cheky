@@ -125,13 +125,15 @@
                 <button class="image-modal-action-btn image-modal-delete-btn" onclick="deleteCurrentImage()" title="Eliminar foto">
                     <i class="fas fa-trash"></i>
                 </button>
+                <!--
                 <button class="image-modal-action-btn image-modal-replace-btn" onclick="replaceCurrentImage()" title="Reemplazar foto">
                     <i class="fas fa-camera"></i>
                 </button>
+                -->
                 <button class="image-modal-action-btn image-modal-share-btn" onclick="shareCurrentImage()" title="Compartir foto">
                     <i class="fas fa-share-alt"></i>
                 </button>
-                <button class="image-modal-action-btn image-modal-edit-btn" onclick="" title="Editar participación">
+                <button class="image-modal-action-btn image-modal-edit-btn" onclick="editCurrentParticipation()" title="Editar participación">
                     <i class="fas fa-edit"></i>
                 </button>
             </div>
@@ -250,6 +252,7 @@
                     data: race.raceInfo,
                     participationData: race.participationData 
                 })),
+                { type: 'communityWall' },
                 { type: 'finalPage' }
             ];
             renderCurrentPage();
@@ -821,31 +824,55 @@ function generateRestaurantIndexContent() {
                 return;
             }
             
-            // Encontrar qué carrera tiene esta imagen - actualizado para nuevo formato
-            currentImageRestaurant = null;
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if (key.startsWith(PHOTO_PREFIX)) {
-                    const raceData = getRaceData(key.replace(PHOTO_PREFIX, ''));
-                    if (raceData && raceData.photo === imageUrl) {
-                        currentImageRestaurant = key.replace(PHOTO_PREFIX, '');
+            // Buscamos a qué carrera pertenece esta URL de foto
+            let raceNameFound = null;
+            if (userData && userData.races) {
+                for (const key in userData.races) {
+                    if (userData.races[key].photoURL === imageUrl) {
+                        raceNameFound = userData.races[key].raceName;
                         break;
                     }
                 }
             }
             
-            modalImageEl.style.display = 'block'; 
-            modalImageEl.src = imageUrl;
-            imageModal.classList.add('show');
+            if (!raceNameFound) {
+                    console.error("No se pudo encontrar la carrera para esta imagen.");
+                    return;
+                }
+
+                // Establecemos la variable global
+                currentImageRestaurant = raceNameFound;
+
+                // Mostramos el modal
+                modalImageEl.style.display = 'block'; 
+                modalImageEl.src = imageUrl;
+                imageModal.classList.add('show');
+
+            
+
         };      
 
         window.deleteCurrentImage = function() {
             if (!currentImageRestaurant) return;
+            closeImageModal(); // Cerramos el modal actual
+            deleteRaceParticipation(currentImageRestaurant); 
+
+        };
+
+        window.editCurrentParticipation = function() {
+            if (!currentImageRestaurant) return;
+            closeImageModal(); // Cerramos el modal de la imagen
             
-            if (confirm('¿Estás seguro de que quieres eliminar esta participación completa?')) {
-                closeImageModal();
-                deleteRaceParticipation(currentImageRestaurant); // Llama a la nueva función
-            }
+            // Un pequeño delay para que la animación de cierre se vea bien
+            setTimeout(() => {
+                // Llamamos a la función principal de edición que ya tenemos
+                editRaceParticipation(currentImageRestaurant);
+            }, 200);
+        };
+
+        // Y la función para reemplazar la foto simplemente llamará a la de editar.
+        window.replaceCurrentImage = function() {
+            editCurrentParticipation();
         };
 
         // Función para reemplazar imagen - actualizada  
@@ -866,24 +893,41 @@ function generateRestaurantIndexContent() {
         };
 
         window.shareCurrentImage = async function() {
-            if (!modalImageEl.src) return;
-            if (navigator.share && modalImageEl.src.startsWith('data:image/')) {
-                try {
-                    // Convierte el base64 a un blob
-                    const res = await fetch(modalImageEl.src);
-                    const blob = await res.blob();
-                    const file = new File([blob], 'cheky_foto.jpg', { type: blob.type });
+            const imageUrl = document.getElementById('modalImage').src;
+            if (!imageUrl) return;
 
-                    await navigator.share({
-                        files: [file],
-                        title: 'Mi foto de cheky.app',
-                        text: '¡Mira mi foto en cheky.app!',
-                    });
-                } catch (err) {
+            // Verificamos si el navegador soporta la API de compartir
+            if (!navigator.share) {
+                alert("La función de compartir no está disponible en este navegador.");
+                return;
+            }
+
+            try {
+                showLoadingIndicator(true, "Preparando para compartir...");
+
+                // 1. Descargamos la imagen desde la URL de Firebase
+                const response = await fetch(imageUrl);
+                const blob = await response.blob(); // La convertimos a un formato de archivo (Blob)
+
+                // 2. Creamos un objeto de archivo virtual
+                const file = new File([blob], "carrera.jpg", { type: blob.type });
+
+                // 3. Usamos la API para compartir el archivo
+                await navigator.share({
+                    title: `Mi foto de la carrera: ${currentImageRestaurant}`,
+                    text: `¡Mira mi logro de la carrera "${currentImageRestaurant}" completada con mi álbum de cheky.app!`,
+                    files: [file]
+                });
+
+                showLoadingIndicator(false);
+
+            } catch (err) {
+                showLoadingIndicator(false);
+                // El error "AbortError" ocurre si el usuario cancela la compartición, lo ignoramos.
+                if (err.name !== 'AbortError') {
+                    console.error('Error al compartir:', err);
                     alert('No se pudo compartir la foto.');
                 }
-            } else {
-                alert('La función de compartir no está disponible en este dispositivo o navegador.');
             }
         };
 
@@ -909,6 +953,10 @@ function generateRestaurantIndexContent() {
                 contentHTML = generateRestaurantContent(pageData.data); 
             } else if (pageData.type === 'completedRace') {  // ← AGREGAR ESTA LÍNEA
                 contentHTML = generateCompletedRaceContent(pageData.data, pageData.participationData);
+            } else if (pageData.type === 'communityWall') {
+                contentHTML = generateCommunityWallContent();
+                // La lógica de carga se activará después de que el HTML se inserte
+                setTimeout(initializeCommunityWall, 0); 
             } else if (pageData.type === 'finalPage') {
                 contentHTML = generateFinalPageContent();
             } else if (pageData.type === 'instructions') {
@@ -1002,6 +1050,10 @@ function generateCoverContent() {
             newPhotoURLForModal = null; // Reiniciamos la variable
             const isEdit = !!existingData;
 
+            // Determinamos si el interruptor debe estar activado por defecto
+            // Estará activado si estamos editando y ya era público, o si estamos creando una nueva.
+            const isPublicChecked = isEdit ? existingData.isPublic : true;
+
             let photoContentHTML;
             if (isEdit && existingData.photoURL) {
                 photoContentHTML = `
@@ -1046,6 +1098,13 @@ function generateCoverContent() {
                             <div style="margin-bottom: 20px;">
                                 <label style="display: block; margin-bottom: 5px; font-weight: 600;">⏱️ Tiempo (opcional):</label>
                                 <input type="text" id="raceTime" placeholder="ej: 25:30" value="${existingData?.time || ''}" style="width: 100%; padding: 8px; border: 2px solid var(--light-blue); border-radius: 6px; font-size: 1rem;">
+                            </div>
+                            <div class="privacy-toggle-container">
+                                <label for="publicToggle" class="privacy-label">¿Compartir en el muro comunitario?</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="publicToggle" ${isPublicChecked ? 'checked' : ''}>
+                                    <span class="slider round"></span>
+                                </label>
                             </div>
                             <button class="info-button" onclick="saveRaceParticipation('${raceName}')" style="width: 100%; margin: 0;">
                                 <i class="fas fa-save"></i>
@@ -1717,7 +1776,7 @@ function generateICSFile(config) {
         }
             
         // Reemplaza tu función saveRaceParticipation por completo con esta
-        window.saveRaceParticipation = async function(raceName) {
+       /* window.saveRaceParticipation = async function(raceName) {
             // Usamos el nuevo indicador con un mensaje claro
             showLoadingIndicator(true, 'Guardando en base de datos...'); 
 
@@ -1756,6 +1815,17 @@ function generateICSFile(config) {
                 // AÑADE ESTE LOG DE CONFIRMACIÓN
                 console.log("%c¡ÉXITO! Datos guardados en Firebase. Procediendo a actualizar la UI...", "color: green; font-weight: bold;");
 
+                const isNewCreation = !oldRaceData; 
+                if (isNewCreation) {
+                    await createPublicPost({
+                        userUid: currentUser.uid,
+                        userName: userData.profile.name || "un corredor",
+                        raceName: raceName,
+                        photoURL: finalRaceDataObject.photoURL
+                    });
+                    console.log("Publicación creada en el muro comunitario.");
+                }
+
                 const sanitizedRaceName = raceName.replace(/[.#$[\]]/g, '_');
                 userData.races[sanitizedRaceName] = finalRaceDataObject;
                 
@@ -1770,7 +1840,81 @@ function generateICSFile(config) {
                 showLoadingIndicator(false);
             }
         };
+        */
+
+        // Reemplaza tu función saveRaceParticipation por completo con esta
+window.saveRaceParticipation = async function(raceName) {
+    showLoadingIndicator(true, 'Guardando participación...');
+
+    try {
+        // 1. Recopilamos todos los datos del formulario
+        const distance = document.getElementById('raceDistance').value;
+        const time = document.getElementById('raceTime').value;
+        const isPublic = document.getElementById('publicToggle').checked; // Leemos el estado del interruptor
+
+        const oldRaceData = getRaceData(raceName);
+        const oldPhotoURL = oldRaceData?.photoURL || null;
+        const finalPhotoURL = newPhotoURLForModal || oldPhotoURL;
+        const wasPublic = oldRaceData?.isPublic || false;
+        const publicPostKey = oldRaceData?.publicPostKey || null;
+
+        if (!finalPhotoURL) throw new Error("No hay ninguna foto para guardar.");
+
+        // 2. Borramos la foto vieja de Storage si se subió una nueva
+        if (oldPhotoURL && finalPhotoURL !== oldPhotoURL) {
+            await deleteImageFromURL(oldPhotoURL);
+        }
+
+        // 3. Lógica para manejar la publicación en el muro comunitario
+        let finalPublicPostKey = publicPostKey;
+
+        // Caso 1: Se hizo público (y antes no lo era)
+        if (isPublic && !wasPublic) {
+            console.log("Haciendo público: creando post...");
+            finalPublicPostKey = await createPublicPost({
+                userUid: currentUser.uid,
+                userName: userData.profile.name || "un corredor",
+                raceName: raceName,
+                photoURL: finalPhotoURL
+            });
+        }
+        // Caso 2: Se hizo privado (y antes era público)
+        else if (!isPublic && wasPublic && publicPostKey) {
+            console.log("Haciendo privado: borrando post...");
+            await deletePublicPost(publicPostKey);
+            finalPublicPostKey = null;
+        }
+
+        // 4. Preparamos el objeto de datos FINAL para la base de datos PRIVADA del usuario
+        const finalRaceDataObject = {
+            photoURL: finalPhotoURL,
+            distance: distance,
+            time: time,
+            timestamp: new Date().toISOString(),
+            raceName: raceName,
+            isPublic: isPublic, // Guardamos la decisión de privacidad
+            publicPostKey: finalPublicPostKey // Guardamos (o borramos) la referencia al post público
+        };
+
+        // 5. Guardamos en el perfil privado del usuario
+        await saveRaceData(currentUser.uid, raceName, finalRaceDataObject);
+
+        // 6. Actualizamos el estado local y la UI
+        const sanitizedRaceName = raceName.replace(/[.#$[\]]/g, '_');
+        userData.races[sanitizedRaceName] = finalRaceDataObject;
         
+        closeRaceParticipationModal();
+        initializeAlbumApp(); 
+        showSuccessMessage('✅ ¡Participación guardada!');
+
+    } catch (error) {
+        console.error("Error al guardar la participación:", error);
+        alert(error.message);
+    } finally {
+        showLoadingIndicator(false);
+    }
+};
+
     // Actualizar función para contar carreras completadas
     function getCompletedRacesCount() {
         return getCompletedRacesList().length;
@@ -1857,7 +2001,7 @@ function generateICSFile(config) {
         openRaceParticipationModal(raceName, participationData);
     };
 
-
+/*
         function openRaceParticipationModal(raceName, existingData = null) {
             newPhotoURLForModal = null; // Reiniciamos la variable
             const isEdit = !!existingData;
@@ -1919,33 +2063,59 @@ function generateICSFile(config) {
             
             document.body.insertAdjacentHTML('beforeend', modalHTML);
         }
+*/
 
-    // Función para eliminar participación
-    window.deleteRaceParticipation = async function(raceName) {
-        if (confirm(`¿Estás seguro de eliminar tu participación en "${raceName}"?`)) {
-            showLoadingIndicator(true);
-            try {
-                await deleteRaceData(currentUser.uid, raceName);
-                // También deberías borrar la imagen de Firebase Storage aquí (opcional, más avanzado)
+        // Función para eliminar participación
+        window.deleteRaceParticipation = async function(raceName) {
+            // Modificamos el mensaje de confirmación para que sea más claro
+            if (confirm(`¿Estás seguro de eliminar tu participación en "${raceName}"? Esta acción borrará la foto y la publicación del muro comunitario (si es pública).`)) {
+                
+                showLoadingIndicator(true, "Eliminando participación...");
 
-                // Eliminar de datos locales
-                delete userData.races[raceName.replace(/[.#$[\]]/g, '_')];
+                try {
+                    const sanitizedRaceName = raceName.replace(/[.#$[\]]/g, '_');
+                    const raceData = getRaceData(raceName); // Lee desde nuestro objeto local 'userData'
 
-                closeRaceParticipationModal();
-                initializeAlbumApp();
-                navigateToPage(2, 'backward'); // Volver al índice
+                    if (!raceData) {
+                        throw new Error("No se encontraron los datos de la carrera para eliminar.");
+                    }
 
-                showLoadingIndicator(false);
-                showSuccessMessage('🗑️ Participación eliminada');
+                    // --- INICIO DE LA NUEVA LÓGICA ---
+                    // Si la publicación era pública y tenía una key asociada, la borramos del muro.
+                    if (raceData.isPublic && raceData.publicPostKey) {
+                        console.log(`Eliminando publicación del muro comunitario: ${raceData.publicPostKey}`);
+                        // Llamamos a la función que ya tenemos en firebase-logic.js
+                        await deletePublicPost(raceData.publicPostKey); 
+                    }
+                    // --- FIN DE LA NUEVA LÓGICA ---
 
-            } catch (error) {
-                showLoadingIndicator(false);
-                alert("Error al eliminar la participación.");
-                console.error(error);
+                    // Borramos la foto de Firebase Storage (esta lógica ya la teníamos)
+                    if (raceData.photoURL) {
+                        await deleteImageFromURL(raceData.photoURL);
+                    }
+
+                    // Borramos el registro privado de la base de datos del usuario
+                    await db.ref(`users/${currentUser.uid}/races/${sanitizedRaceName}`).remove();
+                    
+                    // Actualizamos el estado local para que la UI reaccione al instante
+                    delete userData.races[sanitizedRaceName];
+                    
+                    // Cerramos los modales que puedan estar abiertos y actualizamos la vista
+                    closeImageModal();
+                    closeRaceParticipationModal();
+                    initializeAlbumApp();
+                    navigateToPage(2, 'backward'); // Volvemos al índice
+                    
+                    showSuccessMessage('🗑️ Participación eliminada con éxito de todas partes.');
+
+                } catch (error) {
+                    console.error("Error al eliminar la participación:", error);
+                    alert("No se pudo eliminar la participación. Intenta de nuevo.");
+                } finally {
+                    showLoadingIndicator(false);
+                }
             }
-        }
-    };
-
+        };
 
     // Actualizar función para contar carreras completadas
     function getCompletedRacesCount() {
@@ -2051,6 +2221,132 @@ function generateICSFile(config) {
                 alert("No se pudo encontrar la página para esta carrera.");
             }
         }
+
+            // === INICIO DEL CÓDIGO PARA EL MURO COMUNITARIO ===
+
+        let lastPostTimestamp = null;
+        let isLoadingPosts = false;
+        let allPostsLoaded = false;
+        let wallObserver;
+
+        // Genera el contenedor inicial para el muro
+        function generateCommunityWallContent() {
+            return `
+                <div class="page-content community-wall">
+                    <h2 class="community-wall-header">Muro Comunitario</h2>
+                    <p class="community-wall-subheader">Últimas fotos de todos los corredores</p>
+                    <div id="community-wall-container"></div>
+                    <div id="wall-loader" style="text-align: center; padding: 20px; display: none;">Cargando más...</div>
+                </div>
+            `;
+        }
+
+        // Prepara el scroll infinito
+        function initializeCommunityWall() {
+            // Reseteamos las variables
+            lastPostTimestamp = null;
+            isLoadingPosts = false;
+            allPostsLoaded = false;
+
+            const loader = document.getElementById('wall-loader');
+            
+            // El observador se activa cuando el "loader" entra en la pantalla
+            wallObserver = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting && !isLoadingPosts && !allPostsLoaded) {
+                    fetchCommunityPosts();
+                }
+            }, { threshold: 1.0 });
+
+            if (loader) {
+                wallObserver.observe(loader);
+            }
+
+            // Cargamos el primer lote de fotos
+            fetchCommunityPosts();
+        }
+
+        // Carga los posts desde Firebase
+        async function fetchCommunityPosts() {
+            if (isLoadingPosts || allPostsLoaded) return;
+
+            console.log("Cargando posts...");
+            isLoadingPosts = true;
+            document.getElementById('wall-loader').style.display = 'block';
+
+            const postsRef = db.ref('public_posts');
+            let query;
+
+            // Si es la primera carga, solo pedimos los últimos 5
+            if (lastPostTimestamp === null) {
+                query = postsRef.orderByChild('timestamp').limitToLast(5);
+            } else {
+                // Si no, pedimos los 6 anteriores al último que tenemos (5 nuevos + 1 de solapamiento)
+                query = postsRef.orderByChild('timestamp').endAt(lastPostTimestamp).limitToLast(6);
+            }
+
+            const snapshot = await query.once('value');
+            const postsData = snapshot.val();
+            
+            document.getElementById('wall-loader').style.display = 'none';
+
+            if (postsData) {
+                // Firebase devuelve los datos como un objeto, lo convertimos a un array y lo ordenamos descendente
+                const postsArray = Object.values(postsData).sort((a, b) => b.timestamp - a.timestamp);
+
+                // Si es una carga subsecuente, eliminamos el elemento solapado
+                if (lastPostTimestamp !== null) {
+                    postsArray.shift();
+                }
+
+                if (postsArray.length > 0) {
+                    // Guardamos el timestamp del último elemento para la siguiente carga
+                    lastPostTimestamp = postsArray[postsArray.length - 1].timestamp;
+                    renderPostsToWall(postsArray);
+                } else {
+                    allPostsLoaded = true;
+                    console.log("Todos los posts han sido cargados.");
+                }
+
+            } else {
+                allPostsLoaded = true;
+                console.log("No hay posts o no hay más posts que cargar.");
+            }
+            
+            isLoadingPosts = false;
+        }
+
+        // "Pinta" los posts en el HTML
+        function renderPostsToWall(posts) {
+            const container = document.getElementById('community-wall-container');
+            if (!container) return;
+
+            let lastRaceName = container.lastElementChild?.dataset?.raceName || '';
+            
+            posts.forEach(post => {
+                // Si el nombre de la carrera es diferente al anterior, añadimos un separador
+                if (post.raceName !== lastRaceName) {
+                    const separator = document.createElement('h3');
+                    separator.className = 'post-separator';
+                    separator.textContent = post.raceName;
+                    container.appendChild(separator);
+                    lastRaceName = post.raceName;
+                }
+
+                const postElement = document.createElement('div');
+                postElement.className = 'community-post';
+                postElement.dataset.raceName = post.raceName; // Guardamos el nombre para la siguiente iteración
+                postElement.innerHTML = `
+                    <img src="${post.photoURL}" alt="Foto de ${post.raceName}" loading="lazy">
+                    <div class="post-caption">
+                        <i class="fas fa-user-circle"></i>
+                        <span>${post.userName}</span>
+                    </div>
+                `;
+                container.appendChild(postElement);
+            });
+        }
+
+        // === FIN DEL CÓDIGO PARA EL MURO COMUNITARIO ===
         
     </script>
 </body>

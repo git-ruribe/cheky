@@ -180,3 +180,21 @@ function deleteImageFromURL(url) {
     // Creamos una referencia al archivo desde la URL y lo borramos
     return storage.refFromURL(url).delete();
 }
+
+/**
+ * Crea una publicación en el muro comunitario público.
+ * @param {object} postData - Objeto con { userUid, userName, raceName, photoURL }.
+ */
+function createPublicPost(postData) {
+  const newPostRef = db.ref('public_posts').push();
+  const newPostKey = newPostRef.key; // Obtenemos la ID única
+  return newPostRef.set({
+    ...postData,
+    timestamp: firebase.database.ServerValue.TIMESTAMP
+  }).then(() => newPostKey); // Devolvemos la ID cuando la escritura termina
+}
+
+function deletePublicPost(postKey) {
+    if (!postKey) return Promise.resolve();
+    return db.ref(`public_posts/${postKey}`).remove();
+}
