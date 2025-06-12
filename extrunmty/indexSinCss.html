@@ -231,6 +231,7 @@
         // NUEVAS VARIABLES GLOBALES PARA EL USUARIO
         let currentUser = null;
         let userData = { profile: {}, races: {} };
+        let newPhotoURLForModal = null; 
 
         const PHOTO_PREFIX = 'extrunmty_photo_';    
 
@@ -2008,7 +2009,7 @@ function generateICSFile(config) {
 
         function generateTrophyContent() {
             const completedCount = getCompletedRacesCount();
-            const savedTrophyPhoto = localStorage.getItem('exttrophy_profile_photo');
+            const savedTrophyPhoto = userData?.profile?.photoURL;
             
             // Actualizar foto de perfil
             const profilePhotoEl = document.querySelector('.trophy-profile-photo');
@@ -2088,48 +2089,51 @@ function generateICSFile(config) {
             return photos;
         }
 
-        function showPhotoSelectionModal(photos) {
-            const selectionHTML = `
-                <div id="photoSelectionModal" class="modal-overlay show">
-                    <div class="modal-content" style="max-width: 350px;">
-                        <h3 class="modal-header">Elige tu foto favorita</h3>
-                        <div class="modal-body" style="max-height: 400px;">
-                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
-                                ${photos.map(photo => {
-                                    const raceData = getRaceData(photo.name);
-                                    let extraInfo = '';
-                                    if (raceData) {
-                                        if (raceData.distance) extraInfo += raceData.distance;
-                                        if (raceData.time) extraInfo += ` • ${raceData.time}`;
-                                    }
-                                    
-                                    return `
-                                        <div style="
-                                            border: 2px solid var(--light-blue);
-                                            border-radius: 8px;
-                                            overflow: hidden;
-                                            cursor: pointer;
-                                            transition: border-color 0.2s ease;
-                                        " onclick="selectPhotoForTrophy('${photo.data}', '${photo.name}')">
-                                            <img src="${photo.data}" style="width: 100%; height: 80px; object-fit: cover;">
-                                            <div style="padding: 5px; font-size: 0.8rem; text-align: center; background: var(--light-gray);">
-                                                <div style="font-weight: 600;">${photo.name}</div>
-                                                ${extraInfo ? `<div style="font-size: 0.7rem; color: var(--medium-gray);">${extraInfo}</div>` : ''}
-                                            </div>
-                                        </div>
-                                    `;
-                                }).join('')}
+                // Reemplaza tu función actual con esta versión corregida
+                function showPhotoSelectionModal(photos) {
+                    // Para depuración, podemos ver qué datos le llegan a la función.
+                    // Abre la consola (F12) para ver este mensaje.
+                    console.log('Datos recibidos para el modal de selección de fotos:', photos);
+
+                    const selectionHTML = `
+                        <div id="photoSelectionModal" class="modal-overlay show">
+                            <div class="modal-content" style="max-width: 350px;">
+                                <h3 class="modal-header">Elige tu foto favorita</h3>
+                                <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                                        ${photos.map(photo => {
+                                            // Escapamos las comillas simples en el nombre de la carrera por si acaso
+                                            const escapedName = photo.name.replace(/'/g, "\\'");
+
+                                            // NOTA: photo.data contiene la URL de la imagen.
+                                            // Nos aseguramos de usarla en el `src` de la etiqueta `<img>`.
+                                            return `
+                                                <div class="photo-selection-item" 
+                                                    onclick="selectPhotoForTrophy('${photo.data}', '${escapedName}')"
+                                                    style="border: 2px solid var(--light-blue); border-radius: 8px; overflow: hidden; cursor: pointer;">
+                                                    
+                                                    <img src="${photo.data}" style="width: 100%; height: 100px; object-fit: cover;">
+                                                    
+                                                    <div style="padding: 8px; font-size: 0.8rem; text-align: center; background: var(--light-gray);">
+                                                        <div style="font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                            ${photo.name}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            `;
+                                        }).join('')}
+                                    </div>
+                                </div>
+                                <button class="modal-close-btn" onclick="closePhotoSelectionModal()">
+                                    <i class="fas fa-times"></i>
+                                </button>
                             </div>
                         </div>
-                        <button class="modal-close-btn" onclick="closePhotoSelectionModal()">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            document.body.insertAdjacentHTML('beforeend', selectionHTML);
-        }
+                    `;
+                    
+                    // Añadimos el modal al cuerpo del documento
+                    document.body.insertAdjacentHTML('beforeend', selectionHTML);
+                }
 
         window.selectPhotoForTrophy = async function(photoData, raceName) {
             try {
@@ -2466,13 +2470,13 @@ function generateICSFile(config) {
         }
 
     // Funciones para cerrar modal de participación
-    window.closeRaceParticipationModal = function() {
-        const modal = document.getElementById('raceParticipationModal');
-        if (modal) {
-            modal.remove();
-        }
-        currentRaceForParticipation = null;
-    };
+            window.closeRaceParticipationModal = function() {
+                const modal = document.getElementById('raceParticipationModal');
+                if (modal) {
+                    modal.remove();
+                }
+                currentRaceForParticipation = null;
+            };
 
     // Función para editar participación existente
     window.editRaceParticipation = function(raceName) {
@@ -2484,118 +2488,71 @@ function generateICSFile(config) {
     };
 
     // Modificar openRaceParticipationModal para aceptar datos existentes
-    function openRaceParticipationModal(raceName, existingData = null) {
-        const race = restaurants.find(r => r.name === raceName);
-        const isEdit = !!existingData;
-        
-        let photoAreaHTML;
-        if (existingData && existingData.photo) {
-            photoAreaHTML = `
-                <div class="photo-preview">
-                    <img src="${existingData.photo}" style="
-                        width: 100%;
-                        max-height: 150px;
-                        object-fit: cover;
-                        border-radius: 6px;
-                    ">
-                    <button onclick="selectPhotoForRace('${raceName}')" style="
-                        position: absolute;
-                        top: 5px;
-                        right: 5px;
-                        background: rgba(0,0,0,0.7);
-                        color: white;
-                        border: none;
-                        border-radius: 50%;
-                        width: 30px;
-                        height: 30px;
-                        cursor: pointer;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                    ">
-                        <i class="fas fa-camera" style="font-size: 0.8rem;"></i>
-                    </button>
-                </div>
-            `;
-        } else {
-            photoAreaHTML = `
-                <div class="photo-upload-area" onclick="selectPhotoForRace('${raceName}')" style="
-                    border: 2px dashed var(--primary-blue);
-                    border-radius: 8px;
-                    padding: 20px;
-                    text-align: center;
-                    cursor: pointer;
-                    background: var(--light-gray);
-                ">
-                    <i class="fas fa-camera" style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 8px;"></i>
-                    <p>Toca para subir tu foto</p>
-                </div>
-            `;
-        }
-        
-        const modalHTML = `
-            <div id="raceParticipationModal" class="modal-overlay show">
-                <div class="modal-content" style="max-width: 400px;">
-                    <h3 class="modal-header">${isEdit ? '✏️ Editar' : '📝 Registrar'} Participación</h3>
-                    <div class="modal-body">
-                        <h4 style="text-align: center; margin-bottom: 15px;">${raceName}</h4>
-                        
-                        <div style="margin-bottom: 15px; position: relative;">
-                            <label style="display: block; margin-bottom: 5px; font-weight: 600;">📸 Foto de la carrera:</label>
-                            ${photoAreaHTML}
-                        </div>
-                        
-                        <div style="margin-bottom: 15px;">
-                            <label style="display: block; margin-bottom: 5px; font-weight: 600;">🏃 Distancia:</label>
-                            <select id="raceDistance" style="
-                                width: 100%; padding: 8px; border: 2px solid var(--light-blue);
-                                border-radius: 6px; font-size: 1rem;
-                            ">
-                                <option value="">Seleccionar distancia</option>
-                                <option value="5K" ${existingData?.distance === '5K' ? 'selected' : ''}>5K</option>
-                                <option value="10K" ${existingData?.distance === '10K' ? 'selected' : ''}>10K</option>
-                                <option value="15K" ${existingData?.distance === '15K' ? 'selected' : ''}>15K</option>
-                                <option value="21K" ${existingData?.distance === '21K' ? 'selected' : ''}>21K (Media Maratón)</option>
-                                <option value="42K" ${existingData?.distance === '42K' ? 'selected' : ''}>42K (Maratón)</option>
-                                <option value="Otra" ${existingData?.distance === 'Otra' ? 'selected' : ''}>Otra distancia</option>
-                            </select>
-                        </div>
-                        
-                        <div style="margin-bottom: 20px;">
-                            <label style="display: block; margin-bottom: 5px; font-weight: 600;">⏱️ Tiempo (opcional):</label>
-                            <input type="text" id="raceTime" placeholder="ej: 25:30, 1:15:45" value="${existingData?.time || ''}" style="
-                                width: 100%; padding: 8px; border: 2px solid var(--light-blue);
-                                border-radius: 6px; font-size: 1rem;
-                            ">
-                        </div>
-                        
-                        <div style="display: flex; gap: 10px;">
-                            <button class="info-button" onclick="saveRaceParticipation('${raceName}')" style="
-                                flex: 1; margin: 0;
-                            ">
+        // Reemplaza tu función actual con esta versión completa
+        function openRaceParticipationModal(raceName, existingData = null) {
+            const isEdit = !!existingData; // Convertimos existingData a un booleano (true si no es null)
+
+            // --- Lógica para rellenar la foto ---
+            let photoAreaHTML;
+            if (isEdit && existingData.photoURL) {
+                // Si estamos editando y hay foto, la mostramos
+                photoAreaHTML = `
+                    <div class="photo-preview" style="position: relative;">
+                        <img src="${existingData.photoURL}" style="width: 100%; max-height: 150px; object-fit: cover; border-radius: 6px;">
+                        <button onclick="selectPhotoForRace('${raceName}')" title="Cambiar foto" style="position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-camera" style="font-size: 0.8rem;"></i>
+                        </button>
+                    </div>`;
+            } else {
+                // Si es nuevo registro, mostramos el área para subir
+                photoAreaHTML = `
+                    <div class="photo-upload-area" onclick="selectPhotoForRace('${raceName}')" style="border: 2px dashed var(--primary-blue); border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; background: var(--light-gray);">
+                        <i class="fas fa-camera" style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 8px;"></i>
+                        <p>Toca para subir tu foto</p>
+                    </div>`;
+            }
+
+            // --- Lógica para el modal completo ---
+            const modalHTML = `
+                <div id="raceParticipationModal" class="modal-overlay show">
+                    <div class="modal-content" style="max-width: 400px;">
+                        <h3 class="modal-header">${isEdit ? '✏️ Editar Participación' : '📝 Registrar Participación'}</h3>
+                        <div class="modal-body">
+                            <h4 style="text-align: center; margin-bottom: 15px;">${raceName}</h4>
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: 600;">📸 Foto de la carrera:</label>
+                                ${photoAreaHTML}
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: 600;">🏃 Distancia:</label>
+                                <select id="raceDistance" style="width: 100%; padding: 8px; border: 2px solid var(--light-blue); border-radius: 6px; font-size: 1rem;">
+                                    <option value="">Seleccionar distancia</option>
+                                    <option value="5K" ${existingData?.distance === '5K' ? 'selected' : ''}>5K</option>
+                                    <option value="10K" ${existingData?.distance === '10K' ? 'selected' : ''}>10K</option>
+                                    <option value="15K" ${existingData?.distance === '15K' ? 'selected' : ''}>15K</option>
+                                    <option value="21K" ${existingData?.distance === '21K' ? 'selected' : ''}>21K (Media Maratón)</option>
+                                    <option value="42K" ${existingData?.distance === '42K' ? 'selected' : ''}>42K (Maratón)</option>
+                                    <option value="Otra" ${existingData?.distance === 'Otra' ? 'selected' : ''}>Otra distancia</option>
+                                </select>
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: 600;">⏱️ Tiempo (opcional):</label>
+                                <input type="text" id="raceTime" placeholder="ej: 25:30" value="${existingData?.time || ''}" style="width: 100%; padding: 8px; border: 2px solid var(--light-blue); border-radius: 6px; font-size: 1rem;">
+                            </div>
+                            <button class="info-button" onclick="saveRaceParticipation('${raceName}')" style="width: 100%; margin: 0;">
                                 <i class="fas fa-save"></i>
-                                ${isEdit ? 'Actualizar' : 'Guardar'}
+                                ${isEdit ? 'Actualizar Participación' : 'Guardar Participación'}
                             </button>
-                            
-                            ${isEdit ? `
-                                <button class="info-button" onclick="deleteRaceParticipation('${raceName}')" style="
-                                    flex: 1; margin: 0; background: #dc3545;
-                                ">
-                                    <i class="fas fa-trash"></i>
-                                    Eliminar
-                                </button>
-                            ` : ''}
                         </div>
+                        <button class="modal-close-btn" onclick="closeRaceParticipationModal()">
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
-                    <button class="modal-close-btn" onclick="closeRaceParticipationModal()">
-                        <i class="fas fa-times"></i>
-                    </button>
                 </div>
-            </div>
-        `;
-        
-        document.body.insertAdjacentHTML('beforeend', modalHTML);
-    }
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        }
 
     // Función para eliminar participación
     window.deleteRaceParticipation = async function(raceName) {
