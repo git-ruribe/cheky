@@ -166,3 +166,17 @@ async function uploadImageAndGetURL(userId, path, fileBlob) {
     const snapshot = await storageRef.put(fileBlob);
     return snapshot.ref.getDownloadURL();
 }
+
+/**
+ * Borra un archivo de Firebase Storage a partir de su URL de descarga.
+ * @param {string} url - La URL https://firebasestorage.googleapis.com/... del archivo a borrar.
+ * @returns {Promise<void>}
+ */
+function deleteImageFromURL(url) {
+    // Si la URL no es de Firebase Storage, no hagas nada
+    if (!url || !url.includes('firebasestorage.googleapis.com')) {
+        return Promise.resolve();
+    }
+    // Creamos una referencia al archivo desde la URL y lo borramos
+    return storage.refFromURL(url).delete();
+}

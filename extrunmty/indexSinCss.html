@@ -362,55 +362,35 @@ function compressImage(file, maxWidth = 800, maxHeight = 600, quality = 0.8) {
 }
 
 // 2. Función auxiliar para mostrar indicador de carga
-function showLoadingIndicator(show = true) {
-    let loader = document.getElementById('imageLoader');
-    
-    if (show) {
-        if (!loader) {
-            loader = document.createElement('div');
-            loader.id = 'imageLoader';
-            loader.innerHTML = `
-                <div style="
-                    position: fixed;
-                    top: 0; left: 0;
-                    width: 100vw; height: 100vh;
-                    background: rgba(0,0,0,0.8);
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    z-index: 2000;
-                    color: white;
-                    font-family: 'Lato', sans-serif;
-                    font-size: 1.2rem;
-                ">
-                    <div style="text-align: center;">
-                        <div style="
-                            width: 40px; height: 40px;
-                            border: 3px solid #f3f3f3;
-                            border-top: 3px solid #FF8C00;
-                            border-radius: 50%;
-                            animation: spin 1s linear infinite;
-                            margin: 0 auto 10px;
-                        "></div>
-                        Procesando imagen...
-                    </div>
-                </div>
-                <style>
-                    @keyframes spin {
-                        0% { transform: rotate(0deg); }
-                        100% { transform: rotate(360deg); }
-                    }
-                </style>
-            `;
-            document.body.appendChild(loader);
+        // Reemplaza tu función actual con esta versión mejorada
+        function showLoadingIndicator(show = true, message = 'Procesando...') { // Añadimos un parámetro de mensaje
+            let loader = document.getElementById('imageLoader');
+            
+            if (show) {
+                if (!loader) {
+                    loader = document.createElement('div');
+                    loader.id = 'imageLoader';
+                    // El resto de la creación del loader (el div con los estilos) sigue igual
+                    loader.innerHTML = `
+                        <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; z-index: 2000; color: white; font-family: 'Lato', sans-serif; font-size: 1.2rem;">
+                            <div style="text-align: center;">
+                                <div style="width: 40px; height: 40px; border: 3px solid #f3f3f3; border-top: 3px solid #FF8C00; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 10px;"></div>
+                                <span id="loaderMessage"></span>
+                            </div>
+                        </div>
+                        <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+                    `;
+                    document.body.appendChild(loader);
+                }
+                // Actualizamos el mensaje del loader
+                loader.querySelector('#loaderMessage').textContent = message;
+                loader.style.display = 'flex';
+            } else {
+                if (loader) {
+                    loader.style.display = 'none';
+                }
+            }
         }
-        loader.style.display = 'flex';
-    } else {
-        if (loader) {
-            loader.style.display = 'none';
-        }
-    }
-}
 
 // 3. Función para obtener información del archivo
 function getFileInfo(file) {
@@ -525,72 +505,30 @@ function compressImageWithVintageFilter(file, maxWidth = 800, maxHeight = 600, q
 }
 
 // Función simplificada para manejar la subida de fotos con filtro automático
-async function handlePhotoUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return;
+        async function handlePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (!file || !currentRaceForParticipation) return;
 
-    try {
-        // Mostrar indicador de carga
-        showLoadingIndicator(true);
-        
-        // Obtener información del archivo original
-        const originalInfo = {
-            name: file.name,
-            size: file.size,
-            sizeKB: Math.round(file.size / 1024),
-        };
-        
-        console.log('Procesando imagen:', originalInfo.name, `(${originalInfo.sizeKB}KB)`);
+            showLoadingIndicator(true);
+            try {
+                const processedDataUrl = await compressImageWithVintageFilter(file, 800, 600, 0.8);
+                const fileBlob = base64ToBlob(processedDataUrl);
+                const downloadURL = await uploadImageAndGetURL(currentUser.uid, `races/${currentRaceForParticipation}-${Date.now()}`, fileBlob);
+                
+                // --- INICIO DE LA LÓGICA CORREGIDA ---
+                newPhotoURLForModal = downloadURL; // Guardamos la nueva URL en nuestra variable global
+                showPhotoPreviewInModal(downloadURL); // Actualizamos la vista previa visualmente
+                // --- FIN DE LA LÓGICA CORREGIDA ---
 
-        gtag('event', 'cheky_completed', {
-            'cheky_list_name': 'Carreras Monterrey', // Variable con el nombre de la lista
-            'cheky_item_name': originalInfo.name          // Variable con el nombre del lugar
-            });
-        
-        // Comprimir imagen CON filtro vintage automático
-        const processedDataUrl = await compressImageWithVintageFilter(file, 800, 600, 0.8);
-        
-        // Calcular tamaño procesado
-        const processedSize = Math.round(processedDataUrl.length * 0.75); // Aproximación
-        const compressionRatio = Math.round((1 - processedSize / originalInfo.size) * 100);
-        
-        console.log(`✨ Filtro vintage aplicado y comprimido: ${originalInfo.sizeKB}KB → ${Math.round(processedSize/1024)}KB (${compressionRatio}% reducción)`);
-
-        if (!currentRestaurantForUpload) {
-            throw new Error("No se ha seleccionado una carrera para la foto.");
+                showSuccessMessage("✅ Foto nueva cargada. Pulsa 'Actualizar'.");
+            } catch (error) {
+                console.error('Error durante la subida de la foto:', error);
+                alert('Hubo un error al subir la foto a Firebase.');
+            } finally {
+                showLoadingIndicator(false);
+                event.target.value = '';
+            }
         }
-
-        // Convertir base64 a Blob para subir a Firebase Storage
-        const fileBlob = base64ToBlob(processedDataUrl);
-
-        // Subir la imagen y obtener la URL de descarga
-        const downloadURL = await uploadImageAndGetURL(currentUser.uid, `races/${currentRestaurantForUpload}`, fileBlob);
-        console.log('Imagen subida, URL:', downloadURL);
-
-        // Guardar los datos de participación en Realtime Database (esto se hará en el modal de participación)
-        // Por ahora, solo actualizamos el modal de participación con la foto
-        showPhotoPreviewInModal(downloadURL); // <-- ¡Ojo! Necesitamos la URL, no el base64
-
-        showLoadingIndicator(false);
-        showSuccessMessage(`📸 Foto procesada. Ahora añade los detalles.`);
-
-        // Limpiar input
-        event.target.value = '';
-
-        // Verificar logros
-        const oldCount = getCompletedRacesCount() - 1; // Restamos 1 porque ya se guardó la nueva
-        const newCount = getCompletedRacesCount();
-        checkForNewAchievements(newCount, oldCount);
-        
-    } catch (error) {
-        console.error('Error al procesar imagen:', error);
-        showLoadingIndicator(false);
-        alert('Error al procesar la imagen. Por favor, intenta con otra imagen.');
-    }
-    
-    // Limpiar input
-    event.target.value = '';
-}
 
 // Funciones auxiliares (mantén las que ya tienes del código anterior)
 function showLoadingIndicator(show = true) {
@@ -1241,6 +1179,8 @@ function generateCoverContent() {
         };
 
         function openRaceParticipationModal(raceName) {
+            newPhotoURLForModal = null; 
+            const isEdit = !!existingData;
             const race = restaurants.find(r => r.name === raceName);
             
             const modalHTML = `
@@ -2298,68 +2238,61 @@ function generateICSFile(config) {
             return null;
         }
             
-        window.saveRaceParticipation = async function(raceName) { // Convertir a async
-            const photoPreview = document.querySelector('#raceParticipationModal .photo-preview img');
-            const distance = document.getElementById('raceDistance').value;
-            const time = document.getElementById('raceTime').value;
-            
-            if (!photoPreview || !photoPreview.src.startsWith('https://firebasestorage.googleapis.com')) {
-                alert('Por favor sube una foto primero (la URL debe ser de Firebase)');
-                return;
-            }
-            
-            if (!distance) {
-                alert('Por favor selecciona una distancia');
-                return;
-            }
-
-            const oldCount = getCompletedRacesCount();
-
-            // Crear el objeto de datos
-            const raceDataObject = {
-                photoURL: photoPreview.src, // URL de Firebase Storage
-                distance: distance,
-                time: time,
-                timestamp: new Date().toISOString(),
-                raceName: raceName // Guardamos el nombre original para fácil referencia
-            };
-
-            // Mostrar loader
-            showLoadingIndicator(true);
+        // Reemplaza tu función saveRaceParticipation por completo con esta
+        window.saveRaceParticipation = async function(raceName) {
+            // Usamos el nuevo indicador con un mensaje claro
+            showLoadingIndicator(true, 'Guardando en base de datos...'); 
 
             try {
-                // Guardar en Firebase Realtime Database
-                await saveRaceData(currentUser.uid, raceName, raceDataObject);
+                const distance = document.getElementById('raceDistance').value;
+                const time = document.getElementById('raceTime').value;
+                const oldRaceData = getRaceData(raceName);
+                const oldPhotoURL = oldRaceData?.photoURL || null;
+                const finalPhotoURL = newPhotoURLForModal || oldPhotoURL;
 
-                // Actualizar datos locales
-                userData.races[raceName.replace(/[.#$[\]]/g, '_')] = raceDataObject;
-
-                closeRaceParticipationModal();
-                
-                const newCount = getCompletedRacesCount();
-                
-                // Regenerar páginas
-                initializeAlbumApp();
-                
-                // Navegar a la nueva página
-                const newPageIndex = getCompletedRacePageIndex(raceName);
-                if (newPageIndex !== -1) {
-                    setTimeout(() => navigateToPage(newPageIndex, 'forward'), 100);
+                if (!finalPhotoURL) {
+                    throw new Error("No hay ninguna foto para guardar. Por favor, sube una.");
                 }
+                
+                if (oldPhotoURL && finalPhotoURL !== oldPhotoURL) {
+                    console.log(`Borrando foto antigua: ${oldPhotoURL}`);
+                    try {
+                        await deleteImageFromURL(oldPhotoURL);
+                        console.log("Foto antigua borrada con éxito.");
+                    } catch (deleteError) {
+                        console.warn("No se pudo borrar la foto antigua, pero se continuará con la actualización:", deleteError);
+                    }
+                }
+                
+                const finalRaceDataObject = {
+                    photoURL: finalPhotoURL,
+                    distance: distance,
+                    time: time,
+                    timestamp: new Date().toISOString(),
+                    raceName: raceName
+                };
 
-                showLoadingIndicator(false);
-                showSuccessMessage('🎉 ¡Carrera registrada exitosamente!');
+                // El punto crítico es aquí:
+                await saveRaceData(currentUser.uid, raceName, finalRaceDataObject);
                 
-                // Verificar logros
-                checkForNewAchievements(newCount, oldCount);
+                // AÑADE ESTE LOG DE CONFIRMACIÓN
+                console.log("%c¡ÉXITO! Datos guardados en Firebase. Procediendo a actualizar la UI...", "color: green; font-weight: bold;");
+
+                const sanitizedRaceName = raceName.replace(/[.#$[\]]/g, '_');
+                userData.races[sanitizedRaceName] = finalRaceDataObject;
                 
+                closeRaceParticipationModal();
+                initializeAlbumApp();
+                showSuccessMessage('✅ ¡Participación guardada con éxito!');
+
             } catch (error) {
+                console.error("Error al guardar la participación:", error);
+                alert(error.message);
+            } finally {
                 showLoadingIndicator(false);
-                console.error("Error al guardar en Firebase:", error);
-                alert("No se pudo guardar la participación. Intenta de nuevo.");
             }
         };
-
+        
     // Actualizar función para contar carreras completadas
     function getCompletedRacesCount() {
         return getCompletedRacesList().length;
@@ -2384,53 +2317,32 @@ function generateICSFile(config) {
     // Modificar la función handlePhotoUpload existente para manejar ambos casos
         async function handlePhotoUpload(event) {
             const file = event.target.files[0];
-            if (!file) return;
-
-            // Esta lógica ahora solo se debe ejecutar cuando estamos en el modal de participación.
-            // La variable `currentRaceForParticipation` nos dice si ese es el caso.
-            if (!currentRaceForParticipation) {
-                console.log("Contexto de subida no especificado (no es para una carrera), se ignora.");
-                event.target.value = '';
-                return;
-            }
+            if (!file || !currentRaceForParticipation) return;
 
             showLoadingIndicator(true);
-
             try {
-                // 1. Comprimir la imagen (esto ya lo hacías bien)
                 const processedDataUrl = await compressImageWithVintageFilter(file, 800, 600, 0.8);
-                
-                // 2. Convertir el resultado base64 a un "Blob" (un formato de archivo) para poder subirlo.
-                //    Esta función ya la tienes en `firebase-logic.js`
                 const fileBlob = base64ToBlob(processedDataUrl);
+                const downloadURL = await uploadImageAndGetURL(currentUser.uid, `races/${currentRaceForParticipation}-${Date.now()}`, fileBlob);
+                
+                newPhotoURLForModal = downloadURL;
+                
+                // AÑADE ESTA LÍNEA PARA VERIFICAR
+                console.log(`%cFOTO SUBIDA: La variable newPhotoURLForModal ahora es: ${newPhotoURLForModal}`, "color: blue; font-weight: bold;");
 
-                // 3. Subir el Blob a Firebase Storage y obtener la URL de descarga pública.
-                //    Esta función también está en `firebase-logic.js`
-                console.log(`Subiendo foto para "${currentRaceForParticipation}" a Firebase Storage...`);
-                const downloadURL = await uploadImageAndGetURL(
-                    currentUser.uid, 
-                    `races/${currentRaceForParticipation}-${Date.now()}`, // Path único en Storage para evitar sobreescribir
-                    fileBlob
-                );
-                console.log("¡Éxito! URL de descarga:", downloadURL);
-
-                // 4. AHORA SÍ: Mostrar la URL de Firebase en la vista previa del modal.
-                //    La función `showPhotoPreviewInModal` ya existe, ahora le pasamos la URL correcta.
                 showPhotoPreviewInModal(downloadURL);
-
-                showSuccessMessage("✅ Foto subida. Ahora puedes añadir los detalles y guardar.");
+                showSuccessMessage("✅ Foto nueva cargada. Pulsa 'Guardar'.");
 
             } catch (error) {
                 console.error('Error durante la subida de la foto:', error);
-                alert('Hubo un error al subir la foto a Firebase. Por favor, intenta de nuevo.');
+                alert('Hubo un error al subir la foto a Firebase.');
             } finally {
-                // Limpiamos todo al final
                 showLoadingIndicator(false);
-                currentRaceForParticipation = null; // Reseteamos la variable
-                event.target.value = ''; // Limpiamos el input de archivo
+                // currentRaceForParticipation = null; // <-- Vamos a comentar esta línea por ahora, podría estar causando problemas.
+                event.target.value = '';
             }
-        }  
-    
+        }
+
         // Función para mostrar preview de foto en el modal
         function showPhotoPreviewInModal(photoData) {
             const uploadArea = document.querySelector('#raceParticipationModal .photo-upload-area');
