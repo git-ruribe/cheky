@@ -1871,11 +1871,17 @@ window.saveRaceParticipation = async function(raceName) {
         // Caso 1: Se hizo público (y antes no lo era)
         if (isPublic && !wasPublic) {
             console.log("Haciendo público: creando post...");
+
+            // Buscamos la información de la carrera en nuestro array principal
+            const raceInfo = restaurants.find(r => r.name === raceName);
+            const raceDate = raceInfo ? raceInfo.date : null; // Obtenemos la fecha
+
             finalPublicPostKey = await createPublicPost({
                 userUid: currentUser.uid,
                 userName: userData.profile.name || "un corredor",
                 raceName: raceName,
-                photoURL: finalPhotoURL
+                photoURL: finalPhotoURL,
+                raceDate: raceDate // <-- AÑADIMOS EL NUEVO CAMPO
             });
         }
         // Caso 2: Se hizo privado (y antes era público)
@@ -2338,8 +2344,14 @@ window.saveRaceParticipation = async function(raceName) {
                 postElement.innerHTML = `
                     <img src="${post.photoURL}" alt="Foto de ${post.raceName}" loading="lazy">
                     <div class="post-caption">
-                        <i class="fas fa-user-circle"></i>
-                        <span>${post.userName}</span>
+                        <div>
+                            <i class="fas fa-user-circle"></i>
+                            <span>${post.userName}</span>
+                        </div>
+                        <div class="post-race-date">
+                            <i class="far fa-calendar-alt"></i>
+                            <span>${post.raceDate}</span>
+                        </div>
                     </div>
                 `;
                 container.appendChild(postElement);

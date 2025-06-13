@@ -1467,9 +1467,17 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            justify-content: space-between;
         }
         .post-caption .fa-user-circle {
             color: var(--medium-gray);
+        }
+        .post-race-date {
+            font-size: 0.8rem;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
         /* Estilos para el interruptor de Privacidad */
         .privacy-toggle-container {
