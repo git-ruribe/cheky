@@ -118,9 +118,11 @@
             flex: 1;
             padding: 20px 20px 80px 20px;
             display: flex;
-            flex-direction: column;
-            height: 100%;
             overflow: hidden;
+            height: 95dvh;
+            flex-direction: column;
+            padding-bottom:70px;
+            box-sizing: border-box; 
         }
 
         /* Portada Styles */
@@ -183,6 +185,7 @@
         /* Runner Index Page Styles */
         .restaurant-index-content {
             text-align: center;
+            
         }
         .restaurant-index-header {
             font-family: 'Anton', sans-serif;
@@ -589,6 +592,16 @@
                 
                 
             }
+
+             .page-content {
+                padding: 20px;
+            display: flex;
+            height: 95dvh;
+            flex-direction: column;
+            overflow: hidden;
+            padding-bottom:70px;
+            box-sizing: border-box; 
+            }
             
 
         }
@@ -598,6 +611,12 @@
             
             .page-content {
                 padding: 20px;
+            display: flex;
+            height: 95dvh;
+            flex-direction: column;
+            overflow: hidden;
+            padding-bottom:70px;
+            box-sizing: border-box; 
             }
             
             .restaurant-content-wrapper {
@@ -1414,9 +1433,12 @@
         }
         /* Estilos para el Muro Comunitario */
         .community-wall {
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+                display: flex;
+                height: 95dvh;
+                flex-direction: column;
+                overflow: hidden;
+                padding-bottom:70px;
+                box-sizing: border-box; 
         }
         .community-wall-header {
             text-align: center;

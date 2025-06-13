@@ -2229,135 +2229,115 @@ window.saveRaceParticipation = async function(raceName) {
         }
 
             // === INICIO DEL CÓDIGO PARA EL MURO COMUNITARIO ===
+// === INICIO DEL NUEVO CÓDIGO PARA EL MURO COMUNITARIO (ORDENADO POR CARRERA) ===
 
-        let lastPostTimestamp = null;
-        let isLoadingPosts = false;
-        let allPostsLoaded = false;
-        let wallObserver;
+// Esta función ahora es muy simple: solo llama a la función principal de carga.
+function initializeCommunityWall() {
+    loadAndRenderAllPosts();
+}
 
-        // Genera el contenedor inicial para el muro
-        function generateCommunityWallContent() {
-            return `
-                <div class="page-content community-wall">
-                    <h2 class="community-wall-header">Muro Comunitario</h2>
-                    <p class="community-wall-subheader">Últimas fotos de todos los corredores</p>
-                    <div id="community-wall-container"></div>
-                    <div id="wall-loader" style="text-align: center; padding: 20px; display: none;">Cargando más...</div>
+// Esta es la nueva función principal que hace todo el trabajo.
+async function loadAndRenderAllPosts() {
+    showLoadingIndicator(true, "Cargando muro comunitario...");
+    
+    const postsRef = db.ref('public_posts');
+    const snapshot = await postsRef.once('value');
+    const postsData = snapshot.val();
+
+    const container = document.getElementById('community-wall-container');
+    if (!container) return; // Salir si el contenedor no existe
+    container.innerHTML = ''; // Limpiar contenido anterior
+
+    if (!postsData) {
+        container.innerHTML = '<p style="text-align: center; color: #777;">Aún no hay publicaciones en el muro. ¡Sé el primero!</p>';
+        showLoadingIndicator(false);
+        return;
+    }
+
+    // --- 1. Agrupar todas las publicaciones por nombre de carrera ---
+    const postsByRace = {};
+    for (const key in postsData) {
+        const post = postsData[key];
+        if (!postsByRace[post.raceName]) {
+            // Si es la primera vez que vemos esta carrera, creamos un grupo para ella
+            postsByRace[post.raceName] = {
+                raceName: post.raceName,
+                raceDate: post.raceDate, // Guardamos la fecha de la carrera para poder ordenar el grupo
+                posts: [] // Un array para guardar todas las fotos de esta carrera
+            };
+        }
+        postsByRace[post.raceName].posts.push(post);
+    }
+
+    // --- 2. Convertir el objeto de grupos en un array y ordenarlo ---
+    // El array final estará ordenado por fecha de carrera, de más nueva a más vieja.
+    const groupedAndSortedRaces = Object.values(postsByRace).sort((a, b) => {
+        // Comparamos las fechas de las carreras para ordenar los grupos
+        return new Date(b.raceDate) - new Date(a.raceDate);
+    });
+
+    // --- 3. Ordenar las fotos DENTRO de cada grupo ---
+    // Por cada grupo, ordenamos sus fotos por fecha de publicación (timestamp)
+    groupedAndSortedRaces.forEach(group => {
+        group.posts.sort((a, b) => b.timestamp - a.timestamp);
+    });
+
+    // --- 4. "Pintar" el resultado final en el HTML ---
+    displayGroupedPosts(groupedAndSortedRaces);
+
+    showLoadingIndicator(false);
+}
+
+
+// Nueva función que se dedica solo a mostrar el resultado final.
+function displayGroupedPosts(groupedRaces) {
+    const container = document.getElementById('community-wall-container');
+    if (!container) return;
+    
+    // Recorremos los grupos de carreras ya ordenados
+    groupedRaces.forEach(group => {
+        // Añadimos el separador para el grupo
+        const separator = document.createElement('h3');
+        separator.className = 'post-separator';
+        separator.textContent = `${group.raceName} (${group.raceDate})`; // Mostramos nombre y fecha
+        container.appendChild(separator);
+
+        // Recorremos las fotos (posts) dentro de cada grupo
+        group.posts.forEach(post => {
+            const postElement = document.createElement('div');
+            postElement.className = 'community-post';
+            postElement.innerHTML = `
+                <img src="${post.photoURL}" alt="Foto de ${post.raceName}" loading="lazy">
+                <div class="post-caption">
+                    <div>
+                        <i class="fas fa-user-circle"></i>
+                        <span>${post.userName}</span>
+                    </div>
+                    <div class="post-race-date">
+                        <i class="far fa-clock"></i>
+                        <span>Publicado: ${new Date(post.timestamp).toLocaleDateString()}</span>
+                    </div>
                 </div>
             `;
-        }
+            container.appendChild(postElement);
+        });
+    });
+}
 
-        // Prepara el scroll infinito
-        function initializeCommunityWall() {
-            // Reseteamos las variables
-            lastPostTimestamp = null;
-            isLoadingPosts = false;
-            allPostsLoaded = false;
+function generateCommunityWallContent() {
+    // Esta función solo crea el contenedor principal.
+    // El contenido real se cargará después con las otras funciones.
+    return `
+        <div class="page-content community-wall">
+            <h2 class="community-wall-header">Muro Comunitario</h2>
+            <p class="community-wall-subheader">La historia 2025 del Club Exatec Running.</p>
+            <div id="community-wall-container">
+                </div>
+        </div>
+    `;
+}
 
-            const loader = document.getElementById('wall-loader');
-            
-            // El observador se activa cuando el "loader" entra en la pantalla
-            wallObserver = new IntersectionObserver((entries) => {
-                if (entries[0].isIntersecting && !isLoadingPosts && !allPostsLoaded) {
-                    fetchCommunityPosts();
-                }
-            }, { threshold: 1.0 });
-
-            if (loader) {
-                wallObserver.observe(loader);
-            }
-
-            // Cargamos el primer lote de fotos
-            fetchCommunityPosts();
-        }
-
-        // Carga los posts desde Firebase
-        async function fetchCommunityPosts() {
-            if (isLoadingPosts || allPostsLoaded) return;
-
-            console.log("Cargando posts...");
-            isLoadingPosts = true;
-            document.getElementById('wall-loader').style.display = 'block';
-
-            const postsRef = db.ref('public_posts');
-            let query;
-
-            // Si es la primera carga, solo pedimos los últimos 5
-            if (lastPostTimestamp === null) {
-                query = postsRef.orderByChild('timestamp').limitToLast(5);
-            } else {
-                // Si no, pedimos los 6 anteriores al último que tenemos (5 nuevos + 1 de solapamiento)
-                query = postsRef.orderByChild('timestamp').endAt(lastPostTimestamp).limitToLast(6);
-            }
-
-            const snapshot = await query.once('value');
-            const postsData = snapshot.val();
-            
-            document.getElementById('wall-loader').style.display = 'none';
-
-            if (postsData) {
-                // Firebase devuelve los datos como un objeto, lo convertimos a un array y lo ordenamos descendente
-                const postsArray = Object.values(postsData).sort((a, b) => b.timestamp - a.timestamp);
-
-                // Si es una carga subsecuente, eliminamos el elemento solapado
-                if (lastPostTimestamp !== null) {
-                    postsArray.shift();
-                }
-
-                if (postsArray.length > 0) {
-                    // Guardamos el timestamp del último elemento para la siguiente carga
-                    lastPostTimestamp = postsArray[postsArray.length - 1].timestamp;
-                    renderPostsToWall(postsArray);
-                } else {
-                    allPostsLoaded = true;
-                    console.log("Todos los posts han sido cargados.");
-                }
-
-            } else {
-                allPostsLoaded = true;
-                console.log("No hay posts o no hay más posts que cargar.");
-            }
-            
-            isLoadingPosts = false;
-        }
-
-        // "Pinta" los posts en el HTML
-        function renderPostsToWall(posts) {
-            const container = document.getElementById('community-wall-container');
-            if (!container) return;
-
-            let lastRaceName = container.lastElementChild?.dataset?.raceName || '';
-            
-            posts.forEach(post => {
-                // Si el nombre de la carrera es diferente al anterior, añadimos un separador
-                if (post.raceName !== lastRaceName) {
-                    const separator = document.createElement('h3');
-                    separator.className = 'post-separator';
-                    separator.textContent = post.raceName;
-                    container.appendChild(separator);
-                    lastRaceName = post.raceName;
-                }
-
-                const postElement = document.createElement('div');
-                postElement.className = 'community-post';
-                postElement.dataset.raceName = post.raceName; // Guardamos el nombre para la siguiente iteración
-                postElement.innerHTML = `
-                    <img src="${post.photoURL}" alt="Foto de ${post.raceName}" loading="lazy">
-                    <div class="post-caption">
-                        <div>
-                            <i class="fas fa-user-circle"></i>
-                            <span>${post.userName}</span>
-                        </div>
-                        <div class="post-race-date">
-                            <i class="far fa-calendar-alt"></i>
-                            <span>${post.raceDate}</span>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(postElement);
-            });
-        }
-
+// === FIN DEL NUEVO CÓDIGO ===
         // === FIN DEL CÓDIGO PARA EL MURO COMUNITARIO ===
         
     </script>
