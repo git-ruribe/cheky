@@ -1,5 +1,41 @@
 [
-          {
+    {
+        "name": "Run Pride",
+        "type": "",
+        "address": "",
+        "mapUrl": "",
+        "coordinates": "",
+        "tel": "",
+        "social": "",
+        "photos": [],
+        "description": "",
+        "date": "2025-06-22"
+    }, 
+  {
+        "name": "Que Padre Es Correr",
+        "type": "",
+        "address": "",
+        "mapUrl": "",
+        "coordinates": "",
+        "tel": "",
+        "social": "",
+        "photos": [],
+        "description": "",
+        "date": "2025-06-15"
+    }, 
+  {
+        "name": "21K San Nicolás",
+        "type": "",
+        "address": "",
+        "mapUrl": "",
+        "coordinates": "",
+        "tel": "",
+        "social": "",
+        "photos": [],
+        "description": "",
+        "date": "2025-06-15"
+    },        
+  {
         "name": "Entrenando en JUNIO",
         "type": "",
         "address": "",
