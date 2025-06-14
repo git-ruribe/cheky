@@ -245,14 +245,14 @@
             
             contentPages = [
                 { type: 'cover' },
-                { type: 'instructions' },
+                { type: 'communityWall' },
                 { type: 'restaurantIndex' },
                 ...completedRaces.map(race => ({ 
                     type: 'completedRace', 
                     data: race.raceInfo,
                     participationData: race.participationData 
                 })),
-                { type: 'communityWall' },
+                { type: 'instructions' },
                 { type: 'finalPage' }
             ];
             renderCurrentPage();
