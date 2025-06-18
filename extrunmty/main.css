@@ -183,23 +183,23 @@
         }
 
         /* Runner Index Page Styles */
-        .restaurant-index-content {
+        .race-index-content {
             text-align: center;
             
         }
-        .restaurant-index-header {
+        .race-index-header {
             font-family: 'Anton', sans-serif;
             font-size: 2rem;
             color: var(--primary-blue);
             margin-bottom: 0.5rem;
         }
-        .restaurant-index-count {
+        .race-index-count {
             font-size: 1.2rem;
             color: var(--dark-blue);
             margin-bottom: 1rem;
             font-weight: 600;
         }
-        .restaurant-list-container {
+        .race-list-container {
             flex: 1;
             overflow-y: auto;
             padding-right: 8px;
@@ -208,11 +208,11 @@
             gap: 6px;
             padding: 8px;
         }
-        .restaurant-list-container::-webkit-scrollbar { width: 6px; }
-        .restaurant-list-container::-webkit-scrollbar-track { background: var(--light-blue); border-radius: 3px; }
-        .restaurant-list-container::-webkit-scrollbar-thumb { background: var(--primary-blue); border-radius: 3px; }
+        .race-list-container::-webkit-scrollbar { width: 6px; }
+        .race-list-container::-webkit-scrollbar-track { background: var(--light-blue); border-radius: 3px; }
+        .race-list-container::-webkit-scrollbar-thumb { background: var(--primary-blue); border-radius: 3px; }
 
-        .restaurant-list-item {
+        .race-list-item {
             display: flex;
             align-items: center;
             background: var(--light-gray);
@@ -228,10 +228,10 @@
             text-align: left;
             gap: 8px;
         }
-        .restaurant-list-item i { font-size: 1.1rem; flex-shrink: 0; }
-        .restaurant-list-item .fa-circle-check { color: var(--fresh-green); }
-        .restaurant-list-item .fa-circle { color: var(--medium-gray); }
-        .restaurant-list-item:hover { 
+        .race-list-item i { font-size: 1.1rem; flex-shrink: 0; }
+        .race-list-item .fa-circle-check { color: var(--fresh-green); }
+        .race-list-item .fa-circle { color: var(--medium-gray); }
+        .race-list-item:hover { 
             background-color: var(--sky-blue); 
             border-color: var(--primary-blue);
             transform: translateY(-1px);
@@ -239,7 +239,7 @@
         }
 
         /* Runner Profile Page Specific Styles */
-        .restaurant-content-wrapper {
+        .race-content-wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -249,7 +249,7 @@
             overflow: hidden;
         }
 
-        .restaurant-title {
+        .race-title {
             font-family: 'Anton', sans-serif;
             font-size: 2rem;
             height: 4.8rem;
@@ -619,7 +619,7 @@
             box-sizing: border-box; 
             }
             
-            .restaurant-content-wrapper {
+            .race-content-wrapper {
                 padding: 20px 10px 15px 10px;
             }
         }
@@ -984,26 +984,26 @@
             }
         }
 
-        .restaurant-list-item.highlighted-runner {
+        .race-list-item.highlighted-runner {
             background: linear-gradient(135deg, var(--accent-orange), #FFB347);
             color: white;
             border: 2px solid var(--fresh-green);
             box-shadow: 0 4px 12px rgba(243, 156, 18, 0.4);
         }
         
-        .restaurant-list-item.highlighted-runner .fa-circle,
-        .restaurant-list-item.highlighted-runner .fa-circle-check {
+        .race-list-item.highlighted-runner .fa-circle,
+        .race-list-item.highlighted-runner .fa-circle-check {
             color: white;
         }
         
-        .restaurant-list-item.highlighted-runner::after {
+        .race-list-item.highlighted-runner::after {
             content: '⭐';
             margin-left: auto;
             font-size: 1.2rem;
             flex-shrink: 0;
         }
         
-        .restaurant-list-item.highlighted-runner:hover {
+        .race-list-item.highlighted-runner:hover {
             background: linear-gradient(135deg, #E67E00, #FF8C00);
             transform: translateY(-2px);
             box-shadow: 0 6px 16px rgba(243, 156, 18, 0.5);
