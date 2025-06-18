@@ -258,8 +258,8 @@
             
             contentPages = [
                 { type: 'cover' },
-                { type: 'communityWall' },
                 { type: 'raceIndex' },
+                { type: 'communityWall' },
                 ...completedRaces.map(race => ({ 
                     type: 'completedRace', 
                     data: race.raceInfo,
@@ -628,91 +628,88 @@ function showSuccessMessage(message) {
                 </div>`;
         }
 
-        // Reemplaza la función existente con esta
-// Reemplaza tu función actual con esta versión mejorada
-function generateraceIndexContent() {
-    const completedCount = getCompletedRacesCount();
-    let finalHtmlList = ''; // Usaremos esta variable para construir el HTML final
+        // Reemplaza tu función actual con esta versión mejorada
+        function generateraceIndexContent() {
+            const completedCount = getCompletedRacesCount();
+            let finalHtmlList = ''; 
 
-    // --- NUEVA LÓGICA DE AGRUPACIÓN ---
+            // --- NUEVO: Obtener la fecha de hoy sin la hora para una comparación precisa ---
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); 
+            // --------------------------------------------------------------------
 
-    // 1. Creamos un objeto para agrupar las carreras por mes y año
-    const carrerasPorMes = {};
-    races.forEach(race => {
-        // Obtenemos la fecha y la formateamos a un texto como "Julio de 2025"
-        // Le añadimos T12:00 para evitar problemas de zona horaria
-        const fecha = new Date(race.date + 'T12:00:00');
-        const mesAnio = fecha.toLocaleDateString('es-ES', {
-            month: 'long',
-            year: 'numeric'
-        });
-        
-        // Si no existe una entrada para este mes, la creamos como un array vacío
-        if (!carrerasPorMes[mesAnio]) {
-            carrerasPorMes[mesAnio] = [];
+            const carrerasPorMes = {};
+            races.forEach(race => {
+                const fecha = new Date(race.date + 'T12:00:00'); // Usamos T12:00 para evitar problemas de zona horaria
+                const mesAnio = fecha.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+                if (!carrerasPorMes[mesAnio]) carrerasPorMes[mesAnio] = [];
+                carrerasPorMes[mesAnio].push(race);
+            });
+
+            const mesesOrdenados = Object.keys(carrerasPorMes).sort((a, b) => {
+                const fechaA = new Date(carrerasPorMes[a][0].date + 'T12:00:00');
+                const fechaB = new Date(carrerasPorMes[b][0].date + 'T12:00:00');
+                return fechaA - fechaB;
+            });
+
+            mesesOrdenados.forEach(mes => {
+                finalHtmlList += `<div class="month-separator">${mes}</div>`;
+                const carrerasDelMes = carrerasPorMes[mes].sort((a, b) => new Date(a.date) - new Date(b.date));
+
+                carrerasDelMes.forEach(race => {
+                    const sanitizedRaceName = race.name.replace(/[.#$[\]]/g, '_');
+                    const isCompleted = userData.races && userData.races[sanitizedRaceName];
+                    
+                    // --- NUEVA LÓGICA DE CLIC ---
+                    let clickAction = '';
+                    const raceDate = new Date(race.date + 'T12:00:00');
+                    const isFutureRace = raceDate >= today;
+
+                    if (isCompleted) {
+                        // Si ya la completó, siempre lo lleva a su página del álbum.
+                        clickAction = `MapsToRacePageBySanitizedName('${sanitizedRaceName}')`;
+                    } else {
+                        if (isFutureRace) {
+                            // Si es en el futuro, abre el nuevo modal de información.
+                            // Usamos JSON.stringify para pasar el objeto completo de forma segura.
+                            const escapedName = race.name.replace(/'/g, "\\'");
+                            clickAction = `openFutureRaceInfoModal('${escapedName}')`;
+                        } else {
+                            // Si es en el pasado y no la ha completado, abre el modal para subir foto.
+                            clickAction = `openRaceParticipationModal('${race.name}')`;
+                        }
+                    }
+                    // --- FIN DE LA NUEVA LÓGICA ---
+
+                    const completedClass = isCompleted ? 'completed' : '';
+                    const iconClass = isCompleted ? 'fas fa-check-circle completed-icon' : (isFutureRace ? 'far fa-calendar-alt' : 'far fa-circle');
+
+                    finalHtmlList += `
+                        <li class="race-list-item ${completedClass}" onclick="${clickAction}">
+                            <div class="race-icon-container">
+                                <i class="${iconClass}"></i>
+                            </div>
+                            <div class="race-details">
+                                <div class="race-name">${race.name}</div>
+                                <div class="race-date">${formatearFechaSimple(race.date)}</div>
+                            </div>
+                        </li>
+                    `;
+                });
+            });
+
+            return `
+                <div class="page-content race-index-content">
+                    <h2 class="race-index-header">Calendario de Carreras 2025</h2>
+                    <p class="race-index-count">${completedCount} carreras registradas.</p>
+                    <button class="challenge-button" onclick="openTrophyModal()" style="margin: 15px auto;">
+                        <i class="fas fa-trophy"></i> Ver mis logros
+                    </button>
+                    <div class="race-list-container">
+                        <ul class="race-list">${finalHtmlList}</ul>
+                    </div>
+                </div>`;
         }
-
-        // Añadimos la carrera al array del mes correspondiente
-        carrerasPorMes[mesAnio].push(race);
-    });
-
-    // 2. Ordenamos los meses cronológicamente
-    const mesesOrdenados = Object.keys(carrerasPorMes).sort((a, b) => {
-        // Para ordenar, convertimos el mes de vuelta a una fecha
-        const fechaA = new Date(carrerasPorMes[a][0].date + 'T12:00:00');
-        const fechaB = new Date(carrerasPorMes[b][0].date + 'T12:00:00');
-        return fechaA - fechaB;
-    });
-
-    // 3. Generamos el HTML final, iterando sobre los meses ya ordenados
-    mesesOrdenados.forEach(mes => {
-        // Añadimos el título del mes como separador
-        finalHtmlList += `<div class="month-separator">${mes}</div>`;
-
-        // Ordenamos las carreras DENTRO del mes por día
-        const carrerasDelMes = carrerasPorMes[mes].sort((a, b) => new Date(a.date) - new Date(b.date));
-
-        carrerasDelMes.forEach(race => {
-            const sanitizedRaceName = race.name.replace(/[.#$[\]]/g, '_');
-            const isCompleted = userData.races && userData.races[sanitizedRaceName];
-            const completedClass = isCompleted ? 'completed' : '';
-            const iconClass = isCompleted ? 'fas fa-check-circle completed-icon' : 'far fa-circle';
-            const clickAction = isCompleted
-                ? `MapsToRacePageBySanitizedName('${sanitizedRaceName}')`
-                : `openRaceParticipationModal('${race.name}')`;
-
-            // Generamos el HTML del elemento de la lista (esto es igual que antes)
-            finalHtmlList += `
-                <li class="race-list-item ${completedClass}" onclick="${clickAction}">
-                    <div class="race-icon-container">
-                        <i class="${iconClass}"></i>
-                    </div>
-                    <div class="race-details">
-                        <div class="race-name">${race.name}</div>
-                        <div class="race-date">${race.date}</div>
-                    </div>
-                </li>
-            `;
-        });
-    });
-
-    // --- FIN DE LA NUEVA LÓGICA ---
-
-    // Devolvemos el HTML completo para la página del índice
-    return `
-        <div class="page-content race-index-content">
-            <h2 class="race-index-header">Calendario de Carreras 2S 2025</h2>
-            <p class="race-index-count">${completedCount} carreras registradas.</p>
-            <button class="challenge-button" onclick="openTrophyModal()" style="margin: 15px auto;">
-                <i class="fas fa-trophy"></i>
-                Ver mis logros
-            </button>
-            <div class="race-list-container">
-                <ul class="race-list">${finalHtmlList}</ul>
-            </div>
-        </div>`;
-}
-
         
         window.openInfoModal = function(name, type, address, mapUrl, tel, social, description, officialPhotoUrl, coordinates, date) {
             const latLng = coordinates.split(',').map(coord => parseFloat(coord.trim()));
@@ -2332,8 +2329,51 @@ function generateCommunityWallContent() {
     `;
 }
 
-// === FIN DEL NUEVO CÓDIGO ===
-        // === FIN DEL CÓDIGO PARA EL MURO COMUNITARIO ===
+function openFutureRaceInfoModal(raceName) {
+    const race = races.find(r => r.name === raceName);
+
+    if (!race) {
+        console.error("No se encontró la carrera con el nombre:", raceName);
+        alert("Ocurrió un error al mostrar la información de la carrera.");
+        return;
+    }
+
+    
+
+    const fechaCarrera = formatearFecha(race.date);
+    const description = race.description?.replace(/\\n/g, '<br>') ?? 'No hay descripción disponible para este evento.';
+    const socialLink = race.social;
+    let linkButtonHTML = '';
+
+    modalTitleEl.textContent = race.name;
+
+    if (socialLink) {
+        // --- ¡CAMBIO AQUÍ! Usamos la nueva clase 'btn-orange' ---
+        linkButtonHTML = `
+            <a href="${socialLink}" target="_blank" rel="noopener noreferrer" class="btn-orange">
+                <i class="fas fa-link"></i> Ver Sitio Oficial del Evento
+            </a>`;
+    }
+
+    modalBodyEl.innerHTML = `
+        <p class="modal-info-details"><strong>Fecha:</strong> ${fechaCarrera}</p>
+        <p class="modal-info-description">${description}</p>
+        ${linkButtonHTML}
+        <p class="modal-info-footer">
+            ¡Prepárate! Podrás registrar tu participación después de la fecha del evento.
+        </p>
+    `;
+
+    infoModal.classList.add('show');
+}
+
+function formatearFechaSimple(fechaISO) {
+    const fecha = new Date(fechaISO + 'T12:00:00');
+    return fecha.toLocaleDateString('es-ES', { 
+        day: 'numeric', 
+        month: 'short' 
+    }).replace('.', ''); // Quita el punto que algunos navegadores añaden (ej: "sep.")
+}
         
     </script>
 </body>

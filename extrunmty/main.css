@@ -1560,3 +1560,41 @@
         .slider.round:before {
             border-radius: 50%;
         }
+
+        /* === ESTILO PARA BOTÓN DE ACCIÓN NARANJA === */
+        .btn-orange {
+            display: inline-block; /* Para que ocupe el espacio necesario y permita padding */
+            background-color: #FF8C00; /* Naranja oscuro y vibrante */
+            color: white !important; /* Asegura que el texto sea blanco */
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            text-decoration: none; /* Quita el subrayado de los enlaces */
+            margin-top: 15px;
+            margin-bottom: 10px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease; /* Transición suave para todos los efectos */
+        }
+
+        /* Efecto al pasar el cursor por encima */
+        .btn-orange:hover {
+            background-color: #e67e00; /* Un naranja un poco más oscuro */
+            transform: translateY(-2px); /* El botón se "levanta" un poco */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .month-separator {
+            background-color: #f0f4f8; /* Un gris azulado muy claro */
+            color: #4a5568;          /* Texto gris oscuro */
+            padding: 8px 15px;
+            margin-top: 20px;        /* Espacio antes de un nuevo mes */
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-transform: capitalize; /* Pone en mayúscula la primera letra (ej. "Julio") */
+            border-radius: 6px;
+            border-left: 4px solid var(--primary-blue, #3b82f6); /* Un acento de color a la izquierda */
+        }
