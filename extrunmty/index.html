@@ -65,27 +65,40 @@
 <body>
 
 
-    <div id="auth-container" class="fixed inset-0 bg-gray-900 bg-opacity-80 flex items-center justify-center z-50" style="display: none;">
-        <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-sm text-center">
-            <h2 class="text-2xl font-bold mb-4" id="auth-title">Iniciar Sesión</h2>
-            
-            <p id="auth-error" class="text-red-500 mb-4 h-5"></p>
-
-            <div id="name-field" class="mb-4" style="display: none;">
-                <input type="text" id="nameInput" placeholder="Tu Nombre" class="w-full p-3 border rounded">
-            </div>
-
-            <input type="email" id="emailInput" placeholder="Email" class="w-full p-3 border rounded mb-4">
-            <input type="password" id="passwordInput" placeholder="Contraseña" class="w-full p-3 border rounded mb-4">
-
-            <button id="auth-action-btn" class="w-full bg-blue-600 text-white p-3 rounded hover:bg-blue-700">
-                Entrar
-            </button>
-            <p class="mt-4">
-                <a href="#" id="auth-toggle-link" class="text-blue-600 hover:underline">¿No tienes cuenta? Regístrate</a>
-            </p>
+<div id="auth-container" class="fixed inset-0 bg-gray-900 bg-opacity-80 flex items-center justify-center z-50" style="display: none;">
+    <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-sm text-center">
+        
+        <div class="mb-6">
+            <i class="fas fa-running text-4xl text-blue-600 mb-2"></i>
+            <h2 class="text-xl font-bold text-gray-800">Bienvenido al Álbum</h2>
+            <p class="text-gray-600 text-sm">EXATEC Running Monterrey</p>
         </div>
+
+        <h3 class="text-2xl font-bold mb-4" id="auth-title">Iniciar Sesión</h3>
+        
+        <p id="auth-error" class="text-red-500 mb-4 h-5"></p> <div id="name-field" class="mb-4" style="display: none;">
+            <input type="text" id="nameInput" placeholder="Tu Nombre" class="w-full p-3 border rounded">
+        </div>
+
+        <input type="email" id="emailInput" placeholder="Email" class="w-full p-3 border rounded mb-4">
+        <div id="password-field" class="mb-4">
+            <input type="password" id="passwordInput" placeholder="Contraseña" class="w-full p-3 border rounded">
+        </div>
+
+        <button id="auth-action-btn" class="w-full bg-blue-600 text-white p-3 rounded hover:bg-blue-700 transition-colors duration-300">
+            Entrar
+        </button>
+
+        <div class="mt-4 text-sm">
+            <a href="#" id="forgot-password-link" class="text-gray-500 hover:text-blue-600">¿Olvidaste tu contraseña?</a>
+        </div>
+        
+        <p class="mt-4">
+            <a href="#" id="auth-toggle-link" class="text-blue-600 hover:underline">¿No tienes cuenta? Regístrate</a>
+        </p>
+
     </div>
+</div>
 
     <div class="album-container">
         <div class="album-book-wrapper">
@@ -229,7 +242,7 @@
 
 
     <script>
-        let restaurants = [];
+        let races = [];
         let contentPages = [];
         let currentPageIndex = 0;
 
@@ -246,7 +259,7 @@
             contentPages = [
                 { type: 'cover' },
                 { type: 'communityWall' },
-                { type: 'restaurantIndex' },
+                { type: 'raceIndex' },
                 ...completedRaces.map(race => ({ 
                     type: 'completedRace', 
                     data: race.raceInfo,
@@ -265,7 +278,7 @@
                 for (const raceName in userData.races) {
                     // El nombre original está en la propiedad, no en la clave sanitizada
                     const participationData = userData.races[raceName];
-                    const raceInfo = restaurants.find(r => r.name === participationData.raceName);
+                    const raceInfo = races.find(r => r.name === participationData.raceName);
                     
                     if (raceInfo && participationData) {
                         completed.push({
@@ -285,15 +298,15 @@
         fetch('carreras.json')
           .then(response => response.json())
           .then(data => {
-              restaurants = data;
+              races = data;
               initializeAlbumApp();
           })
           .catch(error => {
-              alert("Error al cargar el archivo de restaurantes: " + error);
+              alert("Error al cargar el archivo de racees: " + error);
           });
         
         let isAnimating = false;
-        let currentRestaurantForUpload = null;
+        let currentraceForUpload = null;
 
         // DOM Elements
         const currentPageEl = document.getElementById('currentPage');
@@ -309,8 +322,8 @@
 
         userPhotoInput.addEventListener('change', handlePhotoUpload);
 
-        window.selectUserPhoto = function(restaurantName, event) {
-            currentRestaurantForUpload = restaurantName;
+        window.selectUserPhoto = function(raceName, event) {
+            currentraceForUpload = raceName;
             userPhotoInput.click();
         };
 
@@ -534,89 +547,7 @@ function compressImageWithVintageFilter(file, maxWidth = 800, maxHeight = 600, q
                 event.target.value = '';
             }
         }
-// Funciones auxiliares (mantén las que ya tienes del código anterior)
-function showLoadingIndicator(show = true) {
-    let loader = document.getElementById('imageLoader');
-    
-    if (show) {
-        if (!loader) {
-            loader = document.createElement('div');
-            loader.id = 'imageLoader';
-            loader.innerHTML = `
-                <div style="
-                    position: fixed;
-                    top: 0; left: 0;
-                    width: 100vw; height: 100vh;
-                    background: rgba(0,0,0,0.8);
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    z-index: 2000;
-                    color: white;
-                    font-family: 'Lato', sans-serif;
-                    font-size: 1.2rem;
-                ">
-                    <div style="text-align: center;">
-                        <div style="
-                            width: 40px; height: 40px;
-                            border: 3px solid #f3f3f3;
-                            border-top: 3px solid #FF8C00;
-                            border-radius: 50%;
-                            animation: spin 1s linear infinite;
-                            margin: 0 auto 10px;
-                        "></div>
-                        Aplicando filtro vintage...
-                    </div>
-                </div>
-                <style>
-                    @keyframes spin {
-                        0% { transform: rotate(0deg); }
-                        100% { transform: rotate(360deg); }
-                    }
-                </style>
-            `;
-            document.body.appendChild(loader);
-        }
-        loader.style.display = 'flex';
-    } else {
-        if (loader) {
-            loader.style.display = 'none';
-        }
-    }
-}
 
-function showSuccessMessage(message) {
-    const successDiv = document.createElement('div');
-    successDiv.style.cssText = `
-        position: fixed;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #28a745;
-        color: white;
-        padding: 10px 20px;
-        border-radius: 5px;
-        z-index: 1500;
-        font-family: 'Lato', sans-serif;
-        font-size: 1.1rem;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    `;
-    successDiv.textContent = message;
-    
-    document.body.appendChild(successDiv);
-    
-    // Animar entrada
-    setTimeout(() => successDiv.style.opacity = '1', 100);
-    
-    // Remover después de 3 segundos
-    setTimeout(() => {
-        successDiv.style.opacity = '0';
-        setTimeout(() => document.body.removeChild(successDiv), 300);
-    }, 3000);
-}
-//-----------------------------
 
 // 5. Función para mostrar mensaje de éxito
 function showSuccessMessage(message) {
@@ -656,8 +587,8 @@ function showSuccessMessage(message) {
 
         function generateCompletedRaceContent(race, participationData) {
             return `
-                <div class="page-content restaurant-content-wrapper">
-                    <h2 class="restaurant-title">${race.name}</h2>
+                <div class="page-content race-content-wrapper">
+                    <h2 class="race-title">${race.name}</h2>
                     <div style="
                         font-family: 'Lato', sans-serif;
                         font-size: 1rem;
@@ -699,7 +630,7 @@ function showSuccessMessage(message) {
 
         // Reemplaza la función existente con esta
 // Reemplaza tu función actual con esta versión mejorada
-function generateRestaurantIndexContent() {
+function generateraceIndexContent() {
     const completedCount = getCompletedRacesCount();
     let finalHtmlList = ''; // Usaremos esta variable para construir el HTML final
 
@@ -707,7 +638,7 @@ function generateRestaurantIndexContent() {
 
     // 1. Creamos un objeto para agrupar las carreras por mes y año
     const carrerasPorMes = {};
-    restaurants.forEach(race => {
+    races.forEach(race => {
         // Obtenemos la fecha y la formateamos a un texto como "Julio de 2025"
         // Le añadimos T12:00 para evitar problemas de zona horaria
         const fecha = new Date(race.date + 'T12:00:00');
@@ -752,13 +683,13 @@ function generateRestaurantIndexContent() {
 
             // Generamos el HTML del elemento de la lista (esto es igual que antes)
             finalHtmlList += `
-                <li class="restaurant-list-item ${completedClass}" onclick="${clickAction}">
-                    <div class="restaurant-icon-container">
+                <li class="race-list-item ${completedClass}" onclick="${clickAction}">
+                    <div class="race-icon-container">
                         <i class="${iconClass}"></i>
                     </div>
-                    <div class="restaurant-details">
-                        <div class="restaurant-name">${race.name}</div>
-                        <div class="restaurant-date">${race.date}</div>
+                    <div class="race-details">
+                        <div class="race-name">${race.name}</div>
+                        <div class="race-date">${race.date}</div>
                     </div>
                 </li>
             `;
@@ -769,15 +700,15 @@ function generateRestaurantIndexContent() {
 
     // Devolvemos el HTML completo para la página del índice
     return `
-        <div class="page-content restaurant-index-content">
-            <h2 class="restaurant-index-header">Calendario de Carreras 2S 2025</h2>
-            <p class="restaurant-index-count">${completedCount} carreras registradas.</p>
+        <div class="page-content race-index-content">
+            <h2 class="race-index-header">Calendario de Carreras 2S 2025</h2>
+            <p class="race-index-count">${completedCount} carreras registradas.</p>
             <button class="challenge-button" onclick="openTrophyModal()" style="margin: 15px auto;">
                 <i class="fas fa-trophy"></i>
                 Ver mis logros
             </button>
-            <div class="restaurant-list-container">
-                <ul class="restaurant-list">${finalHtmlList}</ul>
+            <div class="race-list-container">
+                <ul class="race-list">${finalHtmlList}</ul>
             </div>
         </div>`;
 }
@@ -841,7 +772,7 @@ function generateRestaurantIndexContent() {
                 }
 
                 // Establecemos la variable global
-                currentImageRestaurant = raceNameFound;
+                currentImagerace = raceNameFound;
 
                 // Mostramos el modal
                 modalImageEl.style.display = 'block'; 
@@ -853,20 +784,20 @@ function generateRestaurantIndexContent() {
         };      
 
         window.deleteCurrentImage = function() {
-            if (!currentImageRestaurant) return;
+            if (!currentImagerace) return;
             closeImageModal(); // Cerramos el modal actual
-            deleteRaceParticipation(currentImageRestaurant); 
+            deleteRaceParticipation(currentImagerace); 
 
         };
 
         window.editCurrentParticipation = function() {
-            if (!currentImageRestaurant) return;
+            if (!currentImagerace) return;
             closeImageModal(); // Cerramos el modal de la imagen
             
             // Un pequeño delay para que la animación de cierre se vea bien
             setTimeout(() => {
                 // Llamamos a la función principal de edición que ya tenemos
-                editRaceParticipation(currentImageRestaurant);
+                editRaceParticipation(currentImagerace);
             }, 200);
         };
 
@@ -877,13 +808,13 @@ function generateRestaurantIndexContent() {
 
         // Función para reemplazar imagen - actualizada  
         window.replaceCurrentImage = function() {
-            if (!currentImageRestaurant) return;
+            if (!currentImagerace) return;
             
             // Abrir modal de edición completo en lugar de solo cambiar foto
-            const raceData = getRaceData(currentImageRestaurant);
+            const raceData = getRaceData(currentImagerace);
             if (raceData) {
                 closeImageModal();
-                editRaceParticipation(currentImageRestaurant);
+                editRaceParticipation(currentImagerace);
             }
         };       
         window.closeImageModal = function() {
@@ -914,8 +845,8 @@ function generateRestaurantIndexContent() {
 
                 // 3. Usamos la API para compartir el archivo
                 await navigator.share({
-                    title: `Mi foto de la carrera: ${currentImageRestaurant}`,
-                    text: `¡Mira mi logro de la carrera "${currentImageRestaurant}" completada con mi álbum de cheky.app!`,
+                    title: `Mi foto de la carrera: ${currentImagerace}`,
+                    text: `¡Mira mi logro de la carrera "${currentImagerace}" completada con mi álbum de cheky.app!`,
                     files: [file]
                 });
 
@@ -947,10 +878,10 @@ function generateRestaurantIndexContent() {
 
             if (pageData.type === 'cover') {
                 contentHTML = generateCoverContent();
-            } else if (pageData.type === 'restaurantIndex') {
-                contentHTML = generateRestaurantIndexContent();
-            } else if (pageData.type === 'restaurant') {
-                contentHTML = generateRestaurantContent(pageData.data); 
+            } else if (pageData.type === 'raceIndex') {
+                contentHTML = generateraceIndexContent();
+            } else if (pageData.type === 'race') {
+                contentHTML = generateraceContent(pageData.data); 
             } else if (pageData.type === 'completedRace') {  // ← AGREGAR ESTA LÍNEA
                 contentHTML = generateCompletedRaceContent(pageData.data, pageData.participationData);
             } else if (pageData.type === 'communityWall') {
@@ -1001,7 +932,7 @@ function generateCoverContent() {
             
             const currentPage = contentPages[currentPageIndex];
             
-            if (currentPage.type === 'restaurant' || currentPage.type === 'completedRace') {
+            if (currentPage.type === 'race' || currentPage.type === 'completedRace') {
                 pageIndicatorEl.textContent = "Índice";
                 pageIndicatorEl.classList.add('index-link');
                 pageIndicatorEl.onclick = () => navigateToPage(2, 'backward');
@@ -1029,19 +960,19 @@ function generateCoverContent() {
             }, 400); // Coincidir con la duración CSS (0.4s)
         }
         
-        window.navigateToRestaurantPage = function(restaurantName) {
+        window.navigateToracePage = function(raceName) {
             // Verificar si ya tiene datos
-            const existingData = getRaceData(restaurantName);
+            const existingData = getRaceData(raceName);
             
             if (existingData) {
                 // Si ya participó, ir a la página de la carrera
-                const pageIndex = getCompletedRacePageIndex(restaurantName);
+                const pageIndex = getCompletedRacePageIndex(raceName);
                 if (pageIndex !== -1) {
                     navigateToPage(pageIndex, 'forward');
                 }
             } else {
                 // Si no ha participado, abrir modal de captura
-                openRaceParticipationModal(restaurantName);
+                openRaceParticipationModal(raceName);
             }
         };
 
@@ -1331,8 +1262,8 @@ function generateICSFile(config) {
 
         function generateInstructionsContent() {
             return `
-                <div class="page-content restaurant-content-wrapper">
-                    <h2 class="restaurant-title">¡Bienvenido a tu Álbum! 🏃‍♂️</h2>
+                <div class="page-content race-content-wrapper">
+                    <h2 class="race-title">¡Bienvenido a tu Álbum! 🏃‍♂️</h2>
                     
                     <div style="
                         background: var(--light-gray);
@@ -1446,7 +1377,7 @@ function generateICSFile(config) {
             try {
                 // Cargar el JSON de carreras (esto sigue siendo local)
                 const response = await fetch('carreras.json');
-                restaurants = await response.json();
+                races = await response.json();
 
                 // Cargar los datos de las carreras del usuario desde Firebase
                 const userRaces = await getAllUserRaces(currentUser.uid);
@@ -1873,7 +1804,7 @@ window.saveRaceParticipation = async function(raceName) {
             console.log("Haciendo público: creando post...");
 
             // Buscamos la información de la carrera en nuestro array principal
-            const raceInfo = restaurants.find(r => r.name === raceName);
+            const raceInfo = races.find(r => r.name === raceName);
             const raceDate = raceInfo ? raceInfo.date : null; // Obtenemos la fecha
 
             finalPublicPostKey = await createPublicPost({
@@ -2145,69 +2076,133 @@ window.saveRaceParticipation = async function(raceName) {
         }
 
         function setupAuthFormListeners() {
+            // --- Referencias a los elementos del DOM ---
             const authContainer = document.getElementById('auth-container');
             const title = document.getElementById('auth-title');
             const nameField = document.getElementById('name-field');
+            const passwordField = document.getElementById('password-field');
             const actionBtn = document.getElementById('auth-action-btn');
             const toggleLink = document.getElementById('auth-toggle-link');
+            const forgotPasswordLink = document.getElementById('forgot-password-link');
             const errorEl = document.getElementById('auth-error');
+            
+            // --- Variable para controlar el estado del formulario ---
+            let authState = 'login'; // Puede ser 'login', 'signup', o 'forgot_password'
 
-            let isLogin = true;
+            // --- Función para actualizar la vista del formulario ---
+            function updateAuthView() {
+                errorEl.textContent = ''; // Limpiar errores
+                errorEl.classList.remove('text-green-500'); // Quitar color de éxito
+                errorEl.classList.add('text-red-500');
 
-            // Listener para el botón de Entrar/Registrar
+                if (authState === 'login') {
+                    title.textContent = 'Iniciar Sesión';
+                    nameField.style.display = 'none';
+                    passwordField.style.display = 'block';
+                    actionBtn.textContent = 'Entrar';
+                    toggleLink.textContent = '¿No tienes cuenta? Regístrate';
+                    forgotPasswordLink.style.display = 'block';
+                    toggleLink.style.display = 'block';
+                } else if (authState === 'signup') {
+                    title.textContent = 'Crear Cuenta';
+                    nameField.style.display = 'block';
+                    passwordField.style.display = 'block';
+                    actionBtn.textContent = 'Registrarme';
+                    toggleLink.textContent = '¿Ya tienes cuenta? Inicia Sesión';
+                    forgotPasswordLink.style.display = 'none';
+                    toggleLink.style.display = 'block';
+                } else if (authState === 'forgot_password') {
+                    title.textContent = 'Recuperar Contraseña';
+                    nameField.style.display = 'none';
+                    passwordField.style.display = 'none';
+                    actionBtn.textContent = 'Enviar Enlace de Recuperación';
+                    toggleLink.textContent = 'Volver a Iniciar Sesión';
+                    forgotPasswordLink.style.display = 'none';
+                    toggleLink.style.display = 'block'; // Reusamos el toggle link para volver
+                }
+            }
+
+            // --- Event Listeners ---
+
+            // Botón principal de acción (Entrar / Registrarme / Enviar Enlace)
             actionBtn.addEventListener('click', async () => {
                 const email = document.getElementById('emailInput').value;
                 const password = document.getElementById('passwordInput').value;
-                errorEl.textContent = ''; // Limpiar error
+                errorEl.textContent = '';
 
                 try {
-                    if (isLogin) {
-                        // --- Lógica de Iniciar Sesión ---
+                    if (authState === 'login') {
                         await signIn(email, password);
-                        // El observador onAuthStateChanged se encargará del resto
-                    } else {
-                        // --- Lógica de Registro ---
+                        // El observador onAuthStateChanged se encargará de cerrar el modal
+                    } else if (authState === 'signup') {
                         const name = document.getElementById('nameInput').value;
                         if (!name) {
                             errorEl.textContent = 'Por favor, introduce tu nombre.';
                             return;
                         }
                         await signUp(email, password, name);
-                        // El observador onAuthStateChanged se encargará del resto
+                    } else if (authState === 'forgot_password') {
+                        if (!email) {
+                            errorEl.textContent = 'Por favor, introduce tu email.';
+                            return;
+                        }
+                        // Llamamos a la nueva función de Firebase
+                        await sendPasswordReset(email);
+                        errorEl.classList.remove('text-red-500');
+                        errorEl.classList.add('text-green-500'); // Cambiamos a color verde para éxito
+                        errorEl.textContent = '✅ Enlace de recuperación enviado a tu correo.';
+                        actionBtn.disabled = true; // Deshabilitar botón para evitar spam
+                        setTimeout(() => { // Volver a login después de unos segundos
+                        authState = 'login';
+                        updateAuthView();
+                        actionBtn.disabled = false;
+                        }, 4000);
                     }
                 } catch (error) {
-                    console.error("Error de autenticación:", error.message);
+                    console.error("Error de autenticación:", error.code, error.message);
                     // Traducir errores comunes de Firebase
-                    if (error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
-                        errorEl.textContent = 'Email o contraseña incorrectos.';
-                    } else if (error.code === 'auth/email-already-in-use') {
-                        errorEl.textContent = 'Este email ya está registrado.';
-                    } else if (error.code === 'auth/weak-password') {
-                        errorEl.textContent = 'La contraseña debe tener al menos 6 caracteres.';
-                    } else {
-                        errorEl.textContent = 'Ocurrió un error. Intenta de nuevo.';
+                    switch (error.code) {
+                        case 'auth/user-not-found':
+                            errorEl.textContent = 'No se encontró un usuario con ese email.';
+                            break;
+                        case 'auth/wrong-password':
+                            errorEl.textContent = 'Email o contraseña incorrectos.';
+                            break;
+                        case 'auth/email-already-in-use':
+                            errorEl.textContent = 'Este email ya está registrado.';
+                            break;
+                        case 'auth/weak-password':
+                            errorEl.textContent = 'La contraseña debe tener al menos 6 caracteres.';
+                            break;
+                        case 'auth/invalid-email':
+                            errorEl.textContent = 'El formato del email no es válido.';
+                            break;
+                        default:
+                            errorEl.textContent = 'Ocurrió un error. Intenta de nuevo.';
                     }
                 }
             });
 
-            // Listener para el enlace que cambia entre Login y Registro
+            // Enlace para cambiar entre vistas
             toggleLink.addEventListener('click', (e) => {
                 e.preventDefault();
-                isLogin = !isLogin;
-                errorEl.textContent = ''; // Limpiar error al cambiar
-
-                if (isLogin) {
-                    title.textContent = 'Iniciar Sesión';
-                    nameField.style.display = 'none';
-                    actionBtn.textContent = 'Entrar';
-                    toggleLink.textContent = '¿No tienes cuenta? Regístrate';
-                } else {
-                    title.textContent = 'Crear Cuenta';
-                    nameField.style.display = 'block';
-                    actionBtn.textContent = 'Registrarme';
-                    toggleLink.textContent = '¿Ya tienes cuenta? Inicia Sesión';
+                if (authState === 'login') {
+                    authState = 'signup';
+                } else { // Si está en 'signup' o 'forgot_password', vuelve a 'login'
+                    authState = 'login';
                 }
+                updateAuthView();
             });
+
+            // Enlace para ir a la vista de recuperar contraseña
+            forgotPasswordLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                authState = 'forgot_password';
+                updateAuthView();
+            });
+
+            // Inicializar la vista por primera vez
+            updateAuthView();
         }
 
         // Añade esta nueva función a tu script

@@ -198,3 +198,8 @@ function deletePublicPost(postKey) {
     if (!postKey) return Promise.resolve();
     return db.ref(`public_posts/${postKey}`).remove();
 }
+
+async function sendPasswordReset(email) {
+  // Esta función nativa de Firebase se encarga de todo el proceso.
+  return firebase.auth().sendPasswordResetEmail(email);
+}
