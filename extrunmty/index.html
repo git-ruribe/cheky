@@ -1833,6 +1833,12 @@ window.saveRaceParticipation = async function(raceName) {
         // 5. Guardamos en el perfil privado del usuario
         await saveRaceData(currentUser.uid, raceName, finalRaceDataObject);
 
+        trackChallengeEvent('EXATECphoto_upload', {
+            'race_name': raceName,
+            'race_distance': finalRaceDataObject.distance,
+            'is_public': finalRaceDataObject.isPublic
+        });
+
         // 6. Actualizamos el estado local y la UI
         const sanitizedRaceName = raceName.replace(/[.#$[\]]/g, '_');
         userData.races[sanitizedRaceName] = finalRaceDataObject;
@@ -2137,7 +2143,14 @@ window.saveRaceParticipation = async function(raceName) {
                             errorEl.textContent = 'Por favor, introduce tu nombre.';
                             return;
                         }
-                        await signUp(email, password, name);
+                        const userCredential = await signUp(email, password, name);
+                        // Verificamos que el alta fue de un usuario nuevo para no registrarlo dos veces
+                        if (userCredential && userCredential.additionalUserInfo.isNewUser) {
+                            trackChallengeEvent('EXATECsign_up', {
+                                'method': 'Email/Password'
+                            });
+                        }
+
                     } else if (authState === 'forgot_password') {
                         if (!email) {
                             errorEl.textContent = 'Por favor, introduce tu email.';
