@@ -1731,7 +1731,18 @@ function generateICSFile(config) {
                 if (!finalPhotoURL) throw new Error("No hay ninguna foto para guardar.");
 
                 if (oldPhotoURL && finalPhotoURL !== oldPhotoURL) {
-                    await deleteImageFromURL(oldPhotoURL);
+                    try {
+                        // Intentamos borrar la foto antigua
+                        await deleteImageFromURL(oldPhotoURL);
+                    } catch (error) {
+                        // Si el error es que la foto no existe, lo ignoramos y seguimos adelante.
+                        if (error.code === 'storage/object-not-found') {
+                            console.warn("La foto antigua no se encontró en Storage, probablemente ya fue borrada. Continuando...");
+                        } else {
+                            // Si es otro error (como uno de permisos real), sí lo lanzamos para detener el proceso.
+                            throw error;
+                        }
+                    }
                 }
 
                 let finalPublicPostKey = publicPostKey;
