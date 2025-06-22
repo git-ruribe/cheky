@@ -1713,64 +1713,83 @@ function generateICSFile(config) {
             }
             return null;
         }
-            
-        // Reemplaza tu función saveRaceParticipation por completo con esta
-       /* window.saveRaceParticipation = async function(raceName) {
-            // Usamos el nuevo indicador con un mensaje claro
-            showLoadingIndicator(true, 'Guardando en base de datos...'); 
+
+        window.saveRaceParticipation = async function(raceName) {
+            showLoadingIndicator(true, 'Guardando participación...');
 
             try {
                 const distance = document.getElementById('raceDistance').value;
                 const time = document.getElementById('raceTime').value;
+                const isPublic = document.getElementById('publicToggle').checked;
+
                 const oldRaceData = getRaceData(raceName);
                 const oldPhotoURL = oldRaceData?.photoURL || null;
                 const finalPhotoURL = newPhotoURLForModal || oldPhotoURL;
+                const wasPublic = oldRaceData?.isPublic || false;
+                const publicPostKey = oldRaceData?.publicPostKey || null;
 
-                if (!finalPhotoURL) {
-                    throw new Error("No hay ninguna foto para guardar. Por favor, sube una.");
-                }
-                
+                if (!finalPhotoURL) throw new Error("No hay ninguna foto para guardar.");
+
                 if (oldPhotoURL && finalPhotoURL !== oldPhotoURL) {
-                    console.log(`Borrando foto antigua: ${oldPhotoURL}`);
-                    try {
-                        await deleteImageFromURL(oldPhotoURL);
-                        console.log("Foto antigua borrada con éxito.");
-                    } catch (deleteError) {
-                        console.warn("No se pudo borrar la foto antigua, pero se continuará con la actualización:", deleteError);
+                    await deleteImageFromURL(oldPhotoURL);
+                }
+
+                let finalPublicPostKey = publicPostKey;
+
+                // Caso 1: Se hizo público (y antes no lo era)
+                if (isPublic && !wasPublic) {
+                    console.log("Haciendo público: creando post...");
+                    const raceInfo = races.find(r => r.name === raceName);
+                    const raceDate = raceInfo ? raceInfo.date : null;
+                    finalPublicPostKey = await createPublicPost({
+                        userUid: currentUser.uid,
+                        userName: userData.profile.name || "un corredor",
+                        raceName: raceName,
+                        photoURL: finalPhotoURL,
+                        raceDate: raceDate
+                    });
+                }
+                // Caso 2: Se hizo privado (y antes era público)
+                else if (!isPublic && wasPublic && publicPostKey) {
+                    console.log("Haciendo privado: borrando post...");
+                    await deletePublicPost(publicPostKey);
+                    finalPublicPostKey = null;
+                }
+                // --- ¡NUEVO ESCENARIO! ---
+                // Caso 3: Ya era público y sigue siéndolo.
+                else if (isPublic && wasPublic && publicPostKey) {
+                    // Solo actualizamos si la URL de la foto realmente cambió.
+                    if (finalPhotoURL !== oldPhotoURL) {
+                        console.log("Actualizando foto en el muro comunitario...");
+                        await updatePublicPostPhoto(publicPostKey, finalPhotoURL);
                     }
                 }
-                
+                // --- FIN DEL NUEVO ESCENARIO ---
+
                 const finalRaceDataObject = {
                     photoURL: finalPhotoURL,
                     distance: distance,
                     time: time,
                     timestamp: new Date().toISOString(),
-                    raceName: raceName
+                    raceName: raceName,
+                    isPublic: isPublic,
+                    publicPostKey: finalPublicPostKey
                 };
 
-                // El punto crítico es aquí:
                 await saveRaceData(currentUser.uid, raceName, finalRaceDataObject);
                 
-                // AÑADE ESTE LOG DE CONFIRMACIÓN
-                console.log("%c¡ÉXITO! Datos guardados en Firebase. Procediendo a actualizar la UI...", "color: green; font-weight: bold;");
-
-                const isNewCreation = !oldRaceData; 
-                if (isNewCreation) {
-                    await createPublicPost({
-                        userUid: currentUser.uid,
-                        userName: userData.profile.name || "un corredor",
-                        raceName: raceName,
-                        photoURL: finalRaceDataObject.photoURL
-                    });
-                    console.log("Publicación creada en el muro comunitario.");
-                }
-
+                trackChallengeEvent('photo_upload', {
+                    'race_name': raceName,
+                    'race_distance': finalRaceDataObject.distance,
+                    'is_public': finalRaceDataObject.isPublic
+                });
+                
                 const sanitizedRaceName = raceName.replace(/[.#$[\]]/g, '_');
                 userData.races[sanitizedRaceName] = finalRaceDataObject;
                 
                 closeRaceParticipationModal();
-                initializeAlbumApp();
-                showSuccessMessage('✅ ¡Participación guardada con éxito!');
+                initializeAlbumApp(); 
+                showSuccessMessage('✅ ¡Participación actualizada!');
 
             } catch (error) {
                 console.error("Error al guardar la participación:", error);
@@ -1778,93 +1797,7 @@ function generateICSFile(config) {
             } finally {
                 showLoadingIndicator(false);
             }
-        };
-        */
-
-        // Reemplaza tu función saveRaceParticipation por completo con esta
-window.saveRaceParticipation = async function(raceName) {
-    showLoadingIndicator(true, 'Guardando participación...');
-
-    try {
-        // 1. Recopilamos todos los datos del formulario
-        const distance = document.getElementById('raceDistance').value;
-        const time = document.getElementById('raceTime').value;
-        const isPublic = document.getElementById('publicToggle').checked; // Leemos el estado del interruptor
-
-        const oldRaceData = getRaceData(raceName);
-        const oldPhotoURL = oldRaceData?.photoURL || null;
-        const finalPhotoURL = newPhotoURLForModal || oldPhotoURL;
-        const wasPublic = oldRaceData?.isPublic || false;
-        const publicPostKey = oldRaceData?.publicPostKey || null;
-
-        if (!finalPhotoURL) throw new Error("No hay ninguna foto para guardar.");
-
-        // 2. Borramos la foto vieja de Storage si se subió una nueva
-        if (oldPhotoURL && finalPhotoURL !== oldPhotoURL) {
-            await deleteImageFromURL(oldPhotoURL);
-        }
-
-        // 3. Lógica para manejar la publicación en el muro comunitario
-        let finalPublicPostKey = publicPostKey;
-
-        // Caso 1: Se hizo público (y antes no lo era)
-        if (isPublic && !wasPublic) {
-            console.log("Haciendo público: creando post...");
-
-            // Buscamos la información de la carrera en nuestro array principal
-            const raceInfo = races.find(r => r.name === raceName);
-            const raceDate = raceInfo ? raceInfo.date : null; // Obtenemos la fecha
-
-            finalPublicPostKey = await createPublicPost({
-                userUid: currentUser.uid,
-                userName: userData.profile.name || "un corredor",
-                raceName: raceName,
-                photoURL: finalPhotoURL,
-                raceDate: raceDate // <-- AÑADIMOS EL NUEVO CAMPO
-            });
-        }
-        // Caso 2: Se hizo privado (y antes era público)
-        else if (!isPublic && wasPublic && publicPostKey) {
-            console.log("Haciendo privado: borrando post...");
-            await deletePublicPost(publicPostKey);
-            finalPublicPostKey = null;
-        }
-
-        // 4. Preparamos el objeto de datos FINAL para la base de datos PRIVADA del usuario
-        const finalRaceDataObject = {
-            photoURL: finalPhotoURL,
-            distance: distance,
-            time: time,
-            timestamp: new Date().toISOString(),
-            raceName: raceName,
-            isPublic: isPublic, // Guardamos la decisión de privacidad
-            publicPostKey: finalPublicPostKey // Guardamos (o borramos) la referencia al post público
-        };
-
-        // 5. Guardamos en el perfil privado del usuario
-        await saveRaceData(currentUser.uid, raceName, finalRaceDataObject);
-
-        trackChallengeEvent('EXATECphoto_upload', {
-            'race_name': raceName,
-            'race_distance': finalRaceDataObject.distance,
-            'is_public': finalRaceDataObject.isPublic
-        });
-
-        // 6. Actualizamos el estado local y la UI
-        const sanitizedRaceName = raceName.replace(/[.#$[\]]/g, '_');
-        userData.races[sanitizedRaceName] = finalRaceDataObject;
-        
-        closeRaceParticipationModal();
-        initializeAlbumApp(); 
-        showSuccessMessage('✅ ¡Participación guardada!');
-
-    } catch (error) {
-        console.error("Error al guardar la participación:", error);
-        alert(error.message);
-    } finally {
-        showLoadingIndicator(false);
-    }
-};
+     };
 
     // Actualizar función para contar carreras completadas
     function getCompletedRacesCount() {

@@ -203,3 +203,14 @@ async function sendPasswordReset(email) {
   // Esta función nativa de Firebase se encarga de todo el proceso.
   return firebase.auth().sendPasswordResetEmail(email);
 }
+
+/**
+ * Actualiza la URL de la foto de un post específico en el muro público.
+ * @param {string} postKey - La clave única del post en 'public_posts'.
+ * @param {string} newPhotoURL - La nueva URL de la imagen.
+ */
+async function updatePublicPostPhoto(postKey, newPhotoURL) {
+    const postRef = firebase.database().ref(`public_posts/${postKey}`);
+    // Usamos .update() para modificar solo el campo photoURL sin tocar el resto.
+    return postRef.update({ photoURL: newPhotoURL });
+}
