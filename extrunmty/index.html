@@ -663,7 +663,7 @@ function showSuccessMessage(message) {
                     // --- NUEVA LÓGICA DE CLIC ---
                     let clickAction = '';
                     const raceDate = new Date(race.date + 'T12:00:00');
-                    const isFutureRace = raceDate >= today;
+                    const isFutureRace = raceDate > today;
 
                     if (isCompleted) {
                         // Si ya la completó, siempre lo lleva a su página del álbum.
