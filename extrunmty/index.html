@@ -633,14 +633,12 @@ function showSuccessMessage(message) {
             const completedCount = getCompletedRacesCount();
             let finalHtmlList = ''; 
 
-            // --- NUEVO: Obtener la fecha de hoy sin la hora para una comparación precisa ---
             const today = new Date();
             today.setHours(0, 0, 0, 0); 
-            // --------------------------------------------------------------------
 
             const carrerasPorMes = {};
             races.forEach(race => {
-                const fecha = new Date(race.date + 'T12:00:00'); // Usamos T12:00 para evitar problemas de zona horaria
+                const fecha = new Date(race.date + 'T12:00:00');
                 const mesAnio = fecha.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
                 if (!carrerasPorMes[mesAnio]) carrerasPorMes[mesAnio] = [];
                 carrerasPorMes[mesAnio].push(race);
@@ -660,27 +658,28 @@ function showSuccessMessage(message) {
                     const sanitizedRaceName = race.name.replace(/[.#$[\]]/g, '_');
                     const isCompleted = userData.races && userData.races[sanitizedRaceName];
                     
-                    // --- NUEVA LÓGICA DE CLIC ---
                     let clickAction = '';
+                    
+                    // --- LÓGICA DE FECHA CORREGIDA ---
+                    // 1. Creamos la fecha de la carrera (T12:00 para evitar errores de zona horaria)
                     const raceDate = new Date(race.date + 'T12:00:00');
+                    // 2. La normalizamos a medianoche para una comparación justa con 'today'
+                    raceDate.setHours(0, 0, 0, 0); 
+                    // ------------------------------------
+
                     const isFutureRace = raceDate > today;
 
                     if (isCompleted) {
-                        // Si ya la completó, siempre lo lleva a su página del álbum.
                         clickAction = `MapsToRacePageBySanitizedName('${sanitizedRaceName}')`;
                     } else {
                         if (isFutureRace) {
-                            // Si es en el futuro, abre el nuevo modal de información.
-                            // Usamos JSON.stringify para pasar el objeto completo de forma segura.
                             const escapedName = race.name.replace(/'/g, "\\'");
                             clickAction = `openFutureRaceInfoModal('${escapedName}')`;
                         } else {
-                            // Si es en el pasado y no la ha completado, abre el modal para subir foto.
                             clickAction = `openRaceParticipationModal('${race.name}')`;
                         }
                     }
-                    // --- FIN DE LA NUEVA LÓGICA ---
-
+                    
                     const completedClass = isCompleted ? 'completed' : '';
                     const iconClass = isCompleted ? 'fas fa-check-circle completed-icon' : (isFutureRace ? 'far fa-calendar-alt' : 'far fa-circle');
 
