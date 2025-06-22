@@ -922,18 +922,30 @@ function generateCoverContent() {
 }
 
 
-
         function updateNavigation() {
             prevBtn.disabled = currentPageIndex === 0;
             nextBtn.disabled = currentPageIndex === contentPages.length - 1;
             
             const currentPage = contentPages[currentPageIndex];
             
-            if (currentPage.type === 'race' || currentPage.type === 'completedRace') {
+            // La condición se aplica cuando estamos en una página de carrera completada
+            if (currentPage.type === 'completedRace') {
+                
+                // --- LÓGICA MEJORADA ---
+                // Buscamos dinámicamente la página del índice para no depender de un número fijo.
+                const raceIndexPage = contentPages.findIndex(page => page.type === 'raceIndex');
+
                 pageIndicatorEl.textContent = "Índice";
                 pageIndicatorEl.classList.add('index-link');
-                pageIndicatorEl.onclick = () => navigateToPage(2, 'backward');
+
+                // Si encontramos la página del índice (siempre debería), el enlace apuntará a ella.
+                if (raceIndexPage !== -1) {
+                    pageIndicatorEl.onclick = () => navigateToPage(raceIndexPage, 'backward');
+                }
+                // ------------------------
+
             } else {
+                // Para todas las demás páginas, el indicador está vacío.
                 pageIndicatorEl.textContent = "";
                 pageIndicatorEl.classList.remove('index-link');
                 pageIndicatorEl.onclick = null;
