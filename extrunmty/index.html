@@ -655,7 +655,7 @@ function showSuccessMessage(message) {
                 const carrerasDelMes = carrerasPorMes[mes].sort((a, b) => new Date(a.date) - new Date(b.date));
 
                 carrerasDelMes.forEach(race => {
-                    const sanitizedRaceName = race.name.replace(/[.#$[\]]/g, '_');
+                    const sanitizedRaceName = sanitizeFirebaseKey(race.name);;
                     const isCompleted = userData.races && userData.races[sanitizedRaceName];
                     
                     let clickAction = '';
@@ -1707,7 +1707,7 @@ function generateICSFile(config) {
             // Función para obtener datos de carrera
         function getRaceData(raceName) {
             // Firebase no permite ciertos caracteres en las claves, así que usamos la versión "sanitizada" para buscar
-            const sanitizedRaceName = raceName.replace(/[.#$[\]]/g, '_');
+            const sanitizedRaceName = sanitizeFirebaseKey(raceName);
             if (userData && userData.races) {
                 return userData.races[sanitizedRaceName] || null;
             }
@@ -1795,7 +1795,7 @@ function generateICSFile(config) {
                     'is_public': finalRaceDataObject.isPublic
                 });
                 
-                const sanitizedRaceName = raceName.replace(/[.#$[\]]/g, '_');
+                const sanitizedRaceName = sanitizeFirebaseKey(raceName);
                 userData.races[sanitizedRaceName] = finalRaceDataObject;
                 
                 closeRaceParticipationModal();
@@ -1968,7 +1968,7 @@ function generateICSFile(config) {
                 showLoadingIndicator(true, "Eliminando participación...");
 
                 try {
-                    const sanitizedRaceName = raceName.replace(/[.#$[\]]/g, '_');
+                    const sanitizedRaceName = sanitizeFirebaseKey(raceName);
                     const raceData = getRaceData(raceName); // Lee desde nuestro objeto local 'userData'
 
                     if (!raceData) {
@@ -2176,7 +2176,7 @@ function generateICSFile(config) {
             const pageIndex = contentPages.findIndex(page => 
                 page.type === 'completedRace' && 
                 page.data && 
-                page.data.name.replace(/[.#$[\]]/g, '_') === sanitizedRaceName
+                sanitizeFirebaseKey(page.data.name) === sanitizedRaceName
             );
 
             if (pageIndex !== -1) {
@@ -2341,6 +2341,17 @@ function formatearFechaSimple(fechaISO) {
         day: 'numeric', 
         month: 'short' 
     }).replace('.', ''); // Quita el punto que algunos navegadores añaden (ej: "sep.")
+}
+
+/**
+ * Reemplaza caracteres ilegales en claves de Firebase ( . # $ [ ] / ) por guiones bajos.
+ * @param {string} str El texto a limpiar.
+ * @returns {string} El texto limpio y seguro para usar como clave.
+ */
+function sanitizeFirebaseKey(str) {
+    if (!str) return '';
+    // Añadimos la diagonal (escapada con \) a la lista de caracteres a reemplazar.
+    return str.replace(/[.#$[\]\/]/g, '_');
 }
         
     </script>
