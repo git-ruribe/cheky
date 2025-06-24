@@ -468,7 +468,7 @@
         "date": "2025-03-30"
     },
     {
-        "name": "21K/5K Monterrey",
+        "name": "21K y 5K Monterrey",
         "type": "",
         "address": "",
         "mapUrl": "",
@@ -492,7 +492,7 @@
         "date": "2025-04-21"
     },
     {
-        "name": "21K/5K Vintage Houston",
+        "name": "21K y 5K Vintage Houston",
         "type": "",
         "address": "",
         "mapUrl": "",
@@ -516,7 +516,7 @@
         "date": "2025-04-27"
     },
     {
-        "name": "21K/5K Trotime",
+        "name": "21K y 5K Trotime",
         "type": "",
         "address": "",
         "mapUrl": "",
@@ -726,7 +726,7 @@
     "date": "2025-08-24"
   },
   {
-    "name": "3K/5K/10K Carrera Soriana",
+    "name": "3K 5K 10K Carrera Soriana",
     "type": "3K, 5K, 10K, urban",
     "address": "Parque Fundidora, Monterrey",
     "mapUrl": "",
@@ -787,7 +787,7 @@
     "date": "2025-09-21"
   },
   {
-    "name": "10K/5K Bimbo 10ª Ed.",
+    "name": "10K 5K Bimbo 10ª Ed.",
     "type": "5K, 10K, urban",
     "address": "Parque Fundidora, Monterrey",
     "mapUrl": "",
@@ -799,7 +799,7 @@
     "date": "2025-09-28"
   },
   {
-    "name": "6K/12K Adidas Split",
+    "name": "6K 12K Adidas Split",
     "type": "6K, 12K, urban",
     "address": "Valle Oriente SPGG",
     "mapUrl": "",
@@ -811,7 +811,7 @@
     "date": "2025-10-05"
   },
   {
-    "name": "10K/5K/RRF Rosa Fuerte – Benavides 11ª Ed.",
+    "name": "10K 5K RRF Rosa Fuerte – Benavides 11ª Ed.",
     "type": "5K, 10K, urban, beneficencia (concientización sobre cáncer de mama)",
     "address": "Monterrey",
     "mapUrl": "",
@@ -836,7 +836,7 @@
     "destacada":"si"
   },
   {
-    "name": "5K/10K Duendes 25ª Ed.",
+    "name": "5K 10K Duendes 25ª Ed.",
     "type": "5K, 10K, urban",
     "address": "Calzada del Valle / Humberto Lobo, San Pedro Garza García",
     "mapUrl": "",
@@ -849,7 +849,7 @@
     "destacada":"si"
   },
   {
-    "name": "3K/10K Ternium",
+    "name": "3K 10K Ternium",
     "type": "3K, 10K, urban",
     "address": "Calzada del Valle, San Pedro Garza García",
     "mapUrl": "",
@@ -873,7 +873,7 @@
     "date": "2025-11-02"
   },
   {
-    "name": "10K/5K/3K Simicarrera 10ª Ed.",
+    "name": "10K 5K 3K Simicarrera 10ª Ed.",
     "type": "3K, 5K, 10K, urban",
     "address": "Parque Fundidora, Monterrey",
     "mapUrl": "",
@@ -885,7 +885,7 @@
     "date": "2025-11-09"
   },
   {
-    "name": "15K/30K Adidas Split",
+    "name": "15K 30K Adidas Split",
     "type": "15K, 30K, urban",
     "address": "Macroplaza, Monterrey",
     "mapUrl": "",
@@ -958,7 +958,7 @@
     "date": "2025-12-21"
   },
   {
-    "name": "5K/10K Reto Final 12ª Ed.",
+    "name": "5K 10K Reto Final 12ª Ed.",
     "type": "5K, 10K, urban",
     "address": "Parque Fundidora, Monterrey",
     "mapUrl": "",
