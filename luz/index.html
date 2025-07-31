@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App - Control de Gasto CFE</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.2.1/dist/chartjs-plugin-annotation.min.js"></script>
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .modal { display: none; }
+        .modal.is-open { display: flex; }
+        /* Estilo para que la fila de la nota no tenga borde inferior */
+        .note-row td {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-200 flex items-center justify-center min-h-screen p-4">
+
+    <!-- MODAL DE CONFIGURACIÓN INICIAL -->
+    <div id="setupModal" class="modal fixed inset-0 bg-black/80 items-center justify-center p-4 z-50">
+        <div class="bg-slate-800 rounded-2xl p-6 w-full max-w-md shadow-2xl">
+            <h2 class="text-2xl font-bold text-white mb-4">Configuración Inicial</h2>
+            <p class="text-slate-400 mb-6">Necesitamos algunos datos de tu último recibo para empezar.</p>
+            <form id="setupForm" class="space-y-4">
+                <div>
+                    <label for="fechaInicio" class="block text-sm font-medium text-slate-300 mb-1">Fecha de Inicio del Recibo</label>
+                    <input type="date" id="fechaInicio" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
+                </div>
+                <div>
+                    <label for="lecturaInicial" class="block text-sm font-medium text-slate-300 mb-1">Lectura Inicial (kWh del recibo)</label>
+                    <input type="number" id="lecturaInicial" required placeholder="Ej: 25680" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
+                </div>
+                <div>
+                    <label for="lecturaActualSetup" class="block text-sm font-medium text-slate-300 mb-1">Tu Primera Lectura (kWh)</label>
+                    <input type="number" id="lecturaActualSetup" required placeholder="La lectura de tu medidor hoy" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
+                </div>
+                 <div>
+                    <label for="metaGasto" class="block text-sm font-medium text-slate-300 mb-1">Meta de Gasto ($)</label>
+                    <input type="number" id="metaGasto" required placeholder="Ej: 1000" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
+                </div>
+                <button type="submit" class="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-4 rounded-lg transition-all">Empezar a Ahorrar</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- MODAL PARA NUEVA LECTURA / EDICIÓN -->
+    <div id="readingModal" class="modal fixed inset-0 bg-black/80 items-center justify-center p-4 z-50">
+        <div class="bg-slate-800 rounded-2xl p-6 w-full max-w-md shadow-2xl">
+            <h2 id="readingModalTitle" class="text-2xl font-bold text-white mb-4">Registrar Lectura</h2>
+            <form id="readingForm" class="space-y-4">
+                <input type="hidden" id="editingIndex">
+                <div>
+                    <label for="fechaLectura" class="block text-sm font-medium text-slate-300 mb-1">Fecha y Hora</label>
+                    <input type="datetime-local" id="fechaLectura" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
+                </div>
+                <div>
+                    <label for="lecturaValor" class="block text-sm font-medium text-slate-300 mb-1">Lectura (kWh)</label>
+                    <input type="number" id="lecturaValor" required placeholder="Lectura del medidor" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
+                </div>
+                <div>
+                    <label for="lecturaNota" class="block text-sm font-medium text-slate-300 mb-1">Nota (Opcional)</label>
+                    <textarea id="lecturaNota" placeholder="Ej: Mucho calor, se usó el clima todo el día." rows="2" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white"></textarea>
+                </div>
+                <div class="flex gap-4">
+                    <button type="button" id="cancelReading" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 px-4 rounded-lg transition-all">Cancelar</button>
+                    <button type="submit" class="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-4 rounded-lg transition-all">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL DE DETALLES DE CÁLCULO (REUTILIZABLE) -->
+    <div id="calculationDetailsModal" class="modal fixed inset-0 bg-black/80 items-center justify-center p-4 z-50">
+        <div class="bg-slate-800 rounded-2xl p-6 w-full max-w-lg shadow-2xl">
+            <h2 id="detailsModalTitle" class="text-2xl font-bold text-white mb-4">Detalle del Cálculo</h2>
+            <p id="detailsModalSubtitle" class="text-slate-400 mb-6">Así se desglosa tu consumo.</p>
+            <div id="calculationDetailsContainer" class="space-y-2">
+                <!-- El contenido se generará con JavaScript -->
+            </div>
+            <button id="closeDetailsModal" class="mt-6 w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 px-4 rounded-lg transition-all">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- DASHBOARD PRINCIPAL -->
+    <div id="dashboard" class="w-full max-w-2xl mx-auto bg-slate-800/50 rounded-2xl shadow-2xl p-4 sm:p-6 backdrop-blur-sm border border-slate-700" style="display: none;">
+        <header class="text-center mb-6">
+            <h1 class="text-2xl sm:text-3xl font-bold text-white">Mi Consumo Bimestral</h1>
+            <p id="bimestreFechas" class="text-slate-400">Bimestre: Cargando...</p>
+        </header>
+
+        <div class="bg-slate-900/70 rounded-xl p-5 mb-6 flex items-center justify-between gap-4 border border-slate-700">
+            <div id="gamificationIcon" class="text-5xl sm:text-6xl">...</div>
+            <div>
+                <p class="text-sm text-amber-400 font-semibold">PROYECCIÓN</p>
+                <p id="proyeccionGasto" class="text-3xl sm:text-4xl font-extrabold text-white">$0.00</p>
+                <p id="proyeccionTexto" class="text-slate-300 text-sm mt-1">Calculando...</p>
+                 <button id="showProjectionDetailsButton" class="text-xs text-cyan-400 hover:text-cyan-300 mt-1">(Ver Detalle Proyección)</button>
+            </div>
+            <div class="text-right">
+                 <p class="text-sm text-slate-400">Meta</p>
+                 <p id="metaGastoDisplay" class="text-lg font-bold text-cyan-400">$0</p>
+            </div>
+        </div>
+
+        <div class="h-80 sm:h-96 w-full relative">
+            <canvas id="consumoChart"></canvas>
+        </div>
+
+        <div class="mt-6 space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-center">
+                <div class="bg-slate-800 p-4 rounded-lg border border-slate-700">
+                    <p class="text-sm text-slate-400">Días Transcurridos / Restantes</p>
+                    <p class="text-xl sm:text-2xl font-bold text-white">
+                        <span id="diasTranscurridos">0</span>
+                        <span class="font-medium text-lg text-slate-400">/</span>
+                        <span id="diasRestantes">0</span>
+                    </p>
+                </div>
+                <div class="bg-slate-800 p-4 rounded-lg border border-slate-700">
+                    <p class="text-sm text-slate-400">Consumo / Proyección (kWh)</p>
+                    <p class="text-xl sm:text-2xl font-bold text-white">
+                        <span id="consumoActual">0</span> 
+                        <span class="font-medium text-lg text-slate-400">/ <span id="consumoProyectado">0</span></span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/50 rounded-lg border border-slate-700 p-3 sm:p-4">
+                <h3 class="font-bold text-white mb-3 px-1">Historial de Lecturas</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left text-slate-300">
+                        <thead class="text-xs text-slate-400 uppercase bg-slate-900/50">
+                            <tr>
+                                <th scope="col" class="px-4 py-3 rounded-l-lg">Fecha y Hora</th>
+                                <th scope="col" class="px-4 py-3">Lectura (kWh)</th>
+                                <th scope="col" class="px-4 py-3">Costo Periodo ($)</th>
+                                <th scope="col" class="px-4 py-3">Impacto Diario ($)</th>
+                                <th scope="col" class="px-4 py-3 rounded-r-lg">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historialTabla">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-6 flex gap-4">
+            <button id="resetButton" class="w-1/3 bg-red-800 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition-all">Reiniciar</button>
+            <button id="newReadingButton" class="w-2/3 bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-4 rounded-lg transition-all">Registrar Nueva Lectura</button>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // --- CONFIGURACIÓN Y ELEMENTOS DEL DOM ---
+        const DIAS_BIMESTRE = 61;
+        const tarifas = {
+            niveles: [
+                { nombre: 'Básico', limite: 300, costo: 0.973 },
+                { nombre: 'Intermedio Bajo', limite: 300, costo: 1.127 },
+                { nombre: 'Intermedio Alto', limite: 300, costo: 1.450 },
+            ],
+            excedente: { nombre: 'Excedente', costo: 3.875 },
+            iva: 0.16
+        };
+
+        const setupModal = document.getElementById('setupModal');
+        const readingModal = document.getElementById('readingModal');
+        const calculationDetailsModal = document.getElementById('calculationDetailsModal');
+        const dashboard = document.getElementById('dashboard');
+        const setupForm = document.getElementById('setupForm');
+        const readingForm = document.getElementById('readingForm');
+        const resetButton = document.getElementById('resetButton');
+        const newReadingButton = document.getElementById('newReadingButton');
+        const cancelReading = document.getElementById('cancelReading');
+        const showProjectionDetailsButton = document.getElementById('showProjectionDetailsButton');
+        const closeDetailsModal = document.getElementById('closeDetailsModal');
+        
+        let chartInstance = null;
+        let datos = {};
+
+        // --- LÓGICA DE LA APLICACIÓN ---
+
+        function init() {
+            const datosGuardados = localStorage.getItem('cfe_app_datos');
+            if (datosGuardados) {
+                datos = JSON.parse(datosGuardados);
+                dashboard.style.display = 'block';
+                renderizarTodo();
+            } else {
+                setupModal.classList.add('is-open');
+            }
+        }
+        
+        function toLocalISOString(date) {
+            const d = new Date(date);
+            d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+            return d.toISOString().slice(0, 16);
+        }
+
+        function guardarDatos() {
+            datos.lecturas.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+            localStorage.setItem('cfe_app_datos', JSON.stringify(datos));
+        }
+
+        function calcularSubtotal(kwh) {
+            let subtotal = 0;
+            let kwhRestantes = kwh;
+            for (const nivel of tarifas.niveles) {
+                if (kwhRestantes <= 0) break;
+                const kwhEnNivel = Math.min(kwhRestantes, nivel.limite);
+                subtotal += kwhEnNivel * nivel.costo;
+                kwhRestantes -= kwhEnNivel;
+            }
+            if (kwhRestantes > 0) {
+                subtotal += kwhRestantes * tarifas.excedente.costo;
+            }
+            return subtotal;
+        }
+
+        function calcularTodo() {
+            const inicioLecturas = new Date(datos.lecturas[0].fecha);
+            const finLecturas = new Date(datos.lecturas[datos.lecturas.length - 1].fecha);
+            
+            datos.diasTranscurridos = (finLecturas - inicioLecturas) / (1000 * 60 * 60 * 24);
+            datos.diasRestantes = Math.max(0, DIAS_BIMESTRE - datos.diasTranscurridos);
+
+            datos.lecturaInicial = datos.lecturas[0].lectura;
+            const lecturaMasReciente = datos.lecturas[datos.lecturas.length - 1].lectura;
+            datos.kwhConsumidos = lecturaMasReciente - datos.lecturaInicial;
+            
+            const diasDeConsumoParaPromedio = Math.max(0.0001, datos.diasTranscurridos);
+            datos.promedioKwhDiario = diasDeConsumoParaPromedio > 0 ? datos.kwhConsumidos / diasDeConsumoParaPromedio : 0;
+            
+            datos.kwhProyectados = datos.promedioKwhDiario * DIAS_BIMESTRE;
+            
+            const subtotalProyectado = calcularSubtotal(datos.kwhProyectados);
+            datos.costoProyectado = subtotalProyectado * (1 + tarifas.iva);
+
+            const subtotalActual = calcularSubtotal(datos.kwhConsumidos);
+            datos.costoActual = subtotalActual * (1 + tarifas.iva);
+
+            datos.lecturas[0].costoAcumulado = 0;
+            for(let i = 1; i < datos.lecturas.length; i++) {
+                const lecturaAnterior = datos.lecturas[i-1];
+                const lecturaActual = datos.lecturas[i];
+                const diasEnPeriodo = (new Date(lecturaActual.fecha) - new Date(lecturaAnterior.fecha)) / (1000 * 60 * 60 * 24);
+                
+                if (diasEnPeriodo <= 0) {
+                    lecturaActual.costoPeriodo = 0;
+                    lecturaActual.impactoDiarioProyeccion = 0;
+                    lecturaActual.costoAcumulado = lecturaAnterior.costoAcumulado;
+                    continue;
+                }
+
+                const kwhEnPeriodo = lecturaActual.lectura - lecturaAnterior.lectura;
+                const kwhDiariosPeriodo = kwhEnPeriodo / diasEnPeriodo;
+                const costoPromedioProyectadoPorKwh = datos.kwhProyectados > 0 ? datos.costoProyectado / datos.kwhProyectados : 0;
+                lecturaActual.impactoDiarioProyeccion = kwhDiariosPeriodo * costoPromedioProyectadoPorKwh;
+                
+                lecturaActual.costoPeriodo = lecturaActual.impactoDiarioProyeccion * diasEnPeriodo;
+                lecturaActual.costoAcumulado = (lecturaAnterior.costoAcumulado || 0) + lecturaActual.costoPeriodo;
+            }
+        }
+        
+        function populateCalculationDetails(kwh, title, subtitle) {
+            document.getElementById('detailsModalTitle').innerText = title;
+            document.getElementById('detailsModalSubtitle').innerText = subtitle;
+            const container = document.getElementById('calculationDetailsContainer');
+            container.innerHTML = '';
+            let kwhRestantes = kwh;
+            let subtotal = 0;
+            let html = `<div class="overflow-x-auto"><table class="w-full text-sm text-left">
+                <thead class="text-xs text-slate-400 uppercase">
+                    <tr><th class="px-2 py-2">Nivel</th><th class="px-2 py-2">Consumo (kWh)</th><th class="px-2 py-2">Tarifa ($)</th><th class="px-2 py-2 text-right">Subtotal ($)</th></tr>
+                </thead><tbody>`;
+            for (const nivel of tarifas.niveles) {
+                if (kwhRestantes <= 0) break;
+                const kwhEnNivel = Math.min(kwhRestantes, nivel.limite);
+                const costoNivel = kwhEnNivel * nivel.costo;
+                subtotal += costoNivel;
+                html += `<tr class="border-b border-slate-700">
+                    <td class="px-2 py-2 font-medium">${nivel.nombre}</td>
+                    <td class="px-2 py-2 font-mono">${kwhEnNivel.toFixed(2)}</td>
+                    <td class="px-2 py-2 font-mono">${nivel.costo.toFixed(3)}</td>
+                    <td class="px-2 py-2 font-mono text-right">${costoNivel.toFixed(2)}</td>
+                </tr>`;
+                kwhRestantes -= kwhEnNivel;
+            }
+            if (kwhRestantes > 0) {
+                const costoNivel = kwhRestantes * tarifas.excedente.costo;
+                subtotal += costoNivel;
+                html += `<tr class="border-b border-slate-700">
+                    <td class="px-2 py-2 font-medium">${tarifas.excedente.nombre}</td>
+                    <td class="px-2 py-2 font-mono">${kwhRestantes.toFixed(2)}</td>
+                    <td class="px-2 py-2 font-mono">${tarifas.excedente.costo.toFixed(3)}</td>
+                    <td class="px-2 py-2 font-mono text-right">${costoNivel.toFixed(2)}</td>
+                </tr>`;
+            }
+            const iva = subtotal * tarifas.iva;
+            const total = subtotal + iva;
+            html += `</tbody><tfoot class="text-white">
+                <tr class="font-medium">
+                    <td colspan="3" class="px-2 pt-3 text-right">Subtotal:</td>
+                    <td class="px-2 pt-3 text-right font-mono">$${subtotal.toFixed(2)}</td>
+                </tr>
+                <tr class="font-medium">
+                    <td colspan="3" class="px-2 text-right">IVA (16%):</td>
+                    <td class="px-2 text-right font-mono">$${iva.toFixed(2)}</td>
+                </tr>
+                <tr class="font-bold">
+                    <td colspan="3" class="px-2 py-2 text-right border-t border-slate-600">Total:</td>
+                    <td class="px-2 py-2 text-right font-mono text-lg border-t border-slate-600">$${total.toFixed(2)}</td>
+                </tr>
+            </tfoot></table></div>`;
+            container.innerHTML = html;
+        }
+
+        function renderizarTodo() {
+            calcularTodo();
+            const fechaInicio = new Date(datos.lecturas[0].fecha);
+            const fechaFin = new Date(fechaInicio);
+            fechaFin.setDate(fechaFin.getDate() + DIAS_BIMESTRE);
+            const options = { month: 'short', day: 'numeric' };
+            document.getElementById('bimestreFechas').innerText = `Bimestre: ${fechaInicio.toLocaleDateString('es-MX', options)} - ${fechaFin.toLocaleDateString('es-MX', options)}`;
+            document.getElementById('proyeccionGasto').innerText = `$${datos.costoProyectado.toFixed(2)}`;
+            document.getElementById('metaGastoDisplay').innerText = `$${Number(datos.metaGasto).toFixed(2)}`;
+            document.getElementById('diasTranscurridos').innerText = datos.diasTranscurridos.toFixed(0);
+            document.getElementById('diasRestantes').innerText = datos.diasRestantes.toFixed(0);
+            document.getElementById('consumoActual').innerText = datos.kwhConsumidos.toFixed(0);
+            document.getElementById('consumoProyectado').innerText = datos.kwhProyectados.toFixed(0);
+            const diferencia = datos.costoProyectado - datos.metaGasto;
+            if (diferencia > (datos.metaGasto * 0.1)) {
+                document.getElementById('gamificationIcon').innerText = '🤡';
+                document.getElementById('proyeccionTexto').innerText = `¡Cuidado! Proyección ${Math.round((diferencia/datos.metaGasto)*100)}% sobre la meta.`;
+            } else if (diferencia > 0) {
+                document.getElementById('gamificationIcon').innerText = '😟';
+                 document.getElementById('proyeccionTexto').innerText = `Ligeramente arriba de la meta. ¡Aún puedes lograrlo!`;
+            } else {
+                document.getElementById('gamificationIcon').innerText = '🏆';
+                document.getElementById('proyeccionTexto').innerText = `¡Excelente! Vas por debajo de tu meta.`;
+            }
+            const tablaBody = document.getElementById('historialTabla');
+            tablaBody.innerHTML = '';
+            datos.lecturas.forEach((lectura, index) => {
+                const esRecibo = lectura.tipo === 'recibo';
+                const tr = document.createElement('tr');
+                tr.className = `border-b border-slate-700 ${esRecibo ? 'bg-cyan-900/40' : ''}`;
+                const fechaFormateada = esRecibo ? `${new Date(lectura.fecha).toLocaleDateString('es-MX')} (Recibo)` : new Date(lectura.fecha).toLocaleString('es-MX');
+                const costoPeriodo = lectura.costoPeriodo !== undefined ? `$${lectura.costoPeriodo.toFixed(2)}` : '--';
+                const impactoDiario = lectura.impactoDiarioProyeccion !== undefined ? `$${lectura.impactoDiarioProyeccion.toFixed(2)}` : '--';
+                tr.innerHTML = `
+                    <td class="px-4 py-3 ${esRecibo ? 'font-semibold text-cyan-300' : ''}">${fechaFormateada}</td>
+                    <td class="px-4 py-3 font-mono ${esRecibo ? 'font-semibold text-cyan-300' : ''}">${lectura.lectura}</td>
+                    <td class="px-4 py-3 font-medium ${esRecibo ? 'text-cyan-300' : 'text-white'}">${costoPeriodo}</td>
+                    <td class="px-4 py-3 font-medium ${esRecibo ? 'text-cyan-300' : 'text-white'}">${impactoDiario}</td>
+                    <td class="px-4 py-3"><button data-index="${index}" class="edit-reading-btn text-cyan-400 hover:text-cyan-200 text-sm">Editar</button></td>
+                `;
+                tablaBody.appendChild(tr);
+
+                if (lectura.nota) {
+                    const noteTr = document.createElement('tr');
+                    noteTr.className = `note-row ${esRecibo ? 'bg-cyan-900/40' : ''}`;
+                    noteTr.innerHTML = `<td colspan="5" class="px-4 pt-0 pb-3 pl-8 text-xs text-slate-400">${lectura.nota}</td>`;
+                    tablaBody.appendChild(noteTr);
+                }
+            });
+            
+            document.querySelectorAll('.edit-reading-btn').forEach(button => {
+                button.addEventListener('click', handleEditReading);
+            });
+
+            renderizarGrafica();
+        }
+
+        function renderizarGrafica() {
+            if (chartInstance) chartInstance.destroy();
+            const ctx = document.getElementById('consumoChart').getContext('2d');
+
+            const plotData = datos.lecturas.map(lectura => {
+                const diasDesdeInicio = (new Date(lectura.fecha) - new Date(datos.lecturas[0].fecha)) / (1000 * 60 * 60 * 24);
+                return {
+                    x: diasDesdeInicio,
+                    y: lectura.costoAcumulado
+                };
+            });
+
+            const lastPlotPoint = plotData[plotData.length - 1];
+            const proyeccionData = [{x: lastPlotPoint.x, y: lastPlotPoint.y}, {x: DIAS_BIMESTRE, y: datos.costoProyectado}];
+            const limiteDAC = 5000;
+            const costoNivel1 = calcularSubtotal(300) * (1 + tarifas.iva);
+            const costoNivel2 = calcularSubtotal(600) * (1 + tarifas.iva);
+            const costoNivel3 = calcularSubtotal(900) * (1 + tarifas.iva);
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: [
+                        { label: 'Consumo', data: plotData, borderColor: 'white', borderWidth: 3, pointRadius: 0, tension: 0 },
+                        { label: 'Proyección', data: proyeccionData, borderColor: '#f59e0b', borderWidth: 3, borderDash: [5, 5], pointRadius: 0, tension: 0.1 },
+                        { label: 'Meta de Ahorro', data: [{x: 0, y: datos.metaGasto}, {x: DIAS_BIMESTRE, y: datos.metaGasto}], borderColor: '#22d3ee', borderWidth: 2, borderDash: [3, 3], pointRadius: 0, type: 'line' },
+                        { label: 'Lecturas', data: plotData, type: 'scatter', backgroundColor: 'white', borderColor: '#22d3ee', radius: 5, hoverRadius: 8 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        x: { type: 'linear', max: DIAS_BIMESTRE, title: { display: true, text: 'Días del Bimestre', color: '#94a3b8' }, grid: { color: 'rgba(148, 163, 184, 0.1)' }, ticks: { color: '#94a3b8' } },
+                        y: { beginAtZero: true, title: { display: true, text: 'Gasto (MXN)', color: '#94a3b8' }, grid: { color: 'rgba(148, 163, 184, 0.2)' }, ticks: { color: '#94a3b8', callback: (v) => '$' + v } }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        annotation: {
+                            annotations: {
+                                basico: { type: 'box', yMin: 0, yMax: costoNivel1, backgroundColor: 'rgba(16, 185, 129, 0.08)', label: { content: 'Básico', display: true, position: 'start', color: 'rgba(16, 185, 129, 0.7)' } },
+                                intermedio_bajo: { type: 'box', yMin: costoNivel1, yMax: costoNivel2, backgroundColor: 'rgba(245, 158, 11, 0.08)', label: { content: 'Intermedio Bajo', display: true, position: 'start', color: 'rgba(245, 158, 11, 0.7)' } },
+                                intermedio_alto: { type: 'box', yMin: costoNivel2, yMax: costoNivel3, backgroundColor: 'rgba(239, 68, 68, 0.08)', label: { content: 'Intermedio Alto', display: true, position: 'start', color: 'rgba(239, 68, 68, 0.7)' } },
+                                lineaDAC: { type: 'line', yMin: limiteDAC, yMax: limiteDAC, borderColor: 'rgb(220, 38, 38)', borderWidth: 3, borderDash: [8, 8], label: { content: '¡PELIGRO DAC!', display: true, position: 'end', backgroundColor: 'rgb(220, 38, 38)' } }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- MANEJADORES DE EVENTOS ---
+        setupForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const fechaInicio = document.getElementById('fechaInicio').value;
+            const lecturaInicial = parseInt(document.getElementById('lecturaInicial').value);
+            const lecturaActual = parseInt(document.getElementById('lecturaActualSetup').value);
+            const metaGasto = parseFloat(document.getElementById('metaGasto').value);
+            if (!fechaInicio || isNaN(lecturaInicial) || isNaN(lecturaActual) || isNaN(metaGasto)) { alert('Todos los campos son obligatorios.'); return; }
+            if (lecturaActual < lecturaInicial) { alert('La lectura actual no puede ser menor que la inicial.'); return; }
+            datos = { metaGasto, lecturas: [ { fecha: `${fechaInicio}T12:00:00`, lectura: lecturaInicial, tipo: 'recibo', nota: 'Lectura del recibo' }, { fecha: new Date().toISOString(), lectura: lecturaActual, tipo: 'usuario', nota: '' } ] };
+            guardarDatos();
+            setupModal.classList.remove('is-open');
+            dashboard.style.display = 'block';
+            renderizarTodo();
+        });
+
+        function handleEditReading(e) {
+            const index = parseInt(e.target.dataset.index);
+            const lecturaAEditar = datos.lecturas[index];
+            document.getElementById('readingModalTitle').innerText = 'Editar Lectura';
+            document.getElementById('editingIndex').value = index;
+            document.getElementById('fechaLectura').value = toLocalISOString(new Date(lecturaAEditar.fecha));
+            document.getElementById('lecturaValor').value = lecturaAEditar.lectura;
+            document.getElementById('lecturaNota').value = lecturaAEditar.nota || '';
+            readingModal.classList.add('is-open');
+        }
+
+        newReadingButton.addEventListener('click', function() {
+            document.getElementById('readingModalTitle').innerText = 'Registrar Nueva Lectura';
+            document.getElementById('editingIndex').value = '';
+            document.getElementById('readingForm').reset();
+            document.getElementById('fechaLectura').value = toLocalISOString(new Date());
+            readingModal.classList.add('is-open');
+        });
+
+        cancelReading.addEventListener('click', () => readingModal.classList.remove('is-open'));
+
+        readingForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const index = document.getElementById('editingIndex').value;
+            const fecha = document.getElementById('fechaLectura').value;
+            const lectura = parseInt(document.getElementById('lecturaValor').value);
+            const nota = document.getElementById('lecturaNota').value;
+            if (isNaN(lectura) || !fecha) { alert('Ambos campos son obligatorios.'); return; }
+
+            if (index !== '') { // --- MODO EDICIÓN ---
+                const editIndex = parseInt(index);
+                const lecturaAnterior = editIndex > 0 ? datos.lecturas[editIndex - 1] : null;
+                const lecturaSiguiente = editIndex < datos.lecturas.length - 1 ? datos.lecturas[editIndex + 1] : null;
+                if (lecturaAnterior && new Date(fecha) < new Date(lecturaAnterior.fecha)) { alert('La fecha de una lectura no puede ser anterior a la lectura previa.'); return; }
+                if (lecturaSiguiente && new Date(fecha) > new Date(lecturaSiguiente.fecha)) { alert('La fecha de una lectura no puede ser posterior a la siguiente lectura.'); return; }
+                if (lecturaAnterior && lectura < lecturaAnterior.lectura) { alert('Una lectura no puede ser menor que la lectura anterior.'); return; }
+                if (lecturaSiguiente && lectura > lecturaSiguiente.lectura) { alert('Una lectura no puede ser mayor que la siguiente lectura.'); return; }
+                datos.lecturas[editIndex].fecha = new Date(fecha).toISOString();
+                datos.lecturas[editIndex].lectura = lectura;
+                datos.lecturas[editIndex].nota = nota;
+            } else { // --- MODO NUEVO ---
+                const ultimaLectura = datos.lecturas[datos.lecturas.length - 1];
+                if (lectura < ultimaLectura.lectura) { alert('La nueva lectura no puede ser menor que la anterior.'); return; }
+                if (new Date(fecha) < new Date(ultimaLectura.fecha)) { alert('La fecha de la nueva lectura no puede ser anterior a la última lectura.'); return; }
+                datos.lecturas.push({ fecha: new Date(fecha).toISOString(), lectura: lectura, tipo: 'usuario', nota: nota });
+            }
+            
+            guardarDatos();
+            readingModal.classList.remove('is-open');
+            renderizarTodo();
+        });
+        
+        const showDetailsButton = document.getElementById('showDetailsButton');
+        if (showDetailsButton) {
+            showDetailsButton.addEventListener('click', () => {
+                populateCalculationDetails(datos.kwhConsumidos, 'Detalle del Gasto Actual', `Así se desglosa tu consumo de ${datos.kwhConsumidos.toFixed(0)} kWh hasta hoy.`);
+                calculationDetailsModal.classList.add('is-open');
+            });
+        }
+        
+        showProjectionDetailsButton.addEventListener('click', () => {
+            populateCalculationDetails(datos.kwhProyectados, 'Detalle del Gasto Proyectado', `Así se desglosaría tu consumo proyectado de ${datos.kwhProyectados.toFixed(0)} kWh.`);
+            calculationDetailsModal.classList.add('is-open');
+        });
+        
+        closeDetailsModal.addEventListener('click', () => calculationDetailsModal.classList.remove('is-open'));
+
+        resetButton.addEventListener('click', function() {
+            if (confirm('¿Estás seguro de que quieres borrar todos los datos y empezar de nuevo?')) {
+                localStorage.removeItem('cfe_app_datos');
+                window.location.reload();
+            }
+        });
+
+        init();
+    });
+    </script>
+</body>
+</html>

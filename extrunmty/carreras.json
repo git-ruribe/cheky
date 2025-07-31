@@ -1,4 +1,16 @@
 [
+      {
+        "name": "Entrenando en JULIO",
+        "type": "",
+        "address": "",
+        "mapUrl": "",
+        "coordinates": "",
+        "tel": "",
+        "social": "",
+        "photos": [],
+        "description": "",
+        "date": "2025-07-31"
+    },
             {
         "name": "21K Guadalajara",
         "type": "",
@@ -94,7 +106,8 @@
         "photos": [],
         "description": "",
         "date": "2025-06-15"
-    },        
+    }, 
+       
   {
         "name": "Entrenando en JUNIO",
         "type": "",
