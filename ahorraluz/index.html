@@ -1,38 +1,241 @@
 <!DOCTYPE html>
-<html>
+<html lang="es" class="scroll-smooth">
+
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AhorraLuz - Proyecta y Controla tu Gasto de Electricidad</title>
 
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
-  <base href="/ahorraluz/">
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="Simulador recibo de luz México.">
+    <!-- Estilos personalizados y configuración de Tailwind -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
 
-  <!-- iOS meta tags & icons -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="ahorraluz">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+        /* Estilo para el fondo del hero con gradiente y ruido sutil */
+        .hero-background {
+            background-color: #111827; /* gray-900 */
+            background-image: radial-gradient(circle at 1px 1px, rgba(209, 213, 219, 0.15), transparent 1px);
+            background-size: 1rem 1rem;
+        }
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+        /* Estilos para la animación del acordeón */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+        }
 
-  <title>ahorraluz</title>
-  <link rel="manifest" href="manifest.json">
+        .accordion-item.active .accordion-content {
+            max-height: 1000px; /* Suficientemente grande para el contenido */
+            transition: max-height 1s ease-in-out;
+        }
+
+        /* Estilo para la rotación del ícono del acordeón */
+        .accordion-item.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+        .accordion-icon {
+            transition: transform 0.3s ease-in-out;
+        }
+    </style>
 </head>
-<body>
-  <script src="flutter_bootstrap.js" async></script>
+
+<body class="bg-gray-900 text-gray-200">
+
+    <!-- ===== SECCIÓN HERO ===== -->
+    <header class="hero-background text-center py-20 md:py-32 px-6">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-4xl md:text-6xl font-bold text-white leading-tight">
+                No más sorpresas desagradables en tu recibo de luz
+            </h1>
+            <p class="mt-6 text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
+                Desde ahora puedes proyectar el monto de tu próximo recibo y anticiparte con acciones de ahorro inteligentes.
+            </p>
+            <a href="#solucion" class="mt-10 inline-block bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-8 rounded-full transition-transform transform hover:scale-105">
+                Descubre Cómo
+            </a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-16 md:py-24">
+
+        <!-- ===== SECCIÓN DE INFORMACIÓN (ACORDEONES) ===== -->
+        <section id="informacion" class="max-w-3xl mx-auto">
+            <h2 class="text-3xl font-bold text-center text-white mb-12">Empodérate con Conocimiento</h2>
+            <div class="space-y-4">
+                <!-- Acordeón 1: Conoce tu recibo -->
+                <div class="accordion-item bg-gray-800 rounded-lg shadow-lg">
+                    <button class="accordion-header w-full flex justify-between items-center p-5 text-left font-semibold text-lg text-white">
+                        <span>💡 Conoce tu Recibo de Luz</span>
+                        <i data-lucide="chevron-down" class="accordion-icon"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-5 pt-0 text-gray-400 space-y-4">
+                            <p>Tu recibo de CFE contiene información clave que, una vez que la entiendes, te da el poder de controlar tu consumo. Los puntos más importantes son:</p>
+                            <!-- ===== LISTA ACTUALIZADA ===== -->
+                            <ul class="list-disc list-inside space-y-2">
+                                <li><strong>Tipo de Tarifa:</strong> Identifica si estás en tarifa 1, 1A, 1B, etc. y si aplica el subsidio de verano. Es fundamental para un cálculo preciso.</li>
+                                <li><strong>Lectura Actual y Anterior:</strong> La diferencia entre estas dos cifras es tu consumo en kWh del bimestre.</li>
+                                <li><strong>Consumos de Bimestres Anteriores:</strong> CFE muestra una gráfica de tu historial. Es clave para saber si estás en riesgo de caer en la Tarifa de Alto Consumo (DAC).</li>
+                            </ul>
+                            <!-- Placeholder para imagen -->
+                            <div class="mt-4 bg-gray-700 rounded-md h-56 flex items-center justify-center text-gray-500">
+                                [Imagen de un recibo de CFE con secciones destacadas]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Acordeón 2: Cómo leer tu medidor -->
+                <div class="accordion-item bg-gray-800 rounded-lg shadow-lg">
+                    <button class="accordion-header w-full flex justify-between items-center p-5 text-left font-semibold text-lg text-white">
+                        <span>📟 Cómo Leer tu Medidor</span>
+                        <i data-lucide="chevron-down" class="accordion-icon"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-5 pt-0 text-gray-400 space-y-4">
+                            <p>Revisar tu medidor periódicamente es el primer paso para tomar el control. Existen dos tipos principales:</p>
+                             <ul class="list-disc list-inside space-y-2">
+                                <li><strong>Medidor Digital:</strong> Es el más sencillo. Simplemente anota el número que aparece en la pantalla, que usualmente indica los kWh consumidos.</li>
+                                <li><strong>Medidor Analógico (de manecillas):</strong> Parece un conjunto de relojes. Se lee de derecha a izquierda. Si una manecilla está entre dos números, anota el menor. ¡Nuestra app te ayuda a visualizar esto de forma sencilla!</li>
+                            </ul>
+                            <!-- Placeholder para imagen -->
+                             <div class="mt-4 bg-gray-700 rounded-md h-56 flex items-center justify-center text-gray-500">
+                                [Imagen comparando un medidor digital y uno analógico]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Acordeón 3: Aprende sobre las tarifas -->
+                <div class="accordion-item bg-gray-800 rounded-lg shadow-lg">
+                    <button class="accordion-header w-full flex justify-between items-center p-5 text-left font-semibold text-lg text-white">
+                        <span>💰 Aprende Sobre las Tarifas en México</span>
+                        <i data-lucide="chevron-down" class="accordion-icon"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-5 pt-0 text-gray-400 space-y-4">
+                            <p>En México, la tarifa doméstica no es fija. CFE utiliza un sistema de escalones: mientras más consumes, más caro es cada kWh adicional. Esto está diseñado para incentivar el ahorro.</p>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li><strong>Nivel Básico:</strong> Los primeros kWh son los más baratos (subsidiados).</li>
+                                <li><strong>Nivel Intermedio:</strong> El siguiente bloque de kWh tiene un costo mayor.</li>
+                                <li><strong>Nivel Excedente:</strong> Cada kWh que consumas por encima de los niveles anteriores tiene un costo mucho más elevado.</li>
+                                <li><strong>Tarifa DAC:</strong> Si tu consumo promedio es muy alto, pierdes todo el subsidio y caes en la Tarifa de Alto Consumo (DAC), donde el costo se dispara. ¡Es la zona que debes evitar a toda costa!</li>
+                            </ul>
+                             <!-- Placeholder para imagen -->
+                             <div class="mt-4 bg-gray-700 rounded-md h-56 flex items-center justify-center text-gray-500">
+                                [Gráfica simple mostrando el costo creciente de los niveles de tarifa]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN DE LA SOLUCIÓN (LA APP) ===== -->
+        <section id="solucion" class="text-center mt-24 md:mt-32">
+            <h2 class="text-3xl font-bold text-white">Presentamos AhorraLuz</h2>
+            <p class="mt-4 text-lg text-gray-300 max-w-2xl mx-auto">La herramienta definitiva para entender y optimizar tu consumo eléctrico.</p>
+            <div class="mt-12 grid md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="bg-gray-800 p-8 rounded-lg shadow-lg">
+                    <i data-lucide="trending-up" class="mx-auto text-cyan-400" size="48"></i>
+                    <h3 class="mt-4 text-xl font-bold text-white">Proyección Inteligente</h3>
+                    <p class="mt-2 text-gray-400">Registra tus lecturas y nuestra app calculará una proyección de cuánto pagarás al final del bimestre. ¡Anticípate y evita sorpresas!</p>
+                </div>
+                <!-- Feature 2 -->
+                <div class="bg-gray-800 p-8 rounded-lg shadow-lg">
+                    <i data-lucide="target" class="mx-auto text-cyan-400" size="48"></i>
+                    <h3 class="mt-4 text-xl font-bold text-white">Metas de Ahorro</h3>
+                    <p class="mt-2 text-gray-400">Define cuánto quieres gastar y la app te mostrará si vas por buen camino para cumplir tu meta. Mantén tu consumo bajo control.</p>
+                </div>
+                <!-- Feature 3 -->
+                <div class="bg-gray-800 p-8 rounded-lg shadow-lg">
+                    <i data-lucide="bar-chart-3" class="mx-auto text-cyan-400" size="48"></i>
+                    <h3 class="mt-4 text-xl font-bold text-white">Historial y Gráficas</h3>
+                    <p class="mt-2 text-gray-400">Visualiza tu consumo a lo largo del tiempo con gráficas claras y un historial detallado de tus lecturas. Identifica patrones y oportunidades de ahorro.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN CTA (DESCARGAS) ===== -->
+        <section id="descargas" class="mt-24 md:mt-32 bg-gray-800 rounded-lg p-10 md:p-16 text-center">
+            <h2 class="text-3xl font-bold text-white">Toma el Control de tu Gasto Hoy Mismo</h2>
+            <p class="mt-4 text-lg text-gray-300 max-w-2xl mx-auto">Únete a nuestra comunidad de beta testers y empieza a ahorrar. Tu participación es clave para mejorar la herramienta.</p>
+            <div class="mt-10 flex flex-col md:flex-row justify-center items-center gap-6">
+                
+                <!-- Botón Web App -->
+                <!-- REEMPLAZA # CON LA LIGA A TU WEB APP -->
+                <a href="#" class="flex items-center gap-3 bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-colors w-full md:w-auto justify-center">
+                    <i data-lucide="globe"></i>
+                    <span>Probar la Web App</span>
+                </a>
+
+                <!-- Botón Apple TestFlight -->
+                <!-- REEMPLAZA # CON TU LIGA PÚBLICA DE TESTFLIGHT -->
+                <a href="#" class="flex items-center gap-3 bg-white hover:bg-gray-200 text-gray-900 font-bold py-3 px-6 rounded-lg transition-colors w-full md:w-auto justify-center">
+                    <i data-lucide="apple"></i>
+                    <span>Disponible en TestFlight</span>
+                </a>
+
+                <!-- Botón Android Próximamente -->
+                <div class="flex items-center gap-3 bg-gray-700 text-gray-400 font-bold py-3 px-6 rounded-lg w-full md:w-auto justify-center cursor-not-allowed">
+                    <i data-lucide="android"></i>
+                    <span>Próximamente en Android</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===== FOOTER Y WHATSAPP ===== -->
+    <footer class="border-t border-gray-800 mt-16 md:mt-24 py-10">
+        <div class="container mx-auto px-6 text-center text-gray-500">
+            <p class="font-semibold text-lg text-gray-300 mb-4">¿Encontraste un bug o tienes una idea?</p>
+            <p>Tu opinión es fundamental. Únete a nuestro grupo de WhatsApp para beta testers y ayúdanos a construir la mejor herramienta de ahorro.</p>
+            <!-- REEMPLAZA # CON TU ENLACE DE INVITACIÓN AL GRUPO DE WHATSAPP -->
+            <a href="#" class="mt-6 mb-8 inline-flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full transition-colors">
+                <i data-lucide="message-circle"></i>
+                <span>Unirme al Grupo de Beta Testers</span>
+            </a>
+            <p class="text-sm">&copy; 2025 AhorraLuz. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Inicia Lucide Icons
+        lucide.createIcons();
+
+        // Lógica del Acordeón
+        const accordionItems = document.querySelectorAll('.accordion-item');
+
+        accordionItems.forEach(item => {
+            const header = item.querySelector('.accordion-header');
+            header.addEventListener('click', () => {
+                // Cierra todos los demás acordeones
+                accordionItems.forEach(otherItem => {
+                    if (otherItem !== item && otherItem.classList.contains('active')) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                // Abre o cierra el actual
+                item.classList.toggle('active');
+            });
+        });
+    </script>
+
 </body>
+
 </html>
